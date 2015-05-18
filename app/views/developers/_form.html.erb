@@ -1,0 +1,38 @@
+<%= form_for(@developer) do |f| %>
+  <% if @developer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@developer.errors.count, "error") %> prohibited this developer from being saved:</h2>
+
+      <ul>
+      <% @developer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <br/>
+  <div class="field">
+    <%= f.label :designation %><br>
+    <%= f.text_field :designation %>
+  </div>
+  <br/>
+  <div class="field">
+    <%= f.label :joining_date %><br>
+    <%= f.datetime_select :joining_date %>
+
+  </div>
+  <br/>
+  <div class="field">
+    <%= f.label :previous_job_exp %><br>
+    <%= f.text_field :previous_job_exp %>
+  </div>
+  <br/>
+  <div class="actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+  </div>
+<% end %>
