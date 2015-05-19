@@ -23,8 +23,7 @@
   <br/>
   <div class="field">
     <%= f.label :joining_date %><br>
-    <%= f.datetime_select :joining_date %>
-
+    <%= f.text_field :joining_date %>
   </div>
   <br/>
   <div class="field">
@@ -36,3 +35,12 @@
     <%= f.submit nil, :class => 'btn btn-primary' %>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+  $(function() {
+    $("#developer_joining_date").datepicker({
+    dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>

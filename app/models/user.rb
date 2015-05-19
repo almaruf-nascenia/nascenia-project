@@ -14,8 +14,4 @@ class User < ActiveRecord::Base
       #user.image = auth.info.image # assuming the user model has an image
     end
   end
-
-  def omniauth_authorize_path(resource_name, provider)
-    send "#{resource_name}_omniauth_authorize_path", provider
-  end
 end

@@ -1,12 +1,21 @@
 Rails.application.routes.draw do
 
-  resources :developers
+  resources :developers do
+    member do
+      post 'unassign'
+    end
+  end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
   #devise_for :users do
   #  get '/users/sign_out' => 'devise/sessions#destroy'
   #end
-  resources :projects
+  resources :projects do
+    put :sort, on: :collection
+  end
+
+  get 'project_assign' => 'projects#project_assign'
+  post 'projects/create_project_team', to: 'projects#create_project_team'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

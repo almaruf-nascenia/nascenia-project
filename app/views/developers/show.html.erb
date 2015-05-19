@@ -20,5 +20,42 @@
   <%= @developer.previous_job_exp %>
 </p>
 
-<%= link_to 'Edit', edit_developer_path(@developer) %> |
-<%= link_to 'Back', developers_path %>
+<!--<#%= link_to 'Edit', edit_developer_path(@developer) %> -->
+<!--<#%= link_to 'Back', developers_path %>-->
+
+<div class="input-group">
+  <form action="">
+    <input type="text" name="assign_date" placeholder="Select date to show assign developers" class="form-control search_dev">
+    <span class="input-group-btn">
+      <button type="submit" class="btn btn-default">Search!</button>
+    </span>
+  </form>
+</div>
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th> Project Name </th>
+    <th> Assign Date </th>
+    <th> End Date </th>
+    <th> Percentage </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @teams.each do |team| %>
+    <tr>
+      <td> <%= team.project.name %> </td>
+      <td> <%= team.start_date %> </td>
+      <td> <%= team.end_date %> </td>
+      <td> <%= team.participation_percentage %> </td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $(function() {
+    $('.search_dev').datepicker({
+      dateFormat: 'yy-mm-dd'
+    })
+  });
+</script>

@@ -11,23 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150518042058) do
+ActiveRecord::Schema.define(version: 20150519064518) do
 
   create_table "developers", force: true do |t|
     t.string   "name"
     t.string   "designation"
-    t.datetime "joining_date"
+    t.date     "joining_date"
     t.float    "previous_job_exp", limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "project_teams", force: true do |t|
-    t.integer  "project__id"
+    t.integer  "project_id"
     t.integer  "developer_id"
     t.float    "participation_percentage", limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "status",                              default: false
+    t.date     "start_date"
+    t.date     "end_date"
   end
 
   create_table "projects", force: true do |t|

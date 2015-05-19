@@ -22,6 +22,7 @@
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav navbar-right">
       <% if user_signed_in? %>
+        <li><a><%= link_to "Projects Assigning",   project_assign_path %></a></li>
         <li><a><%= link_to "Projects",   projects_path %></a></li>
         <li><a><%= link_to "Developer",   developers_path %></a></li>
         <li><a><%= link_to "Activity",   '#' %></a></li>

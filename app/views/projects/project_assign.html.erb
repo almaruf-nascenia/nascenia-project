@@ -1,0 +1,112 @@
+<h1>Add Developer to the Project</h1>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th colspan="1"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @projects.each do |project| %>
+    <tr>
+      <td><%= project.name %> </td>
+      <td>
+        <ul class="token-input-list-facebook">
+         <% project.show_current_team.each do |team| %>
+           <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
+              <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
+              <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">×</span>
+            </li>
+          <%end%>
+        </ul>
+      </td>
+       <td>
+         <div class="panelTitleLinkContainer"><a class="actionLink pro-<%= project.id %>" href="javascript:void(0)" onclick="showAddDeveloperDialog(<%= project.id %>);"><span class="glyphicon glyphicon-plus"></span> Add Developer</a></div>
+      </td>
+    </tr>
+  <% end %>
+<br>
+
+<div id="addDeveloperDialog" class="modal fade" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Developer Information</h4>
+      </div>
+      <div class="modal-body tabIndexContainer">
+        <%= form_tag "projects/create_project_team", method: :post, id: "createTeamForm" do %>
+          <div  class="hidden"><%= hidden_field_tag :project_id, '' %></div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="addDeveloperId" class="control-label">Developer Name</label>
+                <select class="form-control" id="addDeveloperId" name="developer_id">
+                  <% developer_list = Developer.all.map { |dev| [dev.name, dev.id] } %>
+                  <%= options_for_select(developer_list) %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div id="addPercentageGroup" class="form-group">
+                <label for="addPercentage" class="control-label focusOnShow">Participation Percentage</label>
+                <input type="text" class="form-control" id="addPercentage" name="participation_percentage" placeholder="Enter participation value">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="addStartDate" class="control-label">Start Date</label>
+                <input type="text" id="addStartDate" class="form-control" id="addStartDate" name="start_date" placeholder="Enter Start Date">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+            <button type="button" class="btn btn-success" onclick="createTeam()"><i class="glyphicon glyphicon-floppy-saved"></i> Add</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $(function() {
+    $("#addStartDate").datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+
+    $('.remove-developer').click(function() {
+      var dev_id = $(this).attr('data-dev-id');
+      $.ajax({
+        url: "/developers/" + dev_id + "/unassign",
+        type: 'post',
+        dataType: 'script',
+        data: {project_id: $(this).attr('data-project-id')},
+        success: function(res) {
+          if(res == '1') {
+            $('#dev-' + dev_id).remove();
+          }
+        }
+      });
+    });
+  });
+</script>
