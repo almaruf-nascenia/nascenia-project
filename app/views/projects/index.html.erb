@@ -12,7 +12,7 @@
 
   <tbody class="sortable">
     <% @projects.each do |project| %>
-      <tr data-id="<%= project.id %>" >
+      <tr project="<%= project.id %>" >
         <td><%= project.name %></td>
         <td><%= project.title %></td>
         <td><%= project.description %></td>

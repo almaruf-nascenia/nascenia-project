@@ -11,7 +11,12 @@ Rails.application.routes.draw do
   #  get '/users/sign_out' => 'devise/sessions#destroy'
   #end
   resources :projects do
-    put :sort, on: :collection
+    collection do
+      post 'sortable'
+    end
+    member do
+      get 'dev_list'
+    end
   end
 
   get 'project_assign' => 'projects#project_assign'

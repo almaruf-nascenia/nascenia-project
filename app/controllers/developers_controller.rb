@@ -10,9 +10,9 @@ class DevelopersController < ApplicationController
 
   def show
     if params[:assign_date].present?
-      @teams = ProjectTeam.where('start_date <= ? and developer_id = ?', params[:assign_date], @developer.id)
+      @teams = ProjectTeam.where('start_date <= ? and developer_id = ?', params[:assign_date], @developer.id).order('end_date IS NOT NULL, end_date DESC')
     else
-      @teams = ProjectTeam.where('project_id = ?', @developer.id)
+      @teams = ProjectTeam.where('developer_id = ?', @developer.id).order('end_date IS NOT NULL, end_date DESC')
     end
     respond_with(@developer)
   end
@@ -27,17 +27,31 @@ class DevelopersController < ApplicationController
 
   def create
     @developer = Developer.new(developer_params)
-    @developer.save
+    if @developer.save
+      flash[:success] = 'New Developer has been successfully created'
+    else
+      flash[:error] = 'Unable to create Developer'
+    end
     respond_with(@developer)
   end
 
   def update
-    @developer.update(developer_params)
+    if @developer.update(developer_params)
+      flash[:success] = 'Developer information has been updated'
+    else
+      flash[:error] = 'Unable to update developer information'
+    end
     respond_with(@developer)
   end
 
   def destroy
-    @developer.destroy
+    developer = ProjectTeam.where('developer_id = ? and status = true', @developer.id)
+      if developer.exists?
+        flash[:error] = 'Developer can not be removed'
+      else
+        @developer.destroy
+        flash[:success] = 'Developer has been removed'
+      end
     respond_with(@developer)
   end
 

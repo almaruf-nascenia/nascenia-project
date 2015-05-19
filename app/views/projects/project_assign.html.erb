@@ -44,8 +44,6 @@
               <div class="form-group">
                 <label for="addDeveloperId" class="control-label">Developer Name</label>
                 <select class="form-control" id="addDeveloperId" name="developer_id">
-                  <% developer_list = Developer.all.map { |dev| [dev.name, dev.id] } %>
-                  <%= options_for_select(developer_list) %>
                 </select>
               </div>
             </div>
@@ -55,7 +53,7 @@
             <div class="col-md-6">
               <div id="addPercentageGroup" class="form-group">
                 <label for="addPercentage" class="control-label focusOnShow">Participation Percentage</label>
-                <input type="text" class="form-control" id="addPercentage" name="participation_percentage" placeholder="Enter participation value">
+                <input type="text" class="form-control" id="addPercentage" name="participation_percentage" placeholder="Enter participation value" value="100">
               </div>
             </div>
           </div>
@@ -95,18 +93,21 @@
     });
 
     $('.remove-developer').click(function() {
-      var dev_id = $(this).attr('data-dev-id');
-      $.ajax({
-        url: "/developers/" + dev_id + "/unassign",
-        type: 'post',
-        dataType: 'script',
-        data: {project_id: $(this).attr('data-project-id')},
-        success: function(res) {
-          if(res == '1') {
-            $('#dev-' + dev_id).remove();
+      var element = $(this);
+      var dev_id = element.attr('data-dev-id');
+      if(confirm("Are you sure?")) {
+        $.ajax({
+          url: "/developers/" + dev_id + "/unassign",
+          type: 'post',
+          dataType: 'script',
+          data: {project_id: element.attr('data-project-id')},
+          success: function(res) {
+            if(res == '1') {
+              element.parents('li').remove();
+            }
           }
-        }
-      });
+        });
+      }
     });
   });
 </script>

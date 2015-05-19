@@ -1,0 +1,3 @@
+$("#addDeveloperDialog").modal('show');
+$("#addDeveloperId").html("<%= escape_javascript(options_for_select(@developer_list.map{ |dev| [dev.name, dev.id] })).html_safe %>");
+$('#project_id').val(<%= params[:id] %>);

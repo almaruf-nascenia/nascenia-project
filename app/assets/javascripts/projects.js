@@ -9,30 +9,19 @@ set_positions = function(){
 }
 
 ready = function(){
-
-    // call set_positions function
-    set_positions();
-
-    $('.sortable').sortable();
-
-    // after the order changes
-    $('.sortable').sortable().bind('sortupdate', function(e, ui) {
-        // array to store new order
-        updated_order = []
-        // set the updated positions
-        set_positions();
-
-        // populate the updated_order array with the new task positions
-        $('.panel.panel-default').each(function(i){
-            updated_order.push({ id: $(this).data("id"), position: i+1 });
-        });
-
-        // send the updated order via ajax
-        $.ajax({
-            type: "PUT",
-            url: '/tasks/sort',
-            data: { order: updated_order }
-        });
+    $('.sortable').sortable({
+        cursor: "move",
+        placeholder: "sortable-placeholder",
+        update: function(e, ui) {
+            var updated_order = $(".sortable").sortable('toArray', {attribute: "project"});
+            // send the updated order via ajax
+            console.log(updated_order);
+            $.ajax({
+                type: "post",
+                url: '/projects/sortable',
+                data: { order: updated_order }
+            });
+        }
     });
 }
 
@@ -44,11 +33,13 @@ $(document).on('page:load', ready);
 
 
 function showAddDeveloperDialog(pro_id) {
-
-    $("#addDeveloperDialog").modal('show');
-    $('#project_id').val(pro_id);
-
+    $.ajax({
+        url: "/projects/" +pro_id + "/dev_list",
+        type: 'get',
+        dataType: 'script'
+    });
 }
+
 function createTeam(){
     $("#addDeveloperDialog").modal('hide');
     $("#createTeamForm").submit();

@@ -10,9 +10,9 @@ class ProjectsController < ApplicationController
 
   def show
     if params[:assign_date].present?
-      @teams = ProjectTeam.where('start_date <= ? and project_id = ?', params[:assign_date], @project.id)
+      @teams = ProjectTeam.where('start_date <= ? and project_id = ?', params[:assign_date], @project.id).order('end_date IS NOT NULL, end_date DESC')
     else
-      @teams = ProjectTeam.where('project_id = ?', @project.id)
+      @teams = ProjectTeam.where('project_id = ?', @project.id).order('end_date IS NOT NULL, end_date DESC')
     end
     respond_with(@project)
   end
@@ -27,37 +27,63 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
-    @project.save
+    if @project.save
+      flash[:success] = 'Project has been successfully created'
+    else
+      flash[:error] = 'Unable to create project'
+    end
     respond_with(@project)
   end
 
+  def sortable
+    updated_order = params[:order]
+    updated_order.each_with_index do |id, index|
+      project = Project.find_by_id(id)
+      project.priority = index
+      project.save
+    end
+  end
+
   def update
-    @project.update(project_params)
+    if @project.update(project_params)
+      flash[:success] = 'Project information has been updated'
+    else
+      flash[:error] = 'Unable to update Project information'
+    end
+
     respond_with(@project)
   end
 
   def destroy
     @project.destroy
+    flash[:success] = 'Project has been removed'
     respond_with(@project)
   end
 
-  def sort
-    params[:order].each do |key,value|
-      Project.find(value[:id]).update_attribute(:priority,value[:position])
-    end
-    render :nothing => true
-  end
-
   def project_assign
-    @projects = Project.all
+    @projects = Project.order(priority: :desc).all
     respond_with(@projects)
   end
 
   def create_project_team
     @project_team = ProjectTeam.new(project_team_params)
     @project_team['status'] = true
-    @project_team.save
+    if @project_team.save
+      flash[:success] = 'New developer has been added'
+    else
+      flash[:error] = 'Unable to add the developer'
+    end
     redirect_to project_assign_path
+  end
+
+  def dev_list
+    project_id = params[:id]
+    project = Project.find_by_id(project_id)
+    project_dev = project.developers.where('status = true')
+    @developer_list = Developer.all - project_dev
+    respond_to do |format|
+      format.js
+    end
   end
 
 
