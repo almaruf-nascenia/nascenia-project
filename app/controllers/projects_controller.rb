@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
-  #before_action :authenticate_user!
+
+  skip_before_action :verify_authenticity_token
   respond_to :html
 
   def index
@@ -29,8 +30,6 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     if @project.save
       flash[:success] = 'Project has been successfully created'
-    else
-      flash[:error] = 'Unable to create project'
     end
     respond_with(@project)
   end
@@ -47,8 +46,6 @@ class ProjectsController < ApplicationController
   def update
     if @project.update(project_params)
       flash[:success] = 'Project information has been updated'
-    else
-      flash[:error] = 'Unable to update Project information'
     end
 
     respond_with(@project)
@@ -71,7 +68,7 @@ class ProjectsController < ApplicationController
     if @project_team.save
       flash[:success] = 'New developer has been added'
     else
-      flash[:error] = 'Unable to add the developer'
+      flash[:error] = "Unable to add the developer without proper information #{@project_team.errors.inspect}"
     end
     redirect_to project_assign_path
   end
@@ -83,6 +80,17 @@ class ProjectsController < ApplicationController
     @developer_list = Developer.all - project_dev
     respond_to do |format|
       format.js
+    end
+  end
+
+  def export
+    @projects= Project.all
+    respond_to do |format|
+      format.html
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"project-activity-list\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
     end
   end
 

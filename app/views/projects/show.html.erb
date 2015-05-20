@@ -1,5 +1,5 @@
 <p>
-  <strong>Name:</strong>
+  <strong>Project Name:</strong>
   <%= @project.name %>
 </p>
 
@@ -23,10 +23,10 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th> Name </th>
+      <th> Developer Name </th>
       <th> Assign Date </th>
       <th> End Date </th>
-      <th> Percentage </th>
+      <th> Participation Percentage </th>
     </tr>
   </thead>
   <tbody>
@@ -41,8 +41,7 @@
   </tbody>
 </table>
 
-<%#= link_to 'Edit', edit_project_path(@project) %>
-<%#= link_to 'Back', projects_path %>
+
 <script type="text/javascript">
  $(function() {
    $('.search_dev').datepicker({

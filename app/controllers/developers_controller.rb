@@ -29,8 +29,6 @@ class DevelopersController < ApplicationController
     @developer = Developer.new(developer_params)
     if @developer.save
       flash[:success] = 'New Developer has been successfully created'
-    else
-      flash[:error] = 'Unable to create Developer'
     end
     respond_with(@developer)
   end
@@ -38,8 +36,6 @@ class DevelopersController < ApplicationController
   def update
     if @developer.update(developer_params)
       flash[:success] = 'Developer information has been updated'
-    else
-      flash[:error] = 'Unable to update developer information'
     end
     respond_with(@developer)
   end
@@ -47,7 +43,7 @@ class DevelopersController < ApplicationController
   def destroy
     developer = ProjectTeam.where('developer_id = ? and status = true', @developer.id)
       if developer.exists?
-        flash[:error] = 'Developer can not be removed'
+        flash[:error] = 'This developer can not be removed'
       else
         @developer.destroy
         flash[:success] = 'Developer has been removed'

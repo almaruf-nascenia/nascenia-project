@@ -11,28 +11,50 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="row">
+    <div class="col-md-12">
+      <div id="addPercentageGroup" class="form-group">
+        <%= f.label :name, :class => 'control-label focusOnShow' %>
+        <%= f.text_field :name, :class => 'form-control' %>
+      </div>
+    </div>
   </div>
-  <br/>
-  <div class="field">
-    <%= f.label :designation %><br>
-    <%= f.text_field :designation %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div id="addPercentageGroup" class="form-group">
+        <%= f.label :designation, :class => 'control-label focusOnShow' %>
+        <%= f.text_field :designation, :class => 'form-control' %>
+      </div>
+    </div>
   </div>
-  <br/>
-  <div class="field">
-    <%= f.label :joining_date %><br>
-    <%= f.text_field :joining_date %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div id="addPercentageGroup" class="form-group">
+        <%= f.label :joining_date, :class => 'control-label focusOnShow' %>
+        <%= f.text_field :joining_date, :class => 'form-control' %>
+      </div>
+    </div>
   </div>
-  <br/>
-  <div class="field">
-    <%= f.label :previous_job_exp %><br>
-    <%= f.text_field :previous_job_exp %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div id="addPercentageGroup" class="form-group">
+        <%= f.label :previous_job_exp, :class => 'control-label focusOnShow' %>
+        <%= f.text_field :previous_job_exp, :class => 'form-control' %>
+      </div>
+    </div>
   </div>
-  <br/>
-  <div class="actions">
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+
+  <div class="actions clearfix">
+    <% unless @developer.new_record? %>
+      <div class="pull-left">
+        <%= link_to 'Show', @developer %> |
+        <%= link_to 'Back', developers_path %>
+      </div>
+    <%end%>
+    <%= f.submit nil, :class => 'btn btn-primary pull-right' %>
   </div>
 <% end %>
 
@@ -40,7 +62,7 @@
 <script type="text/javascript">
   $(function() {
     $("#developer_joining_date").datepicker({
-    dateFormat: 'yy-mm-dd'
+      dateFormat: 'yy-mm-dd'
     });
   });
 </script>

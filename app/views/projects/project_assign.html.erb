@@ -1,33 +1,41 @@
-<h1>Add Developer to the Project</h1>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h1 style="font-size: 20px; margin: 0;">Assign developers to Project</h1>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Project</th>
+        <th>Developers</th>
+        <th colspan="1"></th>
+      </tr>
+      </thead>
 
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th colspan="1"></th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% @projects.each do |project| %>
-    <tr>
-      <td><%= project.name %> </td>
-      <td>
-        <ul class="token-input-list-facebook">
-         <% project.show_current_team.each do |team| %>
-           <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
-              <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
-              <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">×</span>
-            </li>
-          <%end%>
-        </ul>
-      </td>
-       <td>
-         <div class="panelTitleLinkContainer"><a class="actionLink pro-<%= project.id %>" href="javascript:void(0)" onclick="showAddDeveloperDialog(<%= project.id %>);"><span class="glyphicon glyphicon-plus"></span> Add Developer</a></div>
-      </td>
-    </tr>
-  <% end %>
-<br>
+      <tbody>
+      <% @projects.each do |project| %>
+        <tr>
+          <td><%= link_to project.name, project %> </td>
+          <td>
+            <ul class="token-input-list-facebook">
+              <% project.show_current_team.each do |team| %>
+                <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
+                  <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
+                  <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">×</span>
+                </li>
+              <%end%>
+            </ul>
+          </td>
+          <td>
+            <div class="panelTitleLinkContainer"><a class="actionLink pro-<%= project.id %>" href="javascript:void(0)" onclick="showAddDeveloperDialog(<%= project.id %>);"><span class="glyphicon glyphicon-plus"></span> Add Developer</a></div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+      <%= link_to 'Download Project Activity', export_path(format: :csv), :class => 'btn btn-info pull-right'%>
+  </div>
+</div>
 
 <div id="addDeveloperDialog" class="modal fade" data-backdrop="static">
   <div class="modal-dialog">
@@ -37,13 +45,13 @@
         <h4 class="modal-title">Add Developer Information</h4>
       </div>
       <div class="modal-body tabIndexContainer">
-        <%= form_tag "projects/create_project_team", method: :post, id: "createTeamForm" do %>
+        <%= form_tag "projects/create_project_team", method: :post, id: "createTeamForm" do |f| %>
           <div  class="hidden"><%= hidden_field_tag :project_id, '' %></div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="addDeveloperId" class="control-label">Developer Name</label>
-                <select class="form-control" id="addDeveloperId" name="developer_id">
+                <select class="form-control" id="addDeveloperId" name="developer_id" >
                 </select>
               </div>
             </div>
@@ -62,10 +70,9 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="addStartDate" class="control-label">Start Date</label>
-                <input type="text" id="addStartDate" class="form-control" id="addStartDate" name="start_date" placeholder="Enter Start Date">
+                <input type="text" id="addStartDate" class="form-control" id="addStartDate" name="start_date" placeholder="Enter Start Date" value= "<%= Time.now.strftime("%Y-%m-%d") %>">
               </div>
             </div>
-
           </div>
 
           <div class="modal-footer">
@@ -77,14 +84,7 @@
       </div>
     </div>
   </div>
-
-
-
 </div>
-
-
-  </tbody>
-</table>
 
 <script type="text/javascript">
   $(function() {

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   get 'project_assign' => 'projects#project_assign'
   post 'projects/create_project_team', to: 'projects#create_project_team'
+  get 'export' => 'projects#export'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

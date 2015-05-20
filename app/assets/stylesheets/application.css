@@ -18,6 +18,10 @@
  *= require token-input-facebook
  */
 
+.main-logo {
+    margin-top: -10px;
+}
+
 .notice, .success, .warning, .error, .validation {
     border: 1px solid;
     margin: 10px 0px;
@@ -45,4 +49,28 @@
 .error {
     color: #D8000C;
     background-color: #FFBABA;
+}
+
+#error_explanation {
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 5px;
+    border: solid 1px #ebccd1;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.create-new-project,
+.create-new-developer {
+    width: 650px;
+    margin: auto;
+}
+
+.create-new-project h1,
+.create-new-developer h1 {
+    margin-top: 5px;
+}
+
+#error_explanation h2 {
+    font-size: 24px;
 }

@@ -2,6 +2,8 @@ class Developer < ActiveRecord::Base
   has_many :project_teams, dependent: :destroy
   has_many :projects, through: :project_teams
 
+  has_many :active_developer_project, -> { where status: true }, class_name: 'ProjectTeam'
+
   validates :name, presence: true
   validates :designation, presence: true
   validates :joining_date, presence: true

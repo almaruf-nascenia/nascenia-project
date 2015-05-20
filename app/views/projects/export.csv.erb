@@ -1,0 +1,17 @@
+<%- headers = ['Project Name', 'Developer Name', 'Designation', 'Joining Date', 'Start Date', 'Participation Percentage' ,'Previous job experience', 'Current Experience(Month)'] -%>
+<%= CSV.generate_line(headers).html_safe.strip %>
+<%- @projects.each do |project| -%>
+  <%- project.active_developers.each do |dev|%>
+    <%- row = [
+        project.name,
+        dev.name,
+        dev.designation,
+        dev.joining_date,
+        dev.active_developer_project.with_project(project.id).first.start_date,
+        dev.active_developer_project.with_project(project.id).first.participation_percentage,
+        dev.previous_job_exp,
+        ((Time.now.strftime("%Y-%m-%d").to_date - dev.joining_date.to_date).to_f / 30)
+      ] -%>
+    <%= CSV.generate_line(row).html_safe.strip %>
+  <%- end -%>
+<%- end -%>
