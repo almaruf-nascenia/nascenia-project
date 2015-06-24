@@ -60,11 +60,12 @@ class DevelopersController < ApplicationController
         project_team.status = false
         project_team.end_date = Time.now.strftime("%Y-%m-%d")
         project_team.save
-        @status = 1
+        status = dev_id
       else
-        @status = 0
+        status = 0
       end
       format.js
+      format.json{ render json: { status: status }}
     end
   end
 
