@@ -94,6 +94,33 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def show_project_time_sheets
+    @project = Project.find params[:id]
+    @project_time_sheets = @project.project_time_sheets
+
+    respond_to do |format|
+      format.html {}
+    end
+
+  end
+
+  def show_time_sheet_form
+    @project = Project.find params[:id]
+    @project_time_sheet = ProjectTimeSheet.new
+
+  end
+
+  def add_time_sheet
+
+  end
+
+  def edit_project_time_sheet
+
+  end
+
+  def update_time_sheet
+
+  end
 
   private
     def set_project

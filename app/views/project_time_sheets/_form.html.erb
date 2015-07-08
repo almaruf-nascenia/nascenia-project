@@ -1,0 +1,29 @@
+<%= form_for(@project_time_sheet) do |f| %>
+  <% if @project_time_sheet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project_time_sheet.errors.count, "error") %> prohibited this project_time_sheet from being saved:</h2>
+
+      <ul>
+      <% @project_time_sheet.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Title, %><br>
+    <%= f.text_field :Title, %>
+  </div>
+  <div class="field">
+    <%= f.label :Description, %><br>
+    <%= f.text_field :Description, %>
+  </div>
+  <div class="field">
+    <%= f.label :Link %><br>
+    <%= f.text_field :Link %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

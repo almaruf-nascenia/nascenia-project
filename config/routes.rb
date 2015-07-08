@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :project_time_sheets
+
   resources :developers do
     member do
       post 'unassign'
@@ -16,6 +18,11 @@ Rails.application.routes.draw do
     end
     member do
       get 'dev_list'
+      get :show_project_time_sheets
+      get :show_time_sheet_form
+      get :edit_project_time_sheet
+      post :add_time_sheet
+      put :update_time_sheet
     end
   end
 

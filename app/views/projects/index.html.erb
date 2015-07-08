@@ -18,6 +18,8 @@
         <td><%= project.description %></td>
         <td><%= link_to 'Edit', edit_project_path(project) %></td>
         <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Team Activity', show_project_time_sheets_project_path(project.id) %></td>
+        <td><%= link_to 'Time Sheet', '#' %></td>
       </tr>
     <% end %>
   </tbody>
