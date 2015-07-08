@@ -53,13 +53,12 @@ class DevelopersController < ApplicationController
 
   def unassign
     project_id = params[:project_id]
+    remove_date = params[:date]
     dev_id = params[:id]
     project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', project_id, dev_id).first
+    new_project_team = ProjectTeam.new(project_team.attributes.merge({ id: nil, start_date: remove_date, status: false }))
     respond_to do |format|
-      if project_team.present?
-        project_team.status = false
-        project_team.end_date = Time.now.strftime("%Y-%m-%d")
-        project_team.save
+      if new_project_team.save
         status = dev_id
       else
         status = 0

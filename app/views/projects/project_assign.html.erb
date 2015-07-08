@@ -141,11 +141,12 @@
             var projectId = element.data('project-id');
 
             $('#submit-remove-date').click(function(){
+                var remove_date = $('#remove-date').val();
                 $.ajax({
                     url: "/developers/" + devId + "/unassign",
                     type: 'post',
                     dataType: 'json',
-                    data: {project_id: projectId},
+                    data: { project_id: projectId, date: remove_date },
                     success: function (res) {
                         $("#add-remove-date").modal('hide');
                         if (res.status ) {
