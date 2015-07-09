@@ -22,7 +22,6 @@
                     <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
                       <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
                       <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>
-                      <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">×</span>
                       <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>" data-developer-name = "<%= team.developer.name %>" data-project-name = "<%= project.title %>">×</span>
                     </li>
                 <% end %>
@@ -115,7 +114,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
           <button id="submit-remove-date" type="button" class="btn btn-success" >
-            <i class="glyphicon glyphicon-floppy-saved"></i> Add
+            <i class="glyphicon glyphicon-floppy-saved"></i> Submit
           </button>
         </div>
 
@@ -169,7 +168,7 @@
         });
 
         $('.remove-developer').click(function () {
-            $('.remove-developer-modal-title').html('Remove ' + $(this).data('developer-name') + 'from ' + $(this).data('project-name'));
+            $('.remove-developer-modal-title').html('Remove ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name'));
             $("#add-remove-date").modal('show');
             var element = $(this);
             var devId = element.data('dev-id');
