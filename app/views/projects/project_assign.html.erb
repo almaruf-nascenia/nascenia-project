@@ -23,6 +23,7 @@
                       <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
                       <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>
                       <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">×</span>
+                      <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>" data-developer-name = "<%= team.developer.name %>" data-project-name = "<%= project.title %>">×</span>
                     </li>
                 <% end %>
               </ul>
@@ -97,14 +98,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Add Developer Information</h4>
+        <h4 class="remove-developer-modal-title"></h4>
       </div>
       <div class="modal-body tabIndexContainer">
 
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="addStartDate" class="control-label">Start Date</label>
+              <label for="addStartDate" class="control-label">Remove Date</label>
               <input type="text" id="remove-date" class="form-control" id="add-removal-date" name="end_date" placeholder="Enter Remove Date" value="<%= Time.now.strftime("%Y-%m-%d") %>">
             </div>
           </div>
@@ -168,6 +169,7 @@
         });
 
         $('.remove-developer').click(function () {
+            $('.remove-developer-modal-title').html('Remove ' + $(this).data('developer-name') + 'from ' + $(this).data('project-name'));
             $("#add-remove-date").modal('show');
             var element = $(this);
             var devId = element.data('dev-id');

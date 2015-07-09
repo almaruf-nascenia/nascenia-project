@@ -32,6 +32,7 @@ class ProjectTimeSheetsController < ApplicationController
       flash[:notice] = 'New item successfully created'
       redirect_to(project_project_time_sheet_path( id: @project_time_sheet.id, project_id: @project_time_sheet.project_id ))
     else
+      flash[:error] = 'Save reject'
       redirect_to(new_project_project_time_sheet_path)
     end
 
@@ -39,8 +40,8 @@ end
 
   def update
     @project_time_sheet.update(project_time_sheet_params)
+    flash[:notice] = 'Time Sheet successfully updated'
     redirect_to(project_project_time_sheet_path( id: @project_time_sheet.id, project_id: @project_time_sheet.project_id ))
-
   end
 
   def destroy

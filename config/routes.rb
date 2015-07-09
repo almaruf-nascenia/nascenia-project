@@ -19,13 +19,9 @@ Rails.application.routes.draw do
       post 'sortable'
       post 'update_developers_percentage'
     end
+
     member do
       get 'dev_list'
-      get :show_project_time_sheets
-      get :show_time_sheet_form
-      get :edit_project_time_sheet
-      post :add_time_sheet
-      put :update_time_sheet
     end
   end
 
