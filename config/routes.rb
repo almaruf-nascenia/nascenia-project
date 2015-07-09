@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :project_time_sheets
+  # resources :project_time_sheets
 
   resources :developers do
     member do
@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   #  get '/users/sign_out' => 'devise/sessions#destroy'
   #end
   resources :projects do
+    resources :project_time_sheets
     collection do
       post 'sortable'
       post 'update_developers_percentage'

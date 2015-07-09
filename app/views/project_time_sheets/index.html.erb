@@ -1,6 +1,7 @@
-<h1>Project Time Sheet</h1>
+<h1> Time Sheets for Project <%= @project.title %></h1>
 
-<table>
+
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Title</th>
@@ -10,15 +11,15 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class="sortable">
     <% @project_time_sheets.each do |project_time_sheet| %>
       <tr>
         <td><%= project_time_sheet.Title %></td>
         <td><%= project_time_sheet.Description %></td>
         <td><%= project_time_sheet.Link %></td>
-        <td><%= link_to 'Show', project_time_sheet %></td>
-        <td><%= link_to 'Edit', edit_project_time_sheet_path(project_time_sheet) %></td>
-        <td><%= link_to 'Destroy', project_time_sheet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', project_project_time_sheet_path(id: project_time_sheet.id) %></td>
+        <td><%= link_to 'Edit',edit_project_project_time_sheet_path(id: project_time_sheet.id) %></td>
+        <td><%= link_to 'Destroy', project_project_time_sheet_path(id: project_time_sheet.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Project time sheet', new_project_time_sheet_path %>
+<%= link_to 'New Project time sheet', new_project_project_time_sheet_path, html_options = { class: 'btn btn-success' } %>
