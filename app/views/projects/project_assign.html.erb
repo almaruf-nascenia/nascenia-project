@@ -19,8 +19,9 @@
             <td>
               <ul class="token-input-list-facebook ">
                 <% project.show_current_team.each do |team| %>
-                    <li class="token-input-token-facebook edit-developer" id="dev-<%= team.developer.id %>" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>" >
+                    <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
                       <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
+                      <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>
                       <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">×</span>
                     </li>
                 <% end %>
@@ -129,7 +130,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Add Developer Information</h4>
+        <h4 class="modal-title">Edit Developer Percentage </h4>
       </div>
       <div class="edited_developer_project_id" value=""></div>
       <div class="edited_developer_id" value=""></div>
