@@ -36,6 +36,9 @@
       <% end %>
       </tbody>
     </table>
+    <div class="pagination_table">
+      <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+    </div>
     <%= link_to 'Download Project Activity', export_path(format: :csv), :class => 'btn btn-info pull-right' %>
   </div>
 </div>
@@ -199,7 +202,7 @@
                 url: "/developers/" + dev_id + "/edit_developers_percentage",
                 type: 'get',
                 dataType: 'script',
-                data: {project_id: element.attr('data-project-id'), dev_id: dev_id},
+                data: {project_id: element.attr('data-project-id'), dev_id: dev_id}
             });
 
         });
@@ -213,7 +216,7 @@
                 url: "/projects/update_developers_percentage" ,
                 type: 'post',
                 dataType: 'script',
-                data: {id: project_id, developer_percentage: developer_percentage, dev_id: dev_id},
+                data: {id: project_id, developer_percentage: developer_percentage, dev_id: dev_id}
             });
 
         });

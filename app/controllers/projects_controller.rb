@@ -6,7 +6,8 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = Project.all
-    respond_with(@projects)
+    # respond_with(@projects)
+    @projects = @projects.paginate(:page => params[:page])
   end
 
   def show
@@ -59,7 +60,9 @@ class ProjectsController < ApplicationController
 
   def project_assign
     @projects = Project.order(priority: :desc).all
-    respond_with(@projects)
+    # respond_with(@projects)
+    @projects = @projects.paginate(:page => params[:page])
+
   end
 
   def create_project_team
@@ -101,6 +104,35 @@ class ProjectsController < ApplicationController
     else
       flash[:error] = project_team.errors.full_messages.first
     end
+  end
+
+  def show_project_time_sheets
+    @project = Project.find params[:id]
+    @project_time_sheets = @project.project_time_sheets
+    @project_time_sheets = @project_time_sheets.paginate(:page => params[:page])
+
+    respond_to do |format|
+      format.html {}
+    end
+
+  end
+
+  def show_time_sheet_form
+    @project = Project.find params[:id]
+    @project_time_sheet = ProjectTimeSheet.new
+
+  end
+
+  def add_time_sheet
+
+  end
+
+  def edit_project_time_sheet
+
+  end
+
+  def update_time_sheet
+
   end
 
   private

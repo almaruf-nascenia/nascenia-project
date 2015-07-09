@@ -25,6 +25,9 @@
   </tbody>
 </table>
 
+<div class="pagination_table">
+    <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+</div>
 <br>
 
 <%= link_to 'New Project', new_project_path, :class => 'btn btn-primary' %>

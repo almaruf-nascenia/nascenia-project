@@ -23,7 +23,9 @@
   <% end %>
   </tbody>
 </table>
-
+<div class="pagination_table">
+  <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+</div>
 <br>
 
 <%= link_to 'New Project time sheet', show_time_sheet_form_project_path(@project) %>

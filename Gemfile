@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'devise'
 ##OmniAuth Google OAuth2
 gem "omniauth-google-oauth2"
+gem 'will_paginate-bootstrap'
 
 group :assets do
   # Use SCSS for stylesheets

@@ -5,7 +5,8 @@ class DevelopersController < ApplicationController
 
   def index
     @developers = Developer.all
-    respond_with(@developers)
+    # respond_with(@developers)
+    @developers = @developers.paginate(:page => params[:page])
   end
 
   def show
