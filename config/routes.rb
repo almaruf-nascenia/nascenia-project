@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :developers do
     member do
       post 'unassign'
+      get 'edit_developers_percentage'
     end
   end
 
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
   resources :projects do
     collection do
       post 'sortable'
+      post 'update_developers_percentage'
     end
     member do
       get 'dev_list'

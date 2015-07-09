@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :update_developers_percentage]
 
   skip_before_action :verify_authenticity_token
   respond_to :html
@@ -91,6 +91,15 @@ class ProjectsController < ApplicationController
         headers['Content-Disposition'] = "attachment; filename=\"project-activity-list\""
         headers['Content-Type'] ||= 'text/csv'
       end
+    end
+  end
+
+  def update_developers_percentage
+    project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', params[:id], params[:dev_id]).first
+    if project_team.update_attributes(:participation_percentage => params[:developer_percentage])
+      flash[:success] = 'Developer Percentage has been Updated'
+    else
+      flash[:error] = project_team.errors.full_messages.first
     end
   end
 

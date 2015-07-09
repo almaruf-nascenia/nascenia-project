@@ -68,6 +68,13 @@ class DevelopersController < ApplicationController
     end
   end
 
+  def edit_developers_percentage
+    @project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', params[:project_id], params[:dev_id]).first
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
     def set_developer
       @developer = Developer.find(params[:id])
