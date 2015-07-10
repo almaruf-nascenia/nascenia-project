@@ -6,6 +6,7 @@ class ProjectTimeSheetsController < ApplicationController
   def index
     @project = Project.find(params[:project_id])
     @project_time_sheets = @project.project_time_sheets
+    @project_time_sheets = @project_time_sheets.paginate(:page => params[:page])
     respond_with(@project_time_sheets)
   end
 
