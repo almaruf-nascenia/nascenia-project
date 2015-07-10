@@ -147,6 +147,15 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="editStartDate" class="control-label">Start Date</label>
+              <input type="text"  class="form-control" id="editStartDate" name="editStartDate" placeholder="Enter Start Date" value="">
+            </div>
+          </div>
+        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
@@ -167,6 +176,9 @@
         });
 
         $("#remove-date").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        $("#editStartDate").datepicker({
             dateFormat: 'yy-mm-dd'
         });
 
@@ -211,12 +223,13 @@
             var developer_percentage = $('#editPercentage').val();
             var project_id = $('.edited_developer_project_id').val();
             var dev_id = $('.edited_developer_id').val();
+            var edit_date = $('#editStartDate').val();
             $("#edit_developers_percentage").modal('hide');
             $.ajax({
                 url: "/projects/update_developers_percentage" ,
                 type: 'post',
                 dataType: 'script',
-                data: {id: project_id, developer_percentage: developer_percentage, dev_id: dev_id}
+                data: {id: project_id, developer_percentage: developer_percentage, dev_id: dev_id, edit_date: edit_date}
             });
 
         });
