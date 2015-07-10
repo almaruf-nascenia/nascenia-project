@@ -7,9 +7,9 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.all
     # respond_with(@projects)
-    sc = ProjectTeam.select("CONCAT(project_id, '-', developer_id, '-', MAX(created_at))").group(:project_id, :developer_id)
-    pd = ProjectTeam.select('project_id = ? AND status = 1 AND CONCAT(project_id, '-', developer_id, '-', created_at) IN (?)', 2, sc)
-    pd.inspect
+    # sc = ProjectTeam.select("CONCAT(project_id, '-', developer_id, '-', MAX(created_at))").group(:project_id, :developer_id)
+    # pd = ProjectTeam.select('project_id = ? AND status = 1 AND CONCAT(project_id, '-', developer_id, '-', created_at) IN (?)', 2, sc)
+    # pd.inspect
 
     @projects = @projects.paginate(:page => params[:page])
   end
