@@ -58,7 +58,7 @@ class DevelopersController < ApplicationController
     dev_id = params[:id]
     project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', project_id, dev_id).first
 
-    new_project_team = ProjectTeam.new(project_team.attributes.merge({ id: nil, status_date: remove_date, status: false, participation_percentage: 0 }))
+    new_project_team = ProjectTeam.new(project_team.attributes.merge({ id: nil, status_date: remove_date, status: false, participation_percentage: 0, most_recent_data: true }))
     respond_to do |format|
       if new_project_team.save
         ProjectTeam.make_column_archive(dev_id, project_id, new_project_team.id)

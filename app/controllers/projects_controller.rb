@@ -73,18 +73,20 @@ class ProjectsController < ApplicationController
   def create_project_team
     @project_team = ProjectTeam.new(project_team_params)
     @project_team['status'] = true
+    @project_team.most_recent_data = true
     if @project_team.save
+      ProjectTeam.make_column_archive(@project_team.developer_id, @project_team.project_id, @project_team.id)
       flash[:success] = 'New developer has been added'
     else
-      flash[:error] = "Unable to add the developer without proper information #{@project_team.errors.inspect}"
+      flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
     end
     redirect_to project_assign_path
   end
 
   def dev_list
     project_id = params[:id]
-    project = Project.find_by_id(project_id)
-    project_dev = project.developers.where('status = true')
+    project = Project.find(project_id)
+    project_dev = project.developers.where('most_recent_data = true and status = true')
     @developer_list = Developer.all - project_dev
     respond_to do |format|
       format.js
@@ -115,35 +117,6 @@ class ProjectsController < ApplicationController
     else
        flash[:error] = 'Developer Participation Percentage value should be between 0 to 100'
     end
-  end
-
-  def show_project_time_sheets
-    @project = Project.find params[:id]
-    @project_time_sheets = @project.project_time_sheets
-    @project_time_sheets = @project_time_sheets.paginate(:page => params[:page])
-
-    respond_to do |format|
-      format.html {}
-    end
-
-  end
-
-  def show_time_sheet_form
-    @project = Project.find params[:id]
-    @project_time_sheet = ProjectTimeSheet.new
-
-  end
-
-  def add_time_sheet
-
-  end
-
-  def edit_project_time_sheet
-
-  end
-
-  def update_time_sheet
-
   end
 
   private
