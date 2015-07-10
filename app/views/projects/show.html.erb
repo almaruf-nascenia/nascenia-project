@@ -38,7 +38,9 @@
   <% end %>
   </tbody>
 </table>
-
+<div class="pagination_table">
+  <%= will_paginate @teams, renderer: BootstrapPagination::Rails %>
+</div>
 
 <script type="text/javascript">
  $(function() {
