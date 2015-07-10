@@ -11,9 +11,9 @@ class DevelopersController < ApplicationController
 
   def show
     if params[:assign_date].present?
-      @teams = ProjectTeam.where('start_date <= ? and developer_id = ?', params[:assign_date], @developer.id).order('end_date IS NOT NULL, end_date DESC')
+      @teams = ProjectTeam.where('status_date <= ? and developer_id = ?', params[:assign_date], @developer.id).order(' status_date DESC')
     else
-      @teams = ProjectTeam.where('developer_id = ?', @developer.id).order('end_date IS NOT NULL, end_date DESC')
+      @teams = ProjectTeam.where('developer_id = ?', @developer.id).order('status_date DESC')
     end
     respond_with(@developer)
   end
@@ -57,9 +57,11 @@ class DevelopersController < ApplicationController
     remove_date = params[:date]
     dev_id = params[:id]
     project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', project_id, dev_id).first
+
     new_project_team = ProjectTeam.new(project_team.attributes.merge({ id: nil, status_date: remove_date, status: false, participation_percentage: 0 }))
     respond_to do |format|
       if new_project_team.save
+        ProjectTeam.make_column_archive(dev_id, project_id, new_project_team.id)
         status = dev_id
       else
         status = 0
@@ -70,7 +72,7 @@ class DevelopersController < ApplicationController
   end
 
   def edit_developers_percentage
-    @project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', params[:project_id], params[:dev_id]).order('id desc').first
+    @project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true and most_recent_data = true', params[:project_id], params[:dev_id]).first
     respond_to do |format|
       format.js
     end

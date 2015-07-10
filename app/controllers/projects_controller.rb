@@ -103,10 +103,14 @@ class ProjectsController < ApplicationController
   end
 
   def update_developers_percentage
+    dev_id = params[:dev_id]
+    project_id = params[:id]
     if params[:developer_percentage].to_f > 0 and params[:developer_percentage].to_f <= 100
        project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', params[:id], params[:dev_id]).order('id desc').first
        duplicate_project_team = project_team.dup
        duplicate_project_team.update_attributes(:participation_percentage => params[:developer_percentage])
+       ProjectTeam.make_column_archive(dev_id, project_id, project_team.id)
+
        flash[:success] = 'Developer Percentage has been Updated'
     else
        flash[:error] = 'Developer Participation Percentage value should be between 0 to 100'
