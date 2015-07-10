@@ -7,12 +7,16 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.all
     # respond_with(@projects)
+    sc = ProjectTeam.select("CONCAT(project_id, '-', developer_id, '-', MAX(created_at))").group(:project_id, :developer_id)
+    pd = ProjectTeam.select('project_id = ? AND status = 1 AND CONCAT(project_id, '-', developer_id, '-', created_at) IN (?)', 2, sc)
+    pd.inspect
+
     @projects = @projects.paginate(:page => params[:page])
   end
 
   def show
     if params[:assign_date].present?
-      @teams = ProjectTeam.where('start_date <= ? and project_id = ?', params[:assign_date], @project.id).order('end_date IS NOT NULL, end_date DESC')
+      @teams = ProjectTeam.where('status_date <= ? and project_id = ?', params[:assign_date], @project.id).order('end_date IS NOT NULL, end_date DESC')
     else
       @teams = ProjectTeam.where('project_id = ?', @project.id).order('end_date IS NOT NULL, end_date DESC')
     end
@@ -145,6 +149,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_team_params
-      params.permit(:project_id, :developer_id, :participation_percentage, :start_date)
+      params.permit(:project_id, :developer_id, :participation_percentage, :status_date)
     end
 end

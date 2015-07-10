@@ -24,8 +24,7 @@
   <thead>
     <tr>
       <th> Developer Name </th>
-      <th> Assign Date </th>
-      <th> End Date </th>
+      <th> Status Date </th>
       <th> Participation Percentage </th>
     </tr>
   </thead>
@@ -33,8 +32,7 @@
   <% @teams.each do |team| %>
     <tr>
       <td> <%= team.developer.name %> </td>
-      <td> <%= team.start_date %> </td>
-      <td> <%= team.end_date %> </td>
+      <td> <%= team.status_date %> </td>
       <td> <%= team.participation_percentage %> </td>
     </tr>
   <%end%>

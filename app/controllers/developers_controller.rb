@@ -57,7 +57,7 @@ class DevelopersController < ApplicationController
     remove_date = params[:date]
     dev_id = params[:id]
     project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', project_id, dev_id).first
-    new_project_team = ProjectTeam.new(project_team.attributes.merge({ id: nil, start_date: remove_date, status: false }))
+    new_project_team = ProjectTeam.new(project_team.attributes.merge({ id: nil, status_date: remove_date, status: false, participation_percentage: 0 }))
     respond_to do |format|
       if new_project_team.save
         status = dev_id
