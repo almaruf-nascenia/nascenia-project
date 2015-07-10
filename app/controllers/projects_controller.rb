@@ -16,9 +16,9 @@ class ProjectsController < ApplicationController
 
   def show
     if params[:assign_date].present?
-      @teams = ProjectTeam.where('status_date <= ? and project_id = ?', params[:assign_date], @project.id).order('end_date IS NOT NULL, end_date DESC')
+      @teams = ProjectTeam.where('status_date <= ? and project_id = ?', params[:assign_date], @project.id).order('status_date DESC')
     else
-      @teams = ProjectTeam.where('project_id = ?', @project.id).order('end_date IS NOT NULL, end_date DESC')
+      @teams = ProjectTeam.where('project_id = ?', @project.id).order('status_date DESC')
     end
     respond_with(@project)
   end
