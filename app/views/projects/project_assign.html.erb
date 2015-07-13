@@ -18,7 +18,7 @@
             <td><%= link_to project.name, project %> </td>
             <td>
               <ul class="token-input-list-facebook ">
-                <% project.show_current_team.each do |team| %>
+                <% ProjectTeam.project_recent_data(project.id).each  do |team| %>
                     <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
                       <p> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
                       <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>

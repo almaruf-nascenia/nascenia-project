@@ -72,10 +72,9 @@ class ProjectsController < ApplicationController
 
   def create_project_team
     @project_team = ProjectTeam.new(project_team_params)
-    @project_team['status'] = true
+    @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
     if @project_team.save
-      ProjectTeam.make_column_archive(@project_team.developer_id, @project_team.project_id, @project_team.id)
       flash[:success] = 'New developer has been added'
     else
       flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
@@ -85,9 +84,9 @@ class ProjectsController < ApplicationController
 
   def dev_list
     project_id = params[:id]
-    project = Project.find(project_id)
-    project_dev = project.developers.where('most_recent_data = true and status = true')
-    @developer_list = Developer.all - project_dev
+    assigned_dev_id_list = ProjectTeam.project_recent_data(project_id).pluck(:developer_id)
+    @developer_list = Developer.where.not(id: assigned_dev_id_list)
+
     respond_to do |format|
       format.js
     end
@@ -107,9 +106,9 @@ class ProjectsController < ApplicationController
   def update_developers_percentage
     dev_id = params[:dev_id]
     project_id = params[:id]
-    update_project_team = ProjectTeam.new(:project_id => project_id, :developer_id => dev_id, :participation_percentage => params[:developer_percentage], :status => true, :status_date => params[:edit_date]  )
+    update_project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date] )
+
     if update_project_team.save
-       ProjectTeam.make_column_archive(dev_id, project_id, update_project_team.id)
        flash[:success] = 'Developer Percentage has been Updated'
     else
        flash[:error] = update_project_team.errors.full_messages.first
