@@ -1,0 +1,48 @@
+<h1>Developer Engagement Report</h1>
+<br/>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="padding-bottom: 28px">Name</th>
+    <th >Experience in </br>
+                                    Nascenia(years)</th>
+    <th>Previous </br>
+      Experience(years)</th>
+    <th> Total </br>
+      Experience(years)</th>
+    <th style="padding-bottom: 28px"> Project Count</th>
+    <th style="padding-bottom: 28px"> Assigned Project</th>
+  </tr>
+  </thead>
+
+  <tbody class="sortable">
+  <% @developers.each do |developer| %>
+      <% active_projects = developer.active_project_teams %>
+      <tr developer="<%= developer.id %>" >
+
+        <td><%= developer.name %></td>
+        <td><%= developer.company_tenure %></td>
+        <td><%= developer.previous_job_exp %></td>
+        <td><%= developer.total_experience %></td>
+        <td><%= active_projects.count %></td>
+        <td>
+          <ul class="token-input-list-facebook ">
+            <% active_projects.each  do |project_team| %>
+                <li class="token-input-token-facebook" >
+                  <p> <%= project_team.project.title %> <%= project_team.participation_percentage %></p>
+                </li>
+            <% end %>
+          </ul>
+
+        </td>
+
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="pagination_table">
+  <%= will_paginate @developers, renderer: BootstrapPagination::Rails %>
+</div>
+<br>
+
