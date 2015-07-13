@@ -117,7 +117,9 @@ class ProjectsController < ApplicationController
 
   def team_activity
     @project_teams = @project.project_teams.order('status_date, id DESC')
-    @project_teams = @project_teams.paginate(:page => params[:page])
+    @project_teams = @project_teams.paginate(:page => params[:assignment_page])
+    @projects = Project.order(priority: :desc).all
+    @projects = @projects.paginate(:page => params[:developer_page])
   end
 
   private

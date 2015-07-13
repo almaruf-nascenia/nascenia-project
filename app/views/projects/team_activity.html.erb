@@ -1,37 +1,87 @@
 <h1>Project Team Activity for project <%= @project.title %></h1>
 <br/>
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th>Developer Name</th>
-    <th>Action</th>
-    <th>Participation Percentage</th>
-    <th>Date</th>
-  </tr>
-  </thead>
+<div class="bs-example">
+  <ul class="nav nav-tabs" id="myTab">
+    <li class= "<%= params[:tab_name] != 'assignment_activity' ? 'active' : '' %>"><a href="#current-dev-list">Current Developer List</a></li>
+    <li class= "<%= params[:tab_name] == 'assignment_activity' ? 'active' : '' %>"><a href="#assignment-activity">Assign Activity</a></li>
+  </ul>
+  <div class="tab-content">
 
-  <tbody class="sortable">
-  <% @project_teams.each do |project_team| %>
-        <%
-           if project_team.status == 0
-              status = 'Remove'
-           elsif project_team.status == 1
+    <div id="current-dev-list" class="tab-pane fade <%= params[:tab_name] != 'assignment_activity' ? "in active" : '' %>">
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Developer Name</th>
+          <th>Developer Contribution Percentage</th>
+        </tr>
+        </thead>
+        <tbody class="sortable">
+        <tbody>
+        <% @projects.each do |project| %>
+
+                <% ProjectTeam.project_recent_data(project.id).each  do |team| %>
+                <tr>
+                      <td><%= team.developer.name %> </td>
+                      <td><%= team.participation_percentage %>%</td>
+                </tr>
+                <% end %>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination_table">
+        <%= will_paginate @projects, renderer: BootstrapPagination::Rails, :param_name => 'developer_page', :params => { :tab_name => "developer_list" } %>
+      </div>
+
+
+
+    </div>
+
+    <div id="assignment-activity" class="tab-pane fade <%= params[:tab_name] == 'assignment_activity' ? "in active" : '' %>">
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Developer Name</th>
+          <th>Action</th>
+          <th>Participation Percentage</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody class="sortable">
+        <% @project_teams.each do |project_team| %>
+            <%
+               if project_team.status == 0
+                 status = 'Remove'
+               elsif project_team.status == 1
                  status = 'Assign'
-           else
-                status = 'Re-assign'
-           end
-        %>
-      <tr project="<%= project_team.id %>" >
-        <td><%= project_team.developer.name %></td>
-        <td><%= status %></td>
-        <td><%= project_team.participation_percentage.to_s + '%' %></td>
-        <td><%= project_team.status_date %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+               else
+                 status = 'Re-assign'
+               end
+            %>
+            <tr project="<%= project_team.id %>" >
+              <td><%= project_team.developer.name %></td>
+              <td><%= status %></td>
+              <td><%= project_team.participation_percentage.to_s + '%' %></td>
+              <td><%= project_team.status_date %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination_table">
+        <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails, :param_name => 'assignment_page', :params => { :tab_name => "assignment_activity" } %>
+      </div>
+    </div>
 
-<div class="pagination_table">
-  <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails %>
+    </div>
 </div>
-<br>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#myTab a").click(function(e){
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    })
+</script>
+
