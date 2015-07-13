@@ -7,6 +7,10 @@ Rails.application.routes.draw do
       post 'unassign'
       get 'edit_developers_percentage'
     end
+
+    collection do
+      get 'engagement_report'
+    end
   end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
@@ -18,6 +22,7 @@ Rails.application.routes.draw do
     collection do
       post 'sortable'
       post 'update_developers_percentage'
+
     end
 
     member do

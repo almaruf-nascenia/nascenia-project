@@ -76,6 +76,11 @@ class DevelopersController < ApplicationController
     end
   end
 
+  def engagement_report
+    @developers = Developer.all
+    @developers = @developers.paginate(:page => params[:page])
+  end
+
   private
     def set_developer
       @developer = Developer.find(params[:id])
