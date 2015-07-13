@@ -1,0 +1,28 @@
+<h1>Project Team Activity for project <%= @project.title %></h1>
+<br/>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Developer Name</th>
+    <th>Action</th>
+    <th>Participation Percentage</th>
+    <th>Date</th>
+  </tr>
+  </thead>
+
+  <tbody class="sortable">
+  <% @project_teams.each do |project_team| %>
+      <tr project="<%= project_team.id %>" >
+        <td><%= project_team.developer.name %></td>
+        <td><%= project_team.status == 0 || project_team.participation_percentage <= 0 ? 'Remove' : 'Assign' %></td>
+        <td><%= project_team.participation_percentage.to_s + '%' %></td>
+        <td><%= project_team.status_date %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="pagination_table">
+  <%#= will_paginate @project_teams, renderer: BootstrapPagination::Rails %>
+</div>
+<br>

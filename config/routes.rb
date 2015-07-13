@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
     member do
       get 'dev_list'
+      get :team_activity
     end
   end
 

@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :update_developers_percentage]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :update_developers_percentage, :team_activity]
 
   skip_before_action :verify_authenticity_token
   respond_to :html
@@ -117,6 +117,10 @@ class ProjectsController < ApplicationController
     else
        flash[:error] = 'Developer Participation Percentage value should be between 0 to 100'
     end
+  end
+
+  def team_activity
+    @project_teams = @project.project_teams.order('status_date, id DESC')
   end
 
   private
