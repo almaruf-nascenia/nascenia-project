@@ -116,10 +116,12 @@ class ProjectsController < ApplicationController
   end
 
   def team_activity
-    @project_teams = @project.project_teams.order('status_date, id DESC')
+    project = Project.find(params[:id])
+    @project_teams = project.project_teams.order('status_date, id DESC')
     @project_teams = @project_teams.paginate(:page => params[:assignment_page])
-    @projects = Project.order(priority: :desc).all
-    @projects = @projects.paginate(:page => params[:developer_page])
+
+    @team_members = ProjectTeam.project_recent_data(project.id)
+    @team_members = @team_members.paginate(:page => params[:developer_page])
   end
 
   private

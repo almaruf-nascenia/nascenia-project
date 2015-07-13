@@ -18,19 +18,17 @@
         </thead>
         <tbody class="sortable">
         <tbody>
-        <% @projects.each do |project| %>
+        <% @team_members.each do |team| %>
 
-                <% ProjectTeam.project_recent_data(project.id).each  do |team| %>
-                <tr>
-                      <td><%= team.developer.name %> </td>
-                      <td><%= team.participation_percentage %>%</td>
-                </tr>
-                <% end %>
+        <tr>
+              <td><%= team.developer.name %> </td>
+              <td><%= team.participation_percentage %>%</td>
+        </tr>
         <% end %>
         </tbody>
       </table>
       <div class="pagination_table">
-        <%= will_paginate @projects, renderer: BootstrapPagination::Rails, :param_name => 'developer_page', :params => { :tab_name => "developer_list" } %>
+        <%= will_paginate @team_members, renderer: BootstrapPagination::Rails, :param_name => 'developer_page', :params => { :tab_name => "developer_list" } %>
       </div>
 
 
