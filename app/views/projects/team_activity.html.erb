@@ -8,67 +8,11 @@
   <div class="tab-content">
 
     <div id="current-dev-list" class="tab-pane fade <%= params[:tab_name] != 'assignment_activity' ? "in active" : '' %>">
-
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Developer Name</th>
-          <th>Developer Contribution Percentage</th>
-        </tr>
-        </thead>
-        <tbody class="sortable">
-        <tbody>
-        <% @team_members.each do |team| %>
-
-        <tr>
-              <td><%= team.developer.name %> </td>
-              <td><%= team.participation_percentage %>%</td>
-        </tr>
-        <% end %>
-        </tbody>
-      </table>
-      <div class="pagination_table">
-        <%= will_paginate @team_members, renderer: BootstrapPagination::Rails, :param_name => 'developer_page', :params => { :tab_name => "developer_list" } %>
-      </div>
-
-
-
+      <%= render partial: "current_developer_list" %>
     </div>
 
     <div id="assignment-activity" class="tab-pane fade <%= params[:tab_name] == 'assignment_activity' ? "in active" : '' %>">
-
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Developer Name</th>
-          <th>Action</th>
-          <th>Participation Percentage</th>
-          <th>Date</th>
-        </tr>
-        </thead>
-        <tbody class="sortable">
-        <% @project_teams.each do |project_team| %>
-            <%
-               if project_team.status == 0
-                 status = 'Remove'
-               elsif project_team.status == 1
-                 status = 'Assign'
-               else
-                 status = 'Re-assign'
-               end
-            %>
-            <tr project="<%= project_team.id %>" >
-              <td><%= project_team.developer.name %></td>
-              <td><%= status %></td>
-              <td><%= project_team.participation_percentage.to_s + '%' %></td>
-              <td><%= project_team.status_date %></td>
-            </tr>
-        <% end %>
-        </tbody>
-      </table>
-      <div class="pagination_table">
-        <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails, :param_name => 'assignment_page', :params => { :tab_name => "assignment_activity" } %>
-      </div>
+      <%= render partial: "assignment_activites" %>
     </div>
 
     </div>

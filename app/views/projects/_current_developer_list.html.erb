@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Developer Name</th>
+      <th>Developer Contribution Percentage</th>
+    </tr>
+    </thead>
+    <tbody class="sortable">
+    <tbody>
+    <% @team_members.each do |team| %>
+
+        <tr>
+          <td><%= team.developer.name %> </td>
+          <td><%= team.participation_percentage %>%</td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
+
+<div class="pagination_table">
+    <%= will_paginate @team_members, renderer: BootstrapPagination::Rails, :param_name => 'developer_page', :params => { :tab_name => "developer_list" } %>
+</div>
