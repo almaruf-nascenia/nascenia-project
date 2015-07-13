@@ -1,16 +1,64 @@
 class ProjectTeam < ActiveRecord::Base
-belongs_to :project
-belongs_to :developer
 
-validates :developer_id, presence: true
-validates :status_date, presence: true
-validates :participation_percentage, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
 
-scope :with_project, ->(id) { where(:project_id => id)}
-scope :with_developer, ->(id) { where(:developer_id => id)}
+  # ----------------------------------------------------------------------
+  # == Include Modules == #
+  # ----------------------------------------------------------------------
 
-def self.make_column_archive(dev_id, project_id, latest_column_id)
-  project_team = ProjectTeam.where(developer_id: dev_id, project_id: project_id, most_recent_data: true).where('id != ?', latest_column_id).first
+  # ----------------------------------------------------------------------
+  # == Constants == #
+  # ----------------------------------------------------------------------
+
+  STATUS = { removed: 0, assigned: 1, re_assigned: 2 }
+
+
+  # ----------------------------------------------------------------------
+  # == Attributes == #
+  # ----------------------------------------------------------------------
+
+  # ----------------------------------------------------------------------
+  # == File Uploader == #
+  # ----------------------------------------------------------------------
+
+  # ----------------------------------------------------------------------
+  # == Associations and Nested Attributes == #
+  # ----------------------------------------------------------------------
+
+  belongs_to :project
+  belongs_to :developer
+
+  # ----------------------------------------------------------------------
+  # == Validations == #
+  # ----------------------------------------------------------------------
+
+  validates :developer_id, presence: true
+  validates :status_date, presence: true
+  validates :participation_percentage, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+
+  # ----------------------------------------------------------------------
+  # == Callbacks == #
+  # ----------------------------------------------------------------------
+
+  after_create :make_column_archive
+
+  # ----------------------------------------------------------------------
+  # == Scopes and Other macros == #
+  # ----------------------------------------------------------------------
+
+  scope :with_project, ->(id) { where(:project_id => id) }
+  scope :with_developer, ->(id) { where(:developer_id => id) }
+  scope :project_recent_data, ->(project_id) { where(project_id: project_id, most_recent_data: true).where.not(status: 0) }
+
+
+  # ----------------------------------------------------------------------
+  # == Instance methods == #
+  # ----------------------------------------------------------------------
+
+
+private
+
+def make_column_archive
+  project_team = ProjectTeam.where(developer_id: self.developer_id, project_id: self.project_id, most_recent_data: true).where('id != ?', self.id).first
   if project_team.present?
     project_team.most_recent_data = false
     project_team.save

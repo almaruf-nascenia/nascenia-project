@@ -72,10 +72,9 @@ class ProjectsController < ApplicationController
 
   def create_project_team
     @project_team = ProjectTeam.new(project_team_params)
-    @project_team['status'] = true
+    @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
     if @project_team.save
-      ProjectTeam.make_column_archive(@project_team.developer_id, @project_team.project_id, @project_team.id)
       flash[:success] = 'New developer has been added'
     else
       flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
@@ -85,9 +84,9 @@ class ProjectsController < ApplicationController
 
   def dev_list
     project_id = params[:id]
-    project = Project.find(project_id)
-    project_dev = project.developers.where('most_recent_data = true and status = true')
-    @developer_list = Developer.all - project_dev
+    assigned_dev_id_list = ProjectTeam.project_recent_data(project_id).pluck(:developer_id)
+    @developer_list = Developer.where.not(id: assigned_dev_id_list)
+
     respond_to do |format|
       format.js
     end
@@ -107,15 +106,12 @@ class ProjectsController < ApplicationController
   def update_developers_percentage
     dev_id = params[:dev_id]
     project_id = params[:id]
-    if params[:developer_percentage].to_f > 0 and params[:developer_percentage].to_f <= 100
-       project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true', params[:id], params[:dev_id]).order('id desc').first
-       duplicate_project_team = project_team.dup
-       duplicate_project_team.update_attributes(:participation_percentage => params[:developer_percentage])
-       ProjectTeam.make_column_archive(dev_id, project_id, project_team.id)
+    update_project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date] )
 
+    if update_project_team.save
        flash[:success] = 'Developer Percentage has been Updated'
     else
-       flash[:error] = 'Developer Participation Percentage value should be between 0 to 100'
+       flash[:error] = update_project_team.errors.full_messages.first
     end
   end
 
