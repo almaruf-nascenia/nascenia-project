@@ -97,7 +97,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"project-activity-list\""
+        headers['Content-Disposition'] = "attachment; filename=\"project-activity-list.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end
