@@ -18,8 +18,10 @@
         <td><%= developer.designation %></td>
         <td><%= developer.joining_date %></td>
         <td><%= developer.previous_job_exp %></td>
-        <td><%= link_to 'Edit', edit_developer_path(developer) %></td>
-        <td><%= link_to 'Destroy', developer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <span><%= link_to 'Edit', edit_developer_path(developer), html_options = { class: 'label label-primary'} %></span>
+          <span><%= link_to 'Delete', developer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'label label-danger' %></span>
+        </td>
       </tr>
     <% end %>
   </tbody>

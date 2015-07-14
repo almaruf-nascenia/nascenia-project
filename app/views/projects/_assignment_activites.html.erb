@@ -12,15 +12,18 @@
       <%
          if project_team.status == 0
            status = 'Remove'
+           design = 'label label-danger'
          elsif project_team.status == 1
            status = 'Assign'
+           design = 'label label-success'
          else
            status = 'Re-assign'
+           design = 'label label-primary'
          end
       %>
       <tr project="<%= project_team.id %>" >
         <td><%= project_team.developer.name %></td>
-        <td><%= status %></td>
+        <td><span class="<%= design %>"><%= status %></span></td>
         <td><%= project_team.participation_percentage.to_s + '%' %></td>
         <td><%= project_team.status_date %></td>
       </tr>
