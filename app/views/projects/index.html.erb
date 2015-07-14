@@ -10,7 +10,7 @@
     </tr>
   </thead>
 
-  <tbody class="sortable">
+  <tbody>
     <% @projects.each do |project| %>
       <tr project="<%= project.id %>" >
         <td><%= link_to project.name, project %></td>

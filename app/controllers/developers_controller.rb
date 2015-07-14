@@ -70,7 +70,7 @@ class DevelopersController < ApplicationController
   end
 
   def edit_developers_percentage
-    @project_team = ProjectTeam.where('project_id =? and developer_id = ? and status = true and most_recent_data = true', params[:project_id], params[:dev_id]).first
+    @project_team = ProjectTeam.where('project_id =? and developer_id = ? and status IN (1,2) and most_recent_data = true', params[:project_id], params[:dev_id]).first
     respond_to do |format|
       format.js
     end
