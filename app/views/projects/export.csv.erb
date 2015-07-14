@@ -7,7 +7,7 @@
         dev.name,
         dev.designation,
         dev.joining_date,
-        dev.active_developer_project.with_project(project.id).first.status_date,
+        dev.active_project_teams.where( project_id: project.id).first.status_date,
         dev.active_developer_project.with_project(project.id).first.participation_percentage,
         dev.previous_job_exp,
         ((Time.now.strftime("%Y-%m-%d").to_date - dev.joining_date.to_date).to_f / 30)
