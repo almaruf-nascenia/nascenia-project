@@ -1,29 +1,19 @@
 <h3>Team Activity for project <b><%= @project.name %></b></h3>
 <br/>
+
 <div class="bs-example">
-  <ul class="nav nav-tabs" id="myTab">
-    <li class= "<%= params[:tab_name] != 'assignment_activity' ? 'active' : '' %>"><a href="#current-dev-list">Current Developer List</a></li>
-    <li class= "<%= params[:tab_name] == 'assignment_activity' ? 'active' : '' %>"><a href="#assignment-activity">Assign Activity</a></li>
-  </ul>
-  <div class="tab-content">
+    <div class="tab-content">
 
-    <div id="current-dev-list" class="tab-pane fade <%= params[:tab_name] != 'assignment_activity' ? "in active" : '' %>">
-      <%= render partial: "current_developer_list" %>
-    </div>
-
-    <div id="assignment-activity" class="tab-pane fade <%= params[:tab_name] == 'assignment_activity' ? "in active" : '' %>">
-      <%= render partial: "assignment_activites" %>
-    </div>
+        <div id="current-dev-list" class="col-md-4">
+          <h4><b>Current Developer List</b></h4>
+          <%= render partial: "current_developer_list" %>
+        </div>
+        <div id="assignment-activity" class="col-md-8">
+          <h4><b>Assignment Activities</b></h4>
+          <%= render partial: "assignment_activites" %>
+        </div>
 
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#myTab a").click(function(e){
-            e.preventDefault();
-            $(this).tab('show');
-        });
-    })
-</script>
 
