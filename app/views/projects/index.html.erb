@@ -18,9 +18,10 @@
         <td><%= truncate(project.description) %></td>
         <td >
           <span><%= link_to 'Edit', edit_project_path(project), html_options = { class: 'label label-primary'} %></span>
-          <span><%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' },  class: 'label label-danger'%></span>
           <span><%= link_to 'Team Activity', team_activity_project_url(project.id), class: 'label label-success' %></span>
           <span><%= link_to 'Time Sheet', project_project_time_sheets_path(project_id: project.id ), class: 'label label-success' %> </span>
+          <span style="margin: 10px">&nbsp;</span>
+          <span><%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' },  class: 'label label-danger'%></span>
         </td>
 
       </tr>
