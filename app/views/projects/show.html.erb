@@ -1,51 +1,18 @@
-<p>
-  <strong>Project Name:</strong>
-  <%= @project.name %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @project.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @project.description %>
-</p>
-<div class="input-group" style="position: relative;">
-  <form action="">
-    <input type="text" id="search_dev" name="assign_date" placeholder="Select date to show assign developers" class="form-control search_dev">
-    <span class="input-group-btn">
-      <button type="submit" class="btn btn-default">Search!</button>
-    </span>
-  </form>
+<div class="panel panel-info create-new-project">
+  <div class="panel-heading">Project Details</div>
+  <div class="panel-body">
+    <p>
+      <strong>Project Name:</strong>
+      <%= @project.name %>
+    </p>
+    <p>
+      <strong>Title of Project:</strong>
+      <%= @project.title %>
+    </p>
+    <p>
+      <strong>Description of Project:</strong>
+      <%= @project.description %>
+    </p>
+    <%= link_to 'Edit Project Details', edit_project_path(@project)%>
+  </div>
 </div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th> Developer Name </th>
-      <th> Date </th>
-      <th> Participation Percentage </th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @teams.each do |team| %>
-    <tr>
-      <td> <%= team.developer.name %> </td>
-      <td> <%= team.status_date %> </td>
-      <td> <%= team.participation_percentage %> </td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-<div class="pagination_table">
-  <%= will_paginate @teams, renderer: BootstrapPagination::Rails %>
-</div>
-
-<script type="text/javascript">
- $(function() {
-   $('#search_dev').datepicker({
-     dateFormat: 'yy-mm-dd'
-   })
- });
-</script>
