@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713053020) do
+ActiveRecord::Schema.define(version: 20150716093607) do
 
   create_table "developers", force: true do |t|
     t.string   "name"
@@ -20,17 +20,19 @@ ActiveRecord::Schema.define(version: 20150713053020) do
     t.float    "previous_job_exp", limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "work_load",                   default: 0
   end
 
   create_table "project_teams", force: true do |t|
     t.integer  "project_id"
     t.integer  "developer_id"
-    t.float    "participation_percentage", limit: 24
+    t.float    "participation_percentage",          limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "status",                              default: 1
+    t.integer  "status",                                       default: 1
     t.date     "status_date"
-    t.boolean  "most_recent_data",                    default: true
+    t.boolean  "most_recent_data",                             default: true
+    t.integer  "previous_participation_percentage",            default: 0
   end
 
   create_table "project_time_sheets", force: true do |t|

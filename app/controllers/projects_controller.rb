@@ -74,11 +74,17 @@ class ProjectsController < ApplicationController
     @project_team = ProjectTeam.new(project_team_params)
     @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
-    if @project_team.save
-      flash[:success] = 'New developer has been added'
+    developer = Developer.find params[:developer_id]
+    if (developer.current_work_load + @project_team.participation_percentage) <= 100
+      if @project_team.save
+        flash[:success] = 'New developer has been added'
+      else
+        flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+      end
     else
-      flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+      flash[:error] = "#{developer.name} work load will exceed 100%"
     end
+
     redirect_to project_assign_path
   end
 
@@ -106,12 +112,17 @@ class ProjectsController < ApplicationController
   def update_developers_percentage
     dev_id = params[:dev_id]
     project_id = params[:id]
-    update_project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date] )
+    developer = Developer.find dev_id
+    project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage] )
 
-    if update_project_team.save
-       flash[:success] = 'Developer Percentage has been Updated'
+    if (developer.current_work_load + project_team.participation_percentage - params[:previous_percentage].to_f) <= 100
+      if project_team.save
+         flash[:success] = 'Developer Percentage has been Updated'
+      else
+         flash[:error] = update_project_team.errors.full_messages.first
+      end
     else
-       flash[:error] = update_project_team.errors.full_messages.first
+      flash[:error] = "#{developer.name} work load will exceed 100%"
     end
   end
 

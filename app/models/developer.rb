@@ -67,4 +67,8 @@ class Developer < ActiveRecord::Base
   def active_project
 
   end
+
+  def current_work_load
+    self.active_project_teams.pluck(:participation_percentage).inject(:+)
+  end
 end

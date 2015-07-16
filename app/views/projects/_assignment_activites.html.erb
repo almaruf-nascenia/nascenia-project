@@ -21,15 +21,21 @@
            design = 'label label-primary'
          end
       %>
-      <tr project="<%= project_team.id %>" >
+      <tr project="<%= project_team.id %>">
         <td><%= project_team.developer.name %></td>
         <td><span class="<%= design %>"><%= status %></span></td>
-        <td><%= project_team.participation_percentage.to_s + '%' %></td>
+        <td><%= project_team.participation_percentage.to_s + '%' %>
+          <% if project_team.status == 2 %>
+              <span style='color:red;text-decoration:line-through'>
+                    <span style='color:black'>(<%= project_team.previous_participation_percentage %>)</span>
+              </span>
+          <% end %>
+        </td>
         <td><%= project_team.status_date %></td>
       </tr>
   <% end %>
   </tbody>
 </table>
 <div class="pagination_table">
-  <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails, :param_name => 'assignment_page', :params => { :tab_name => "assignment_activity" } %>
+  <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails, :param_name => 'assignment_page', :params => {:tab_name => "assignment_activity"} %>
 </div>
