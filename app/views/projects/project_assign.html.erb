@@ -138,8 +138,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Edit Developer Percentage </h4>
       </div>
+
       <div class="edited_developer_project_id" value=""></div>
       <div class="edited_developer_id" value=""></div>
+      <div class="previous_percentage" value=""></div>
+
       <div class="modal-body tabIndexContainer">
         <div class="row">
           <div class="col-md-6">
@@ -227,12 +230,13 @@
             var project_id = $('.edited_developer_project_id').val();
             var dev_id = $('.edited_developer_id').val();
             var edit_date = $('#editStartDate').val();
+            var previous_percentage = $('.previous_percentage').val();
             $("#edit_developers_percentage").modal('hide');
             $.ajax({
                 url: "/projects/update_developers_percentage" ,
                 type: 'post',
                 dataType: 'script',
-                data: {id: project_id, developer_percentage: developer_percentage, dev_id: dev_id, edit_date: edit_date}
+                data: {id: project_id, developer_percentage: developer_percentage, dev_id: dev_id, edit_date: edit_date,previous_percentage: previous_percentage}
             });
 
         });

@@ -1,5 +1,6 @@
 $("#edit_developers_percentage").modal('show');
 $("#editPercentage").val('<%=@project_team.participation_percentage %>');
+$(".previous_percentage").val('<%=@project_team.participation_percentage %>');
 $('.edited_developer_project_id').val('<%= params[:project_id] %>');
 $('.edited_developer_id').val('<%= params[:dev_id] %>');
 $('#editStartDate').val('<%= @project_team.status_date.strftime("%Y-%m-%d") %>');
