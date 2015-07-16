@@ -1,17 +1,18 @@
-<%- headers = ['Project Name', 'Developer Name', 'Designation', 'Joining Date', 'Start Date', 'Participation Percentage' ,'Previous job experience', 'Current Experience(Month)'] -%>
+<%- headers = ['Developer Name', 'Experience in Nascenia(years)', 'Previous Experience(years)', 'Total Experience(years)', 'Project Count', 'Assigned Project','Participation Percentage(%)'] -%>
 <%= CSV.generate_line(headers).html_safe.strip %>
-<%- @projects.each do |project| -%>
-  <%- project.active_developers.each do |dev|%>
-    <%- row = [
-        project.name,
-        dev.name,
-        dev.designation,
-        dev.joining_date,
-        dev.active_project_teams.where( project_id: project.id).first.status_date,
-        dev.active_developer_project.with_project(project.id).first.participation_percentage,
-        dev.previous_job_exp,
-        ((Time.now.strftime("%Y-%m-%d").to_date - dev.joining_date.to_date).to_f / 30)
-      ] -%>
-    <%= CSV.generate_line(row).html_safe.strip %>
-  <%- end -%>
+<%- @developers.each do |developer| -%>
+    <% active_projects = developer.active_project_teams %>
+        <% active_projects.each  do |project_team| %>
+           <%- row = [
+                developer.name,
+                developer.company_tenure,
+                developer.previous_job_exp,
+                developer.total_experience,
+                active_projects.count,
+                project_team.project.name,
+                project_team.participation_percentage
+            ] -%>
+
+        <%= CSV.generate_line(row).html_safe.strip %>
+    <% end %>
 <%- end -%>

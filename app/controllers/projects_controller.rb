@@ -93,7 +93,7 @@ class ProjectsController < ApplicationController
   end
 
   def export
-    @projects= Project.all
+    @developers = Developer.all
     respond_to do |format|
       format.html
       format.csv do
