@@ -117,7 +117,7 @@ class ProjectsController < ApplicationController
 
   def team_activity
     project = Project.find(params[:id])
-    @project_teams = project.project_teams.order('status_date, id DESC')
+    @project_teams = project.project_teams.order('status_date DESC, id DESC')
     @project_teams = @project_teams.paginate(:page => params[:assignment_page])
 
     @team_members = ProjectTeam.project_recent_data(project.id)

@@ -43,9 +43,9 @@ class DevelopersController < ApplicationController
   end
 
   def destroy
-    developer = ProjectTeam.where('developer_id = ? and status = true', @developer.id)
-      if developer.exists?
-        flash[:error] = 'This developer can not be removed'
+    project_teams = @developer.active_project_teams
+      if project_teams.exists?
+        flash[:error] = "#{@developer.name } is engage in project. We have to first remove his/her project."
       else
         @developer.destroy
         flash[:success] = 'Developer has been removed'

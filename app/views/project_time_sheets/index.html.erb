@@ -1,5 +1,10 @@
 <h1> Time Sheets for Project <%= @project.title %></h1>
+<br/>
 
+<%= link_to 'Add time sheet', new_project_project_time_sheet_path, html_options = { class: 'btn btn-success' } %>
+
+<br/>
+<br/>
 
 <table class="table table-striped">
   <thead>
@@ -27,6 +32,5 @@
 <div class="pagination_table">
   <%= will_paginate @project_time_sheets, renderer: BootstrapPagination::Rails %>
 </div>
-<br>
 
-<%= link_to 'Add time sheet', new_project_project_time_sheet_path, html_options = { class: 'btn btn-success' } %>
+
