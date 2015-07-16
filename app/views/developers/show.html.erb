@@ -42,14 +42,30 @@
   </thead>
   <tbody>
   <% @teams.each do |team| %>
-    <tr>
-      <td> <%= team.project.name %> </td>
-      <td> <%= team.status_date %> </td>
-      <td> <%= team.participation_percentage %> </td>
-    </tr>
-  <%end%>
+      <%
+         if team.status == 0
+           status = 'Remove'
+           design = 'label label-danger'
+         elsif team.status == 1
+           status = 'Assign'
+           design = 'label label-success'
+         else
+           status = 'Re-assign'
+           design = 'label label-primary'
+         end
+      %>
+        <td><%= team.project.name %></td>
+        <td><span class="<%= design %>"><%= status %></span></td>
+        <td><%= team.participation_percentage.to_s + '%' %></td>
+        <td><%= team.status_date %></td>
+      </tr>
+  <% end %>
   </tbody>
 </table>
+
+<div class="pagination_table">
+  <%= will_paginate @teams, renderer: BootstrapPagination::Rails %>
+</div>
 
 <script type="text/javascript">
   $(function() {

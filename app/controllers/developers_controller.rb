@@ -15,6 +15,7 @@ class DevelopersController < ApplicationController
     else
       @teams = ProjectTeam.where('developer_id = ?', @developer.id).order('status_date DESC')
     end
+    @teams = @teams.paginate(:page => params[:page])
     respond_with(@developer)
   end
 
