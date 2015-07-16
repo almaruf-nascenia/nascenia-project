@@ -11,7 +11,7 @@
 
 <p>
   <strong>Link:</strong>
-  <%= @project_time_sheet.Link %>
+  <%= link_to  @project_time_sheet.Link, @project_time_sheet.Link, target: '_blank' %>
 </p>
 
 <%= link_to 'Edit', edit_project_project_time_sheet_path(id: @project_time_sheet) %> |
