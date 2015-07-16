@@ -9,7 +9,7 @@ class ProjectTeam < ActiveRecord::Base
   # == Constants == #
   # ----------------------------------------------------------------------
 
-  STATUS = { removed: 0, assigned: 1, re_assigned: 2 }
+  STATUS = {removed: 0, assigned: 1, re_assigned: 2}
 
 
   # ----------------------------------------------------------------------
@@ -55,14 +55,16 @@ class ProjectTeam < ActiveRecord::Base
   # ----------------------------------------------------------------------
 
 
-private
+  private
 
-def make_column_archive
-  project_team = ProjectTeam.where(developer_id: self.developer_id, project_id: self.project_id, most_recent_data: true).where('id != ?', self.id).first
-  if project_team.present?
-    project_team.most_recent_data = false
-    project_team.save
+  def make_column_archive
+    project_teams = ProjectTeam.where(developer_id: self.developer_id, project_id: self.project_id, most_recent_data: true).where('id != ?', self.id)
+    if project_teams.present?
+      project_teams.each do |project_team|
+        project_team.most_recent_data = false
+        project_team.save
+      end
+    end
   end
-end
 
 end

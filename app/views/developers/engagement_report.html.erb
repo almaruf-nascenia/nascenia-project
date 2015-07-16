@@ -1,5 +1,15 @@
-<h1>Developer Engagement Report</h1>
+<h1>Developer Engagement Report on Date <b><%= @filter_date.present? ? @filter_date : 'Empty select date' %></b></h1>
 <br/>
+
+<div>
+  <form path="<%= engagement_report_developers_path %>">
+  <input type='text' placeholder='select date' id='date-selector' name="filter_date" >
+  <span>
+    <button type="submit" class="filter-date" id="submit-filter-date">Filter</button>
+  </span>
+  </form>
+</div>
+
 <table class="table table-striped">
   <thead>
   <tr>
@@ -17,7 +27,7 @@
 
   <tbody class="sortable">
   <% @developers.each do |developer| %>
-      <% active_projects = developer.active_project_teams %>
+      <% active_projects = developer.active_project_teams.where('status_date <= ?', @filter_date).order('status_date desc') %>
       <tr developer="<%= developer.id %>" >
 
         <td><%= developer.name %></td>
@@ -29,7 +39,7 @@
           <ul class="token-input-list-facebook ">
             <% active_projects.each  do |project_team| %>
                 <li class="token-input-token-facebook" >
-                  <p> <%= project_team.project.title %> <%= project_team.participation_percentage %></p>
+                  <p> <%= project_team.project.name %> <%= project_team.participation_percentage %></p>
                 </li>
             <% end %>
           </ul>
@@ -45,4 +55,11 @@
   <%= will_paginate @developers, renderer: BootstrapPagination::Rails %>
 </div>
 <br>
+<script>
+  $(function(){
+      $("#date-selector").datepicker({
+          dateFormat: 'yy-mm-dd'
+      });
+  });
+</script>
 

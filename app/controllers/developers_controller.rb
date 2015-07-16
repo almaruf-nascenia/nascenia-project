@@ -78,6 +78,7 @@ class DevelopersController < ApplicationController
   end
 
   def engagement_report
+    @filter_date = params[:filter_date] || Time.now.strftime("%Y-%m-%d")
     @developers = Developer.all
     @developers = @developers.paginate(:page => params[:page])
   end

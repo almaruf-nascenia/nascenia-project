@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
   # == Validations == #
   # ----------------------------------------------------------------------
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
 
   # ----------------------------------------------------------------------
