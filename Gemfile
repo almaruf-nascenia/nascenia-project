@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.6'
 gem 'mysql2'
 gem 'devise'
-gem "omniauth-google-oauth2"
+gem 'omniauth-google-oauth2'
 gem 'will_paginate-bootstrap'
 
 group :assets do
@@ -21,8 +21,6 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
-gem 'spring',        group: :development
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -30,11 +28,10 @@ gem 'spring',        group: :development
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-gem 'capistrano', group: :development
-gem 'capistrano-rails', group: :development
-gem 'capistrano-bundler', group: :development
-gem 'capistrano-rbenv', group: :development
-
+group :development do
+  gem 'spring'
+  gem 'capistrano', '2.14.2'
+  gem 'rvm-capistrano', '1.2.7', require: false
+end
 # Use debugger
 #gem 'debugger', group: [:development, :test]
-

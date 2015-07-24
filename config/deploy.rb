@@ -1,84 +1,86 @@
-# config valid only for current version of Capistrano
-lock '3.4.0'
+require 'rvm/capistrano'
+require 'bundler/capistrano'
+#require 'whenever/capistrano'
 
-set :application, 'teamplanner'
-set :deploy_user, 'deployer'
-
+set :application, 'TeamPlanner'
+set :repository, 'git@github.com:fattah/TeamPlanner.git'
 set :scm, :git
-set :repo_url, 'git@github.com:fattah/TeamPlanner.git'
+# set :deploy_via, :remote_cache
+set :rvm_ruby_string, '2.1.1'
+set :rvm_type, :system
+set :rake, 'bundle exec rake'
+set :use_sudo, true
+set :bundle_cmd, 'bundle'
 
-set :rbenv_type, :system
-set :rbenv_ruby, '2.1.1'
-set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+# the user of the server which will run commands on server
+default_run_options[:pty] = true
+ssh_options[:port] = 22
+ssh_options[:username] = 'deployer'
+ssh_options[:host_key] = 'ssh-dss'
+ssh_options[:paranoid] = false
+ssh_options[:forward_agent] = true
 
-set :keep_releases, 5
-set :linked_files, %w{config/database.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+task :link_shared_files, roles: :app do
+  run "rm -rf #{current_path}/public/uploads; ln -s #{shared_path}/uploads #{current_path}/public/uploads"
+end
 
-set :tests, []
+# if you're still using the script/reaper helper you will need
+# these http://github.com/rails/irs_process_scripts
 
-set(:config_files, %w(
-  nginx.conf
-  database.example.yml
-  log_rotation
-))
+task :production do
+  set :user, 'deployer'
+  set :branch, 'master'
+  set :deploy_to, ''
+  set :rails_env, 'production'
+  web_server = ''
+  set :application, web_server
+  role :web, web_server # Your HTTP server, Apache/etc
+  role :app, web_server # This may be the same as your `Web` server
+  role :db, web_server, :primary => true # This is where Rails migrations will run
+  set :keep_releases, 10
+end
 
-set(:symlinks, [
-                 {
-                     source: "nginx.conf",
-                     link: "/etc/nginx/sites-enabled/#{fetch(:full_app_name)}"
-                 },
-                 {
-                     source: "log_rotation",
-                     link: "/etc/logrotate.d/#{fetch(:full_app_name)}"
-                 }
-             ])
+task :staging do
+  set :branch, 'master'
+  set :deploy_to, '/www/apps/teamplanner-staging'
+  set :rails_env, 'staging'
+  web_server = '106.186.115.31'
+  set :application, web_server
+  role :web, web_server # Your HTTP server, Apache/etc
+  role :app, web_server # This may be the same as your `Web` server
+  role :db, web_server, :primary => true # This is where Rails migrations will run
+  set :keep_releases, 5
+  #set :whenever_command, 'bundle exec whenever'
+  #set :whenever_environment, defer { fetch(:rails_env) }
+end
 
-
-# Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, '/var/www/my_app_name'
-
-# Default value for :scm is :git
-# set :scm, :git
-
-# Default value for :format is :pretty
-# set :format, :pretty
-
-# Default value for :log_level is :debug
-# set :log_level, :debug
-
-# Default value for :pty is false
-# set :pty, true
-
-# Default value for :linked_files is []
-# set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
-
-# Default value for linked_dirs is []
-# set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
-
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-# Default value for keep_releases is 5
-# set :keep_releases, 5
-
+#If you are using Passenger mod_rails uncomment this:
 namespace :deploy do
-  before :deploy, "deploy:check_revision"
-  before :deploy, "deploy:run_tests"
-  after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
-  after :finishing, 'deploy:cleanup'
-  before 'deploy:setup_config', 'nginx:remove_default_vhost'
-  after 'deploy:setup_config', 'nginx:reload'
-  after 'deploy:publishing', 'deploy:restart'
+  task :start do ; end
+  task :stop do ; end
 
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
+  desc 'Restart the application'
+  task :restart, roles: :app, :except => {:no_release => true} do
+    run "#{try_sudo} touch #{File.join(current_path, 'tmp', 'restart.txt')}"
   end
 
+  task :create_shared_files_and_directories, role: :app do
+    run "mkdir -p #{shared_path}/config/.bundle"
+    run "mkdir -p #{shared_path}/bundle"
+    run "touch #{shared_path}/config/.bundle/config"
+    run "mkdir -p #{shared_path}/uploads"
+    run "mkdir -p #{shared_path}/assets"
+  end
+
+  desc 'Copy the database.yml file into the latest release'
+  task :copy_in_database_yml do
+    run "cp #{shared_path}/config/database.yml #{latest_release}/config/"
+    run "cp #{shared_path}/config/secrets.yml #{latest_release}/config/"
+  end
 end
+
+before 'deploy:assets:precompile', 'deploy:copy_in_database_yml'
+after 'deploy:setup', 'deploy:create_shared_files_and_directories'
+after 'deploy:update_code', 'deploy:migrate'
+after 'deploy:create_symlink', :link_shared_files
+after 'deploy:update', 'deploy:cleanup'
