@@ -15,17 +15,17 @@ project_list = [
 
 
 project_list.each do |name, title, description|
-  Project.create( name: name, title: title,description: description )
+  Project.find_or_create_by( name: name, title: title, description: description )
 end
 
 developer_list = [
     ["Swawibe","Junior Soft Engineer","2014-08-18","1"],
     ["Shumon","Junior Soft Engineer","2014-06-10","2"],
-    ["Rafi","Senior Soft Engineer","2014-08-10","5"],
+    ["Rafi","Senior Soft Engineer","2014-08-10","4"],
     ["Tauhid","Junior Soft Engineer","2013-05-10","1"],
-    ["Akter","Senior Soft Engineer ","2013-02-01","4"]
+    ["Akter","Senior Soft Engineer ","2013-02-01","5"]
 ]
 
 developer_list.each do |name, designation, joining_date, previous_job_exp|
-  Developer.create(name: name, designation: designation, joining_date: joining_date, previous_job_exp: previous_job_exp )
+  Developer.find_or_create_by( name: name, designation: designation, joining_date: joining_date, previous_job_exp: previous_job_exp )
 end
