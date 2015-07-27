@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
 
   # resources :project_time_sheets
+  resources :admins, only: [] do
+
+    collection do
+      get :manage
+    end
+  end
 
   resources :developers do
     member do
