@@ -10,9 +10,10 @@
     <tbody>
     <% @users.each do |user| %>
 
-        <tr>
+        <tr class='user_<%= user.id %>' data-id="<%= user.id %>">
           <td><%= user.email %> </td>
-          <td><%= user.name %> </td>
+          <td><%= link_to 'Upgrade to Admin', make_user_admin_admin_path(id: user.id), remote: true %> </td>
+
         </tr>
     <% end %>
     </tbody>

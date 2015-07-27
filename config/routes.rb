@@ -6,6 +6,12 @@ Rails.application.routes.draw do
     collection do
       get :manage_admin_and_users_list
     end
+
+    member do
+      get :make_user_admin
+      get :remove_user_from_admin
+    end
+
   end
 
   resources :developers do
