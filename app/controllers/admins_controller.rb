@@ -3,8 +3,11 @@ class AdminsController < ApplicationController
 
   respond_to :html
 
-  def manage
+  def manage_admin_and_users_list
     @admins = User.where(admin: true)
+    @admins = @admins.paginate(:page => params[:admin_pagination])
+
     @users = User.all
+    @users = @users.paginate(:page => params[:user_pagination])
   end
 end

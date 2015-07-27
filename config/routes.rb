@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :admins, only: [] do
 
     collection do
-      get :manage
+      get :manage_admin_and_users_list
     end
   end
 
