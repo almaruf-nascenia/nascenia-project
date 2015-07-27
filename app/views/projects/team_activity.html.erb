@@ -2,18 +2,26 @@
 <br/>
 
 <div class="bs-example">
-    <div class="tab-content">
+  <div class="tab-content">
 
-        <div id="current-dev-list" class="col-md-4">
-          <h4><b>Current Developer List</b></h4>
+    <div id="current-dev-list" class="col-md-4">
+      <div class="panel panel-info">
+        <div class="panel-heading">Current Developer List</div>
+        <div class=" panel-body">
           <%= render partial: "current_developer_list" %>
         </div>
-        <div id="assignment-activity" class="col-md-8">
-          <h4><b>Assignment Activities</b></h4>
+      </div>
+    </div>
+
+    <div id="assignment-activity" class="col-md-8">
+      <div class="panel panel-info">
+        <div class="panel-heading">Assignment Activities</div>
+        <div class=" panel-body">
           <%= render partial: "assignment_activites" %>
         </div>
-
+      </div>
     </div>
+  </div>
 </div>
 
 
