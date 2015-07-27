@@ -14,4 +14,9 @@ class User < ActiveRecord::Base
       #user.image = auth.info.image # assuming the user model has an image
     end
   end
+
+  def super_admin?
+    admin_emails = YAML::load_file('config/superadmin.yml')
+    admin_emails['superadmin'].include?(current_user.email)
+  end
 end

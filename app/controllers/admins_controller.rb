@@ -10,4 +10,12 @@ class AdminsController < ApplicationController
     @users = User.all
     @users = @users.paginate(:page => params[:user_pagination])
   end
+
+  def make_user_admin
+    @user = User.find(params[:user_id])
+  end
+
+  def remove_user_from_admin
+    @user = User.find(params[:user_id])
+  end
 end
