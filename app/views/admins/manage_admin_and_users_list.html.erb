@@ -1,29 +1,33 @@
-<h3>Manage Admin and Users</h3>
-<br/>
-<div class="bs-example">
-  <ul class="nav nav-tabs" id="myTab">
-    <li class= "<%= params[:tab_name] != 'users_list' ? 'active' : '' %>"><a href="#administrators_list">Administrators</a></li>
-    <li class= "<%= params[:tab_name] == 'users_list' ? 'active' : '' %>"><a href="#users_list">Users</a></li>
-  </ul>
-  <div class="tab-content">
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 style="margin: 0;">Manage admin and users</h3>
+  </div>
+  <br/>
+  <div class="bs-example">
+    <ul class="nav nav-tabs" id="myTab">
+      <li class= "<%= params[:tab_name] != 'users_list' ? 'active' : '' %>"><a href="#administrators_list">Administrators</a></li>
+      <li class= "<%= params[:tab_name] == 'users_list' ? 'active' : '' %>"><a href="#users_list">Users</a></li>
+    </ul>
+    <div class="tab-content">
 
-    <div id="administrators_list" class="tab-pane fade <%= params[:tab_name] != 'users_list' ? "in active" : '' %>">
-      <%= render partial: "administrators_list" %>
+      <div id="administrators_list" class="tab-pane fade <%= params[:tab_name] != 'users_list' ? "in active" : '' %>">
+        <%= render partial: "administrators_list" %>
+      </div>
+
+      <div id="users_list" class="tab-pane fade <%= params[:tab_name] == 'users_list' ? "in active" : '' %>">
+        <%= render partial: "users_list" %>
+      </div>
+
     </div>
-
-    <div id="users_list" class="tab-pane fade <%= params[:tab_name] == 'users_list' ? "in active" : '' %>">
-      <%= render partial: "users_list" %>
-    </div>
-
   </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#myTab a").click(function(e){
-            e.preventDefault();
-            $(this).tab('show');
-        });
-    })
-</script>
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $("#myTab a").click(function(e){
+              e.preventDefault();
+              $(this).tab('show');
+          });
+      })
+  </script>
 

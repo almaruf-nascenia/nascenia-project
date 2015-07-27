@@ -1,22 +1,24 @@
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th>User Email</th>
-    <th>Action</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tbody>
-  <% @users.each do |user| %>
+<div class="panel-body">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>User Email</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tbody>
+    <% @users.each do |user| %>
 
-      <tr>
-        <td><%= user.email %> </td>
-        <td><%= user.name %> </td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+        <tr>
+          <td><%= user.email %> </td>
+          <td><%= user.name %> </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
 
-<div class="pagination_table">
-  <%= will_paginate @users, renderer: BootstrapPagination::Rails, :param_name => 'user_pagination', :params => { :tab_name => "users_list" } %>
+  <div class="pagination_table">
+    <%= will_paginate @users, renderer: BootstrapPagination::Rails, :param_name => 'user_pagination', :params => { :tab_name => "users_list" } %>
+  </div>
 </div>
