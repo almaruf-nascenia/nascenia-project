@@ -23,9 +23,14 @@
         <td><%= project_time_sheet.Description %></td>
         <td ><%= link_to 'Link', project_time_sheet.Link, target: '_blank' %></td>
         <td><%= link_to 'Show', project_project_time_sheet_path(id: project_time_sheet.id) %></td>
+        <% if can? :update, project_time_sheet %>
         <td><%= link_to 'Edit',edit_project_project_time_sheet_path(id: project_time_sheet.id) %></td>
+        <% end %>
+
+        <% if can? :update, project_time_sheet %>
         <td><%= link_to 'Destroy', project_project_time_sheet_path(id: project_time_sheet.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+        <% end %>
+            </tr>
     <% end %>
   </tbody>
 </table>

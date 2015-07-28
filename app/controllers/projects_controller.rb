@@ -28,6 +28,7 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new
     authorize! :create, @project
+
     respond_with(@project)
   end
 
@@ -39,8 +40,10 @@ class ProjectsController < ApplicationController
     if @project.save
       flash[:success] = 'Project has been successfully created'
     end
-    respond_with(@project)
     authorize! :create, @project
+
+    respond_with(@project)
+
   end
 
   def sortable
@@ -63,6 +66,8 @@ class ProjectsController < ApplicationController
   def destroy
     @project.destroy
     flash[:success] = 'Project has been removed'
+    authorize! :delete, @project
+
     respond_with(@project)
   end
 
@@ -87,6 +92,8 @@ class ProjectsController < ApplicationController
     else
       flash[:error] = "#{developer.name} work load will exceed 100%"
     end
+
+    authorize! :create, @project_team
 
     redirect_to project_assign_path
   end
@@ -117,6 +124,8 @@ class ProjectsController < ApplicationController
     project_id = params[:id]
     developer = Developer.find dev_id
     project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage] )
+    authorize! :create, project_team
+
 
     if (developer.current_work_load + project_team.participation_percentage - params[:previous_percentage].to_f) <= 100
       if project_team.save

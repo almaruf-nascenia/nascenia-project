@@ -33,14 +33,17 @@ class DevelopersController < ApplicationController
     if @developer.save
       flash[:success] = 'New Developer has been successfully created'
     end
-    respond_with(@developer)
     authorize! :create, @developer
+
+    respond_with(@developer)
   end
 
   def update
     if @developer.update(developer_params)
       flash[:success] = 'Developer information has been updated'
     end
+    authorize! :update, @developer
+
     respond_with(@developer)
   end
 
@@ -52,6 +55,8 @@ class DevelopersController < ApplicationController
       @developer.destroy
       flash[:success] = 'Developer has been removed'
     end
+    authorize! :update, @developer
+
     respond_with(@developer)
   end
 
@@ -60,6 +65,7 @@ class DevelopersController < ApplicationController
     remove_date = params[:date]
     dev_id = params[:id]
     new_project_team = ProjectTeam.new({ project_id: project_id, developer_id: dev_id, status_date: remove_date, status: ProjectTeam::STATUS[:removed], participation_percentage: 0, most_recent_data: true })
+    authorize! :create, new_project_team
 
     respond_to do |format|
       if new_project_team.save
@@ -74,6 +80,8 @@ class DevelopersController < ApplicationController
 
   def edit_developers_percentage
     @project_team = ProjectTeam.where('project_id =? and developer_id = ? and status IN (1,2) and most_recent_data = true', params[:project_id], params[:dev_id]).first
+    authorize! :create, @project_team
+
     respond_to do |format|
       format.js
     end

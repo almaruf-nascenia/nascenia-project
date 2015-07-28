@@ -1,8 +1,8 @@
 <h1>Project List</h1>
 <br/>
-
+<% if can? :create, @projects %>
 <%= link_to 'New Project', new_project_path, :class => 'btn btn-primary' %>
-
+<% end %>
 <br/>
 <br/>
 
@@ -23,11 +23,15 @@
         <td><%= project.title %></td>
         <td><%= truncate(project.description) %></td>
         <td >
+          <% if can? :update, project %>
           <span><%= link_to 'Edit', edit_project_path(project), html_options = { class: 'label label-primary'} %></span>
+          <% end %>
           <span><%= link_to 'Team Activity', team_activity_project_url(project.id), class: 'label label-success' %></span>
           <span><%= link_to 'Time Sheet', project_project_time_sheets_path(project_id: project.id ), class: 'label label-success' %> </span>
           <span style="margin: 10px">&nbsp;</span>
+          <% if can? :delete, project%>
           <span><%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' },  class: 'label label-danger'%></span>
+              <% end %>
         </td>
 
       </tr>

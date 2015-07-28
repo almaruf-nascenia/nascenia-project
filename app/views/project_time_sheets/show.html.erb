@@ -13,6 +13,8 @@
   <strong>Link:</strong>
   <%= link_to  @project_time_sheet.Link, @project_time_sheet.Link, target: '_blank' %>
 </p>
+<% if can? :update, @project_time_sheet %>
+    <%= link_to 'Edit', edit_project_project_time_sheet_path(id: @project_time_sheet) %>|
+<% end %>
 
-<%= link_to 'Edit', edit_project_project_time_sheet_path(id: @project_time_sheet) %> |
 <%= link_to 'Back', project_project_time_sheets_path %>

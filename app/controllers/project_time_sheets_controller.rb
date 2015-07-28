@@ -19,16 +19,21 @@ class ProjectTimeSheetsController < ApplicationController
   def new
     @project = Project.find(params[:project_id])
     @project_time_sheet = ProjectTimeSheet.new(project: @project)
+    authorize! :create, @project
+
     respond_with(@project_time_sheet)
   end
 
   def edit
     @project = Project.find(params[:project_id])
     @project_time_sheet = ProjectTimeSheet.find(params[:id])
+
+    authorize! :update, @project
   end
 
   def create
     @project_time_sheet = ProjectTimeSheet.new(project_time_sheet_params)
+    authorize! :create, @project_time_sheet
 
     if @project_time_sheet.save
       flash[:notice] = 'New item successfully created'
@@ -42,12 +47,16 @@ end
 
   def update
     @project_time_sheet.update(project_time_sheet_params)
+    authorize! :create, @project_time_sheet
+
     flash[:notice] = 'Time Sheet successfully updated'
     redirect_to(project_project_time_sheet_path( id: @project_time_sheet.id, project_id: @project_time_sheet.project_id ))
   end
 
   def destroy
     @project_time_sheet.destroy
+    authorize! :create, @project_time_sheet
+
     flash[:notice] = 'Time Sheet successfully deleted'
     redirect_to(project_project_time_sheets_path( id: @project_time_sheet.id, project_id: @project_time_sheet.project_id ))
   end

@@ -13,6 +13,7 @@ class AdminsController < ApplicationController
 
   def make_user_admin
     @user = User.find(params[:id])
+    authorize! :update, @user
     @user.admin = true
     @user.save
     @admins = User.where(admin: true)
@@ -26,6 +27,7 @@ class AdminsController < ApplicationController
 
   def remove_user_from_admin
     @user = User.find(params[:id])
+    authorize! :create, @user
     @user.admin = false
     @user.save
     @users = User.where(admin: false)
@@ -34,11 +36,14 @@ class AdminsController < ApplicationController
 
   def add_admin_form
     @admin = User.new(admin: true)
+    authorize! :create, @admin
   end
 
   def add_admin
     @admin = User.new(user_params)
     @admin.password = Devise.friendly_token[0,20]
+    authorize! :create, @admin
+
 
     if @admin.save
       redirect_to manage_admin_and_users_list_admins_path
