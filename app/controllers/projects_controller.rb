@@ -33,6 +33,8 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    authorize! :update, @project
+
   end
 
   def create
@@ -59,6 +61,7 @@ class ProjectsController < ApplicationController
     if @project.update(project_params)
       flash[:success] = 'Project information has been updated'
     end
+    authorize! :update, @project
 
     respond_with(@project)
   end

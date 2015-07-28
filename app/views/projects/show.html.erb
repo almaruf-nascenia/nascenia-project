@@ -13,6 +13,8 @@
       <strong>Description of Project:</strong>
       <%= @project.description %>
     </p>
-    <%= link_to 'Edit Project Details', edit_project_path(@project)%>
+    <% if can? :update, @project %>
+        <%= link_to 'Edit Project Details', edit_project_path(@project)%>
+    <% end  %>
   </div>
 </div>

@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">
-        <%= image_tag('nascenia.png', :class => 'main-logo')%>
+        <%= image_tag('nascenia.png', :class => 'main-logo') %>
       </a>
     </div>
 
@@ -17,29 +17,32 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li>
-            <%= link_to 'Team Assigning',   project_assign_path %>
-          </li>
+
             <% if current_user.super_admin? %>
-            <li>
-              <%= link_to 'Manage Admin',   manage_admin_and_users_list_admins_path %>
-            </li>
+                <li>
+                  <%= link_to 'Manage Admin', manage_admin_and_users_list_admins_path %>
+                </li>
+                <li>
+                  <%= link_to 'Team Assigning', project_assign_path %>
+                </li>
             <% end %>
-          <li>
-            <%= link_to 'Projects',   projects_path %>
-          </li>
-          <li>
-            <%= link_to 'Developer',   developers_path %>
-          </li>
-          <li>
-            <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
-          </li>
+            <li>
+              <%= link_to 'Projects', projects_path %>
+            </li>
+            <li>
+              <%= link_to 'Developer', developers_path %>
+            </li>
+            <li>
+              <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
+            </li>
         <% else %>
-          <li>
-            <%= link_to 'Log In', new_user_session_path, :method => :get %>
-          </li>
+            <li>
+              <%= link_to 'Log In', new_user_session_path, :method => :get %>
+            </li>
         <% end %>
       </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
 </nav>
