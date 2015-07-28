@@ -12,7 +12,7 @@
         <% unless admin.super_admin? %>
             <tr class="user_<%= admin.id %>" data-id="<%= admin.id %>">
               <td><%= admin.email %> </td>
-              <td><%= link_to 'Remove from admin', remove_user_from_admin_admin_path(id: admin.id), remote: true %> </td>
+              <td><%= link_to 'Remove from admin', remove_user_from_admin_admin_path(id: admin.id), data: { confirm: 'Are you sure to Remove from Admin ?' }, remote: true %> </td>
             </tr>
         <% end %>
     <% end %>
