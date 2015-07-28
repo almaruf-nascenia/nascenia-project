@@ -1,5 +1,5 @@
 class AdminsController < ApplicationController
-  # before_action :set_developer, only: [:show, :edit, :update, :destroy]
+   before_filter :check_super_admin, only: [:manage_admin_and_users_list, :make_user_admin, :remove_user_from_admin]
 
   respond_to :html, :js
 
@@ -25,5 +25,11 @@ class AdminsController < ApplicationController
     @user = User.find(params[:id])
     @user.admin = false
     @user.save
+  end
+
+  private
+
+  def check_super_admin
+      current_user.super_admin?
   end
 end

@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  validates :email, presence: true
+  validate :check_mail
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -17,6 +20,14 @@ class User < ActiveRecord::Base
 
   def super_admin?
     admin_emails = YAML::load_file('config/superadmin.yml')
-    admin_emails['superadmin'].include?(current_user.email)
+    admin_emails['superadmin'].include?(self.email)
+  end
+
+  private
+
+  def check_mail
+    unless self.email.end_with?('nascenia.com') || self.email.end_with?('bdipo.com')
+      self.errors.add(:email, 'Only Nascenia employee can use this application')
+    end
   end
 end
