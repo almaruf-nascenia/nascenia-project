@@ -34,6 +34,7 @@ class DevelopersController < ApplicationController
       flash[:success] = 'New Developer has been successfully created'
     end
     respond_with(@developer)
+    authorize! :create, @developer
   end
 
   def update

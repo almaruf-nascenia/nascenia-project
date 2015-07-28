@@ -12,8 +12,11 @@
 <div class="container default">
   <%= render 'shared/main_nav' %>
 
-  <div class="col-md-14">
-    <%= raw flash_message %>
+  <div class="col-md-12" >
+    <div class="text-warning">
+      <%= raw flash_message %>
+    </div>
+
     <%= yield %>
   </div>
   </div>

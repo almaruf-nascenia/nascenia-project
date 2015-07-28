@@ -1,8 +1,9 @@
 <h1>Developers List</h1>
 <br/>
-<%= link_to 'New Developer', new_developer_path, :class => 'btn btn-primary' %>
-<%= link_to 'Developer Engagement Report ', engagement_report_developers_path, :class => 'btn btn-primary' %>
-
+<% if can? :create, @developers %>
+    <%= link_to 'New Developer', new_developer_path, :class => 'btn btn-primary' %>
+    <%= link_to 'Developer Engagement Report ', engagement_report_developers_path, :class => 'btn btn-primary' %>
+<% end %>
 <br/>
 <br/>
 <table class="table table-striped">
@@ -23,10 +24,12 @@
         <td><%= developer.designation %></td>
         <td><%= developer.joining_date %></td>
         <td><%= developer.previous_job_exp %></td>
+        <% if can? :update, developer %>
         <td>
           <span><%= link_to 'Edit', edit_developer_path(developer), html_options = { class: 'label label-primary'} %></span>
           <span><%= link_to 'Delete', developer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'label label-danger' %></span>
         </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

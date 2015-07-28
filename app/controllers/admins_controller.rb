@@ -1,5 +1,6 @@
 class AdminsController < ApplicationController
 
+  before_filter :check_super_admin
   respond_to :html, :js
 
   def manage_admin_and_users_list

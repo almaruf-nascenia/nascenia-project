@@ -27,6 +27,7 @@ class ProjectsController < ApplicationController
 
   def new
     @project = Project.new
+    authorize! :create, @project
     respond_with(@project)
   end
 
@@ -39,6 +40,7 @@ class ProjectsController < ApplicationController
       flash[:success] = 'Project has been successfully created'
     end
     respond_with(@project)
+    authorize! :create, @project
   end
 
   def sortable
