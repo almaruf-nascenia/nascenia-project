@@ -76,6 +76,7 @@ namespace :deploy do
   task :copy_in_database_yml do
     run "cp #{shared_path}/config/database.yml #{latest_release}/config/"
     run "cp #{shared_path}/config/secrets.yml #{latest_release}/config/"
+    run "cp #{shared_path}/config/superadmin.yml #{latest_release}/config/"
   end
 end
 
