@@ -193,7 +193,7 @@
         });
 
         $('.remove-developer').click(function () {
-            $('.remove-developer-modal-title').html('Remove ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name'));
+            $('.remove-developer-modal-title').html('Are you sure to <b> remove</b> ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name') + '?');
             $("#add-remove-date").modal('show');
             var element = $(this);
             var devId = element.data('dev-id');

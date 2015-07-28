@@ -1,3 +1,5 @@
+
+
 <%= form_for([@project, @project_time_sheet]) do |f| %>
   <% if @project_time_sheet.errors.any? %>
     <div id="error_explanation">
@@ -15,19 +17,32 @@
       <%= f.hidden_field :project_id %>
     </div>
 
-  <div class="field">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="addPercentageGroup" class="form-group">
     <%= f.label :Title %><br>
     <%= f.text_field :Title %>
   </div>
-  <div class="field">
+        </div>
+    </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="addPercentageGroup" class="form-group">
     <%= f.label :Description %><br>
     <%= f.text_area :Description, html_options = { } %>
   </div>
-  <div class="field">
+          </div>
+      </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="addPercentageGroup" class="form-group">
     <%= f.label :Link %><br>
     <%= f.text_field :Link %>
-  </div><br>
-  <div class="actions">
-    <%= f.submit @project_time_sheet.new_record? ? 'Create Project Time Sheet': 'Update Project Time Sheet',:class => 'btn btn-success'%>
+  </div>
+    </div>
+    </div>
+    <div class="actions clearfix">
+    <%= f.submit @project_time_sheet.new_record? ? 'Create Project Time Sheet': 'Update Project Time Sheet',:class => 'btn btn-success pull-right'%>
+      <%= link_to 'back', project_project_time_sheets_path(project_id: @project.id) %>
   </div>
 <% end %>
