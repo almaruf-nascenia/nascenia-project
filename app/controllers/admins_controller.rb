@@ -1,5 +1,4 @@
 class AdminsController < ApplicationController
-   before_filter :check_super_admin, only: [:manage_admin_and_users_list, :make_user_admin, :remove_user_from_admin]
 
   respond_to :html, :js
 
@@ -32,9 +31,24 @@ class AdminsController < ApplicationController
     @users = @users.paginate(:page => params[:user_pagination])
   end
 
+  def add_admin_form
+    @admin = User.new(admin: true)
+  end
+
+  def add_admin
+    @admin = User.new(user_params)
+    @admin.password = Devise.friendly_token[0,20]
+
+    if @admin.save
+      redirect_to manage_admin_and_users_list_admins_path
+    else
+        render 'add_admin_form'
+    end
+  end
+
   private
 
-  def check_super_admin
-      current_user.super_admin?
+  def user_params
+    params.require(:user).permit(:name, :email, :admin)
   end
-end
+ end

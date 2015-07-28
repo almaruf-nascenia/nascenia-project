@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
     collection do
       get :manage_admin_and_users_list
+      get :add_admin_form
+      post :add_admin
     end
 
     member do

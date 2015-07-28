@@ -1,5 +1,6 @@
 class ProjectTimeSheetsController < ApplicationController
   before_action :set_project_time_sheet, only: [:show, :edit, :update, :destroy]
+  skip_before_filter :check_super_admin
 
   respond_to :html
 

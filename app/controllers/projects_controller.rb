@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy, :update_developers_percentage, :team_activity]
 
   skip_before_action :verify_authenticity_token
+  skip_before_filter :check_super_admin
   respond_to :html
 
   def index
