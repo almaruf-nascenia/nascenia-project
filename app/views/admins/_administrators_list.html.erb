@@ -8,7 +8,7 @@
     </thead>
     <tbody>
     <tbody>
-    <% @admins.each do |admin| %>
+    <% admins.each do |admin| %>
         <% unless admin.super_admin? %>
             <tr class="user_<%= admin.id %>" data-id="<%= admin.id %>">
               <td><%= admin.email %> </td>
@@ -20,6 +20,6 @@
   </table>
 
   <div class="pagination_table">
-    <%= will_paginate @admins, renderer: BootstrapPagination::Rails, :param_name => 'admin_pagination', :params => { :tab_name => "admins_list" } %>
+    <%= will_paginate admins, renderer: BootstrapPagination::Rails, :param_name => 'admin_pagination', :params => { :tab_name => "admins_list" } %>
   </div>
 </div>

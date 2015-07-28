@@ -11,23 +11,23 @@
     <div class="tab-content">
 
       <div id="administrators_list" class="tab-pane fade <%= params[:tab_name] != 'users_list' ? "in active" : '' %>">
-        <%= render partial: "administrators_list" %>
+        <%= render partial: "administrators_list", locals: {:admins => @admins} %>
       </div>
 
       <div id="users_list" class="tab-pane fade <%= params[:tab_name] == 'users_list' ? "in active" : '' %>">
-        <%= render partial: "users_list" %>
+        <%= render partial: "users_list", locals: {:users => @users} %>
       </div>
 
     </div>
   </div>
 </div>
 
-  <script type="text/javascript">
-      $(document).ready(function(){
-          $("#myTab a").click(function(e){
-              e.preventDefault();
-              $(this).tab('show');
-          });
-      })
-  </script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#myTab a").click(function(e){
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    })
+</script>
 

@@ -8,7 +8,7 @@
     </thead>
     <tbody>
     <tbody>
-    <% @users.each do |user| %>
+    <% users.each do |user| %>
 
         <tr class='user_<%= user.id %>' data-id="<%= user.id %>">
           <td><%= user.email %> </td>
@@ -22,6 +22,6 @@
   </table>
 
   <div class="pagination_table">
-    <%= will_paginate @users, renderer: BootstrapPagination::Rails, :param_name => 'user_pagination', :params => { :tab_name => "users_list" } %>
+    <%= will_paginate users, renderer: BootstrapPagination::Rails, :param_name => 'user_pagination', :params => { :tab_name => "users_list" } %>
   </div>
 </div>

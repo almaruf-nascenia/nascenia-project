@@ -44,12 +44,12 @@ class DevelopersController < ApplicationController
 
   def destroy
     project_teams = @developer.active_project_teams
-      if project_teams.exists?
-        flash[:error] = "#{@developer.name } is engage in project. We have to first remove his/her project."
-      else
-        @developer.destroy
-        flash[:success] = 'Developer has been removed'
-      end
+    if project_teams.exists?
+      flash[:error] = "#{@developer.name } is engage in project. We have to first remove his/her project."
+    else
+      @developer.destroy
+      flash[:success] = 'Developer has been removed'
+    end
     respond_with(@developer)
   end
 
@@ -61,7 +61,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       if new_project_team.save
-         status = dev_id
+        status = dev_id
       else
         status = 0
       end
@@ -84,11 +84,11 @@ class DevelopersController < ApplicationController
   end
 
   private
-    def set_developer
-      @developer = Developer.find(params[:id])
-    end
+  def set_developer
+    @developer = Developer.find(params[:id])
+  end
 
-    def developer_params
-      params.require(:developer).permit(:name, :designation, :joining_date, :previous_job_exp)
-    end
+  def developer_params
+    params.require(:developer).permit(:name, :designation, :joining_date, :previous_job_exp)
+  end
 end

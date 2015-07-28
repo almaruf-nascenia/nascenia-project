@@ -1,1 +1,2 @@
 $('.user_<%= @user.id %>').remove();
+$("#users_list").html("<%= escape_javascript(render(:partial => "admins/users_list", locals: {:users => @users})) %>");

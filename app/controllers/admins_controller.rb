@@ -15,6 +15,9 @@ class AdminsController < ApplicationController
     @user = User.find(params[:id])
     @user.admin = true
     @user.save
+    @admins = User.where(admin: true)
+    @admins = @admins.paginate(:page => params[:admin_pagination])
+
 
     respond_to do |format|
       format.js {}
@@ -25,6 +28,8 @@ class AdminsController < ApplicationController
     @user = User.find(params[:id])
     @user.admin = false
     @user.save
+    @users = User.where(admin: false)
+    @users = @users.paginate(:page => params[:user_pagination])
   end
 
   private

@@ -57,7 +57,7 @@ class Developer < ActiveRecord::Base
   end
 
   def company_tenure
-      (((Date.today - self.joining_date) / 365).to_f).round(2)
+    (((Date.today - self.joining_date) / 365).to_f).round(2)
   end
 
   def total_experience
