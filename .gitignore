@@ -16,6 +16,7 @@ db/schema.rb
 .idea
 .DS_Store
 .ruby-gemset
+/config/superadmin.yml
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 #
