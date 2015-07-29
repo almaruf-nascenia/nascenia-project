@@ -15,9 +15,11 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <% if user_signed_in? %>
-
+      <% if user_signed_in? %>
+          <ul class="nav nav-tabs navbar-right ">
+            <li class="col-lg-pull-1">
+              <h5 style="margin-top: 15px"> Signed is as: <b><%= current_user.name.present? ? current_user.name : 'No name in database' %></b>&nbsp; Email: <b><%= current_user.email %></b> </h5>
+            </li>
             <% if current_user.super_admin? %>
                 <li>
                   <%= link_to 'Manage Admin', manage_admin_and_users_list_admins_path %>
@@ -35,12 +37,15 @@
             <li>
               <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
             </li>
-        <% else %>
-            <li>
-              <%= link_to 'Log In', new_user_session_path, :method => :get %>
-            </li>
-        <% end %>
-      </ul>
+          </ul>
+      <% else %>
+          <li>
+            <%= link_to 'Log In', new_user_session_path, :method => :get %>
+          </li>
+      <% end %>
+
+
+
     </div>
     <!-- /.navbar-collapse -->
   </div>
