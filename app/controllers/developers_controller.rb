@@ -50,7 +50,7 @@ class DevelopersController < ApplicationController
   def destroy
     project_teams = @developer.active_project_teams
     if project_teams.exists?
-      flash[:error] = "#{@developer.name } is engage in project. We have to first remove his/her project."
+      flash[:error] = "#{@developer.name } is assigned in project. To delete, you have to first unassigned him."
     else
       @developer.destroy
       flash[:success] = 'Developer has been removed'
