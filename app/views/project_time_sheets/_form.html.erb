@@ -18,29 +18,28 @@
     <div class="row">
       <div class="col-md-12">
         <div id="addPercentageGroup" class="form-group">
-          <%= f.label :Title %><br>
-          <%= f.text_field :Title %>
+          <%= f.label :Title, :class => 'control-label focusOnShow' %><br>
+          <%= f.text_field :Title, :class => 'form-control' %>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div id="addPercentageGroup" class="form-group">
-          <%= f.label :Description %><br>
-          <%= f.text_area :Description, html_options = { } %>
+          <%= f.label :Description, :class => 'control-label focusOnShow' %><br>
+          <%= f.text_area :Description, :class => 'form-control' %>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div id="addPercentageGroup" class="form-group">
-          <%= f.label :Link %><br>
-          <%= f.text_field :Link %>
+          <%= f.label :Link, :class => 'control-label focusOnShow' %><br>
+          <%= f.text_field :Link, :class => 'form-control' %>
         </div>
       </div>
     </div>
     <div class="actions clearfix">
       <%= f.submit @project_time_sheet.new_record? ? 'Create Project Time Sheet': 'Update Project Time Sheet',:class => 'btn btn-success pull-right'%>
-      <%= link_to 'back', project_project_time_sheets_path(project_id: @project.id) %>
     </div>
 <% end %>

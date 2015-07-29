@@ -1,6 +1,12 @@
-<h1>Editing Project </h1>
+<div class="panel panel-info create-new-project">
+  <div class="panel-heading">Editing Project <b><%= @project.name %></b></div>
+  <div class="panel-body">
+    <%= render 'form' %>
 
-<%= render 'form' %>
+    <%= link_to 'Show', project_project_time_sheet_path(id: @project_time_sheet.id, project_id: @project_time_sheet.project_id) %>
+    |
+    <%= link_to 'Back', project_project_time_sheets_path(project_id: @project.id) %>
+  </div>
+</div>
 
-<%= link_to 'Show', project_project_time_sheet_path(id: @project_time_sheet.id, project_id: @project_time_sheet.project_id) %> |
-<%= link_to 'Back', project_project_time_sheets_path(project_id: @project.id) %>
+

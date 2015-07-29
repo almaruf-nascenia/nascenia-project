@@ -1,7 +1,8 @@
 <div class="panel panel-info create-new-project">
-  <div class="panel-heading">New Time Sheet</div>
+  <div class="panel-heading">New Time Sheet for project <b><%= @project.name %></b></div>
   <div class="panel-body">
     <%= render 'form' %>
+    <%= link_to 'Back', project_project_time_sheets_path(project_id: @project.id) %>
   </div>
 </div>
 
