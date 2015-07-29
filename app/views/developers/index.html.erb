@@ -27,6 +27,7 @@
         <% if can? :update, developer %>
         <td>
           <span><%= link_to 'Edit', edit_developer_path(developer), html_options = { class: 'label label-primary'} %></span>
+          <span style="margin: 10px">&nbsp;</span>
           <span><%= link_to 'Delete', developer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'label label-danger' %></span>
         </td>
         <% end %>
