@@ -17,8 +17,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <% if user_signed_in? %>
           <ul class="nav nav-tabs navbar-right ">
-            <li class="col-lg-pull-1">
-              <h5 style="margin-top: 15px"> Signed is as: <b><%= current_user.name.present? ? current_user.name : 'No name in database' %></b>&nbsp; Email: <b><%= current_user.email %></b> </h5>
+            <li>
+              <h5 style="margin-top: 15px; margin-right: 15px"> Signed in as: <b><%= current_user.name.present? ? current_user.name : 'No name in database' %></b>&nbsp; Email: <b><%= current_user.email %></b> </h5>
             </li>
             <% if current_user.super_admin? %>
                 <li>
