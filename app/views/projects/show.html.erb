@@ -14,7 +14,7 @@
       <%= @project.description %>
     </p>
     <% if can? :update, @project %>
-        <%= link_to 'Edit Project Details', edit_project_path(@project)%>|
+        <%= link_to 'Edit Project Details', edit_project_path(@project)%> |
     <% end  %>
     <%= link_to 'Back', projects_path %>
   </div>
