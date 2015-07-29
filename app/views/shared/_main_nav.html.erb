@@ -18,7 +18,7 @@
       <% if user_signed_in? %>
           <ul class="nav nav-tabs navbar-right" style="border: none">
             <li>
-              <h5 style="margin-top: 15px; margin-right: 15px"> Signed in as: <b><%= current_user.email %></b> </h5>
+              <h5 style="margin-top: 13px; margin-right: 15px"> Signed in as: <b><%= current_user.email %></b> </h5>
             </li>
             <% if current_user.super_admin? %>
                 <li>
