@@ -12,9 +12,9 @@ class DevelopersController < ApplicationController
 
   def show
     if params[:assign_date].present?
-      @teams = ProjectTeam.where('status_date <= ? and developer_id = ?', params[:assign_date], @developer.id).order(' status_date DESC')
+      @teams = ProjectTeam.where('status_date <= ? and developer_id = ?', params[:assign_date], @developer.id).order(' status_date DESC, id DESC')
     else
-      @teams = ProjectTeam.where('developer_id = ?', @developer.id).order('status_date DESC')
+      @teams = ProjectTeam.where('developer_id = ?', @developer.id).order('status_date DESC, id DESC')
     end
     @teams = @teams.paginate(:page => params[:page])
     respond_with(@developer)

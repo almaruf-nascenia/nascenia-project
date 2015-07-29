@@ -23,7 +23,7 @@
               <ul class="token-input-list-facebook ">
                 <% ProjectTeam.project_recent_data(project.id).each do |team| %>
                     <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
-                      <p class="<%= team.developer.current_work_load >= 100 ? 'text-warning' : '' %>"> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
+                      <p class="<%= team.developer.current_work_load > 100 ? 'text-warning' : '' %>"> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
                       <% if can? :create, :team %>
                           <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>
                           <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>" data-developer-name="<%= team.developer.name %>" data-project-name="<%= project.name %>">×</span>

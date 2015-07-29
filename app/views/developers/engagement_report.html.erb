@@ -3,7 +3,7 @@
 
 <div>
   <form path="<%= engagement_report_developers_path %>">
-  <input type='text' placeholder='select date' id='date-selector' name="filter_date" >
+  <input type='text' placeholder='select date' id='date-selector' name="filter_date" value="<%= @filter_date.present? ? @filter_date : '' %>" >
   <span>
     <button type="submit" class="filter-date" id="submit-filter-date">Filter</button>
   </span>
