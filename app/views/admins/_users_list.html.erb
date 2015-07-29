@@ -9,19 +9,19 @@
     <tbody>
     <tbody>
     <% users.each do |user| %>
-
         <tr class='user_<%= user.id %>' data-id="<%= user.id %>">
           <td><%= user.email %> </td>
           <% unless user.super_admin? %>
-          <td><%= link_to 'Upgrade to Admin', make_user_admin_admin_path(id: user.id), data: { confirm: 'Are you sure to upgrade into Admin ?' }, remote: true %> </td>
-           <% end %>
-
+              <td><%= link_to 'Upgrade to Admin', make_user_admin_admin_path(id: user.id), data: {confirm: 'Are you sure to upgrade into Admin ?'}, remote: true %> </td>
+          <% else %>
+              <td></td>
+          <% end %>
         </tr>
     <% end %>
     </tbody>
   </table>
 
   <div class="pagination_table">
-    <%= will_paginate users, renderer: BootstrapPagination::Rails, :param_name => 'user_pagination', :params => { :tab_name => "users_list" } %>
+    <%= will_paginate users, renderer: BootstrapPagination::Rails, :param_name => 'user_pagination', :params => {:tab_name => "users_list"} %>
   </div>
 </div>

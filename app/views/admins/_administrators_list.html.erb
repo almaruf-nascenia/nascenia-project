@@ -1,5 +1,5 @@
 <div class="panel-body">
-  <%= link_to 'Add Admin', add_admin_form_admins_path, html_options ={ class: 'btn btn-success'} %>
+  <%= link_to 'Add Admin', add_admin_form_admins_path, html_options ={class: 'btn btn-success'} %>
   <table class="table table-striped">
     <thead>
     <tr>
@@ -10,17 +10,20 @@
     <tbody>
     <tbody>
     <% admins.each do |admin| %>
-
-            <tr class="user_<%= admin.id %>" data-id="<%= admin.id %>">
-              <td><%= admin.email %> </td>
-              <td><%= link_to 'Remove from admin', remove_user_from_admin_admin_path(id: admin.id), data: { confirm: 'Are you sure to Remove from Admin ?' }, remote: true %> </td>
-            </tr>
-
+        <tr class="user_<%= admin.id %>" data-id="<%= admin.id %>">
+          <td>
+            <% admin.email %> </td>
+          <% unless admin.super_admin? %>
+              <td><%= link_to 'Remove from admin', remove_user_from_admin_admin_path(id: admin.id), data: {confirm: 'Are you sure to Remove from Admin ?'}, remote: true %> </td>
+          <% else %>
+              <td></td>
+          <% end %>
+        </tr>
     <% end %>
     </tbody>
   </table>
 
   <div class="pagination_table">
-    <%= will_paginate admins, renderer: BootstrapPagination::Rails, :param_name => 'admin_pagination', :params => { :tab_name => "admins_list" } %>
+    <%= will_paginate admins, renderer: BootstrapPagination::Rails, :param_name => 'admin_pagination', :params => {:tab_name => "admins_list"} %>
   </div>
 </div>
