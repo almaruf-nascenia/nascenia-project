@@ -1,47 +1,65 @@
 <h1>Project List</h1>
 <br/>
 <% if can? :create, @projects %>
-<%= link_to 'New Project', new_project_path, :class => 'btn btn-primary' %>
+    <%= link_to 'New Project', new_project_path, :class => 'btn btn-primary' %>
 <% end %>
 <br/>
 <br/>
 
 <table class="table table-striped">
   <thead>
-    <tr>
-      <th>Project Name</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
+  <tr>
+    <th>Project Name</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th colspan="3"></th>
+  </tr>
   </thead>
 
-  <tbody>
-    <% @projects.each do |project| %>
-      <tr project="<%= project.id %>" >
+  <tbody class="sortable projects_table">
+  <% @projects.each do |project| %>
+      <tr project_id="<%= project.id %>">
         <td><%= link_to project.name, project %></td>
         <td><%= project.title %></td>
         <td><%= truncate(project.description) %></td>
         <td >
           <% if can? :update, project %>
-          <span><%= link_to 'Edit', edit_project_path(project), html_options = { class: 'label label-primary'} %></span>
+              <span><%= link_to 'Edit', edit_project_path(project), html_options = { class: 'label label-primary'} %></span>
           <% end %>
           <span><%= link_to 'Team Activity', team_activity_project_url(project.id), class: 'label label-success' %></span>
           <span><%= link_to 'Time Sheet', project_project_time_sheets_path(project_id: project.id ), class: 'label label-success' %> </span>
           <span style="margin: 10px">&nbsp;</span>
           <% if can? :delete, project%>
-          <span><%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' },  class: 'label label-danger'%></span>
-              <% end %>
+              <span><%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' },  class: 'label label-danger'%></span>
+          <% end %>
         </td>
-
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>
 
 <div class="pagination_table">
-    <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+  <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
 </div>
 <br>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".projects_table").sortable({
+            stop: function() {
+                var project_ids =  $(this).sortable('toArray', { attribute: 'project_id' });
+                var page_number = <%= params[:page] %>;
 
+                $.ajax({
+                    url: "/projects/update_table_priority",
+                    type: 'post',
+                    dataType: 'script',
+                    data: {
+                        project_ids: project_ids,
+                        page_number: page_number
+                    }
+                });
+            }
+        });
+    });
+</script>

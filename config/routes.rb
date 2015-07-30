@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     collection do
       post 'sortable'
       post 'update_developers_percentage'
+      post 'update_table_priority'
 
     end
 

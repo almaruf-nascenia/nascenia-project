@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   respond_to :html
 
   def index
-    @projects = Project.all
+    @projects = Project.order(priority: :asc).all
     # respond_with(@projects)
     # sc = ProjectTeam.select("CONCAT(project_id, '-', developer_id, '-', MAX(created_at))").group(:project_id, :developer_id)
     # pd = ProjectTeam.select('project_id = ? AND status = 1 AND CONCAT(project_id, '-', developer_id, '-', created_at) IN (?)', 2, sc)
@@ -138,6 +138,15 @@ class ProjectsController < ApplicationController
 
     @team_members = ProjectTeam.project_recent_data(project.id)
     @team_members = @team_members.paginate(:page => params[:developer_page])
+  end
+
+  def update_table_priority
+    project_ids = params[:project_ids]
+    page_number = params[:page_number].to_i - 1
+    project_ids.each_with_index do |project_id, index|
+      Project.find(project_id).update_attributes(priority: WillPaginate.per_page  * page_number + index + 1)
+    end
+
   end
 
   private
