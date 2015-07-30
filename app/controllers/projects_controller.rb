@@ -6,12 +6,7 @@ class ProjectsController < ApplicationController
   respond_to :html
 
   def index
-    @projects = Project.order(priority: :asc).all
-    # respond_with(@projects)
-    # sc = ProjectTeam.select("CONCAT(project_id, '-', developer_id, '-', MAX(created_at))").group(:project_id, :developer_id)
-    # pd = ProjectTeam.select('project_id = ? AND status = 1 AND CONCAT(project_id, '-', developer_id, '-', created_at) IN (?)', 2, sc)
-    # pd.inspect
-
+    @projects = Project.order(:priority, :id).all
     @projects = @projects.paginate(:page => params[:page])
   end
 
@@ -39,6 +34,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
+    @project.priority = Project.count + 1
     if @project.save
       flash[:success] = 'Project has been successfully created'
     end
