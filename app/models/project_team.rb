@@ -48,6 +48,8 @@ class ProjectTeam < ActiveRecord::Base
   scope :with_project, ->(id) { where(:project_id => id) }
   scope :with_developer, ->(id) { where(:developer_id => id) }
   scope :project_recent_data, ->(project_id) { where(project_id: project_id, most_recent_data: true).where.not(status: 0) }
+  scope :by_developer_and_date, ->(dev_id, date) { where('developer_id = ? AND status != 0 AND  status_date <= ? AND id IN (?) ', dev_id, date, where('status_date <= ?', date).group(:developer_id, :project_id).maximum(:id).values) }
+
 
 
   # ----------------------------------------------------------------------

@@ -27,7 +27,7 @@
 
   <tbody class="sortable">
   <% @developers.each do |developer| %>
-      <% active_projects = developer.active_project_teams.where('status_date <= ?', @filter_date).order('status_date desc') %>
+      <% active_projects = ProjectTeam.by_developer_and_date(developer.id, @filter_date).order('status_date desc') %>
       <tr developer="<%= developer.id %>" >
 
         <td><%= developer.name %></td>
