@@ -8,14 +8,14 @@
 
 
 project_list = [
-    [ "Team Planner", "Know about your team", "This is a project where we can show all activites of all team" ],
-    [ "Horsecount", "Horse Management", "All things of horse is introduced in this project"],
-    [ "UDK", "Undiscovered Kitchen","UDK is a consumer project" ]
+    [ "Team Planner", "Know about your team", "This is a project where we can show all activites of all team" , 1],
+    [ "Horsecount", "Horse Management", "All things of horse is introduced in this project", 2],
+    [ "UDK", "Undiscovered Kitchen","UDK is a consumer project", 3]
 ]
 
 
-project_list.each do |name, title, description|
-  Project.find_or_create_by( name: name, title: title, description: description )
+project_list.each do |name, title, description, priority|
+  Project.find_or_create_by( name: name, title: title, description: description, priority: priority )
 end
 
 developer_list = [

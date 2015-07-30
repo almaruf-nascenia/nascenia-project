@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = Project.order(:priority, :id).all
-    @projects = @projects.paginate(:page => params[:page])
+    @projects = @projects.paginate(page: params[:page])
   end
 
   def show
@@ -63,6 +63,10 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
+    projects_to_be_updated = Project.where("priority > ? ", @project.priority)
+    projects_to_be_updated.each do |project|
+      Project.decrement_counter(:priority, project.id)
+    end
     @project.destroy
     flash[:success] = 'Project has been removed'
     authorize! :delete, @project
@@ -82,11 +86,11 @@ class ProjectsController < ApplicationController
     @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
 
-      if @project_team.save
-        flash[:success] = 'New developer has been added'
-      else
-        flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
-      end
+    if @project_team.save
+      flash[:success] = 'New developer has been added'
+    else
+      flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+    end
 
     authorize! :create, @project_team
 
@@ -120,11 +124,11 @@ class ProjectsController < ApplicationController
     project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage] )
     authorize! :create, project_team
 
-      if project_team.save
-         flash[:success] = 'Developer Percentage has been Updated'
-      else
-         flash[:error] = 'Developer Percentage Update fail'
-      end
+    if project_team.save
+      flash[:success] = 'Developer Percentage has been Updated'
+    else
+      flash[:error] = 'Developer Percentage Update fail'
+    end
   end
 
   def team_activity
@@ -138,23 +142,72 @@ class ProjectsController < ApplicationController
 
   def update_table_priority
     project_ids = params[:project_ids]
-    page_number = params[:page_number].to_i - 1
+    page_number = params[:page_number].present? ? params[:page_number].to_i - 1 : 0
     project_ids.each_with_index do |project_id, index|
       Project.find(project_id).update_attributes(priority: WillPaginate.per_page  * page_number + index + 1)
     end
 
+    @projects = Project.order(:priority, :id).all
+    @projects = @projects.paginate(page: params[:page_number].to_i, per_page: 2)
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+  def project_table_row_up
+    project_id = params[:id]
+    project = Project.find(project_id)
+    Project.find_by_priority(project.priority - 1).update_attribute(:priority, project.priority)
+    project.update_attribute(:priority, project.priority - 1)
+
+    @page = params[:page].present? ? params[:page].to_i : 1
+    @projects = Project.order(:priority, :id).all
+    @projects = @projects.paginate(page: @page)
+
+    unless @projects.where(id: project_id).present?
+      @page = @page - 1
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def project_table_row_down
+    project_id = params[:id]
+    project = Project.find(project_id)
+    if project.priority != Project.count
+      Project.find_by_priority(project.priority + 1).update_attribute(:priority, project.priority)
+      project.update_attribute(:priority, project.priority + 1)
+
+      @page = params[:page].present? ? params[:page].to_i : 1
+      @projects = Project.order(:priority, :id).all
+      @projects = @projects.paginate(page: @page)
+
+      unless @projects.where(id: project_id).present?
+        @page = @page - 1
+      end
+    else
+      flash[:error] = "Can't Go Down More"
+    end
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
-    def set_project
-      @project = Project.find(params[:id])
-    end
+  def set_project
+    @project = Project.find(params[:id])
+  end
 
-    def project_params
-      params.require(:project).permit(:id, :name, :title, :description)
-    end
+  def project_params
+    params.require(:project).permit(:id, :name, :title, :description, :priority)
+  end
 
-    def project_team_params
-      params.permit(:project_id, :developer_id, :participation_percentage, :status_date)
-    end
+  def project_team_params
+    params.permit(:project_id, :developer_id, :participation_percentage, :status_date)
+  end
 end

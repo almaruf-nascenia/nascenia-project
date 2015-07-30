@@ -37,7 +37,8 @@ Rails.application.routes.draw do
       post 'sortable'
       post 'update_developers_percentage'
       post 'update_table_priority'
-
+      post 'project_table_row_up'
+      post 'project_table_row_down'
     end
 
     member do
