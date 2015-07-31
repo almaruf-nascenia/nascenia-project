@@ -28,14 +28,14 @@
               <span><%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' },  class: 'label label-danger'%></span>
           <% end %>
           <span style="margin: 5px">&nbsp;</span>
-          <%# if can? :update, project %>
-              <%# if project.priority != 1%>
-                  <!--<span class="up_arrow"><%#= image_tag('up_arrow.png', size: "16") %></span>-->
-              <%# end %>
-              <%# unless projects.count == project.priority%>
-                <!--<span class="down_arrow"><%#= image_tag('down_arrow.png', size: "16") %></span>-->
-              <%# end %>
-          <%# end %>
+          <% if can? :update, project %>
+              <% if project.priority != 1%>
+                  <span class="up_arrow"><%= image_tag('up_arrow.png', size: "16") %></span>
+              <% end %>
+              <% unless projects.count == project.priority%>
+                <span class="down_arrow"><%= image_tag('down_arrow.png', size: "16") %></span>
+              <% end %>
+          <% end %>
         </td>
       </tr>
   <% end %>
