@@ -121,8 +121,8 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button id="submit-remove-date" type="button" class="btn btn-success">
-            Submit
+          <button id="submit-remove-date" type="button" class="btn btn-danger">
+            Remove
           </button>
         </div>
 
@@ -190,7 +190,7 @@
         });
 
         $('.remove-developer').click(function () {
-            $('.remove-developer-modal-title').html('Are you sure to <b> remove</b> ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name') + '?');
+            $('.remove-developer-modal-title').html('Are you sure to <span class="text-danger"> remove</span> ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name') + '?');
             $("#add-remove-date").modal('show');
             var element = $(this);
             var devId = element.data('dev-id');
