@@ -1,1 +1,1 @@
-$('#projects-container').html('<%=j render partial: 'projects/projects_table', locals: { projects: @projects } %>');
+window.location.href = '<%= projects_path(page: @page) %>';

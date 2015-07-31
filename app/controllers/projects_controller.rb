@@ -142,13 +142,14 @@ class ProjectsController < ApplicationController
 
   def update_table_priority
     project_ids = params[:project_ids]
-    page_number = params[:page_number].present? ? params[:page_number].to_i - 1 : 0
+    page_number = params[:page_number].present? ? params[:page_number].to_i : 1
     project_ids.each_with_index do |project_id, index|
-      Project.find(project_id).update_attributes(priority: WillPaginate.per_page  * page_number + index + 1)
+      Project.find(project_id).update_attributes(priority: WillPaginate.per_page  * ( page_number -1 )+ index + 1)
     end
 
     @projects = Project.order(:priority, :id).all
     @projects = @projects.paginate(page: params[:page_number].to_i)
+    @page =  page_number
 
     respond_to do |format|
       format.js
