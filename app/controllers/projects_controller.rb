@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_assign
-    @projects = Project.order(priority: :desc).all
+    @projects = Project.order(:priority).all
     # respond_with(@projects)
     @projects = @projects.paginate(:page => params[:page])
 
