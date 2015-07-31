@@ -122,6 +122,26 @@ class ProjectsController < ApplicationController
     redirect_to project_assign_path
   end
 
+  def update_project_team
+    @project_team = ProjectTeam.find(params[:id])
+    @project_team.participation_percentage = params[:percentage] if params[:percentage].present?
+    @project_team.status_date = params[:date] if params[:date].present?
+
+
+    if @project_team.save
+      flash[:success] = 'Assignment data updated'
+    else
+      flash[:error] = 'Assignment data updated'
+    end
+
+    status = params[:project_id]
+    # authorize! :create, @project_team
+
+    respond_to do |format|
+      format.json{ render json: { status: status }}
+    end
+  end
+
   def dev_list
     project_id = params[:id]
     assigned_dev_id_list = ProjectTeam.project_recent_data(project_id).pluck(:developer_id)

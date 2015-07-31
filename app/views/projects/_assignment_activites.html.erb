@@ -32,10 +32,102 @@
           <% end %>
         </td>
         <td><%= project_team.status_date %></td>
+        <td><%= link_to 'edit', '#', html_options = { class: 'label label-primary edit-activity', data: { project_id: project_team.project_id,id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s } } %></td>
       </tr>
   <% end %>
   </tbody>
 </table>
 <div class="pagination_table">
-  <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails, :param_name => 'assignment_page', :params => {:tab_name => "assignment_activity"} %>
+  <%= will_paginate @project_teams, renderer: BootstrapPagination::Rails, :param_name => 'assignment_page', :params => {:tab_name => 'assignment_activity'} %>
 </div>
+
+<!-- modal for showing edit form -->
+
+<div id="edit_developers_percentage" class="modal fade" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Edit Assignment data </h4>
+      </div>
+
+      <div class="edited_developer_project_id" value=""></div>
+      <div class="edited_developer_id" value=""></div>
+      <div class="previous_percentage" value=""></div>
+
+      <div class="modal-body tabIndexContainer">
+        <div class="row">
+          <div class="col-md-6">
+            <div id="editPercentageGroup" class="form-group">
+              <label for="editPercentage" class="control-label focusOnShow">Participation Percentage Change</label>
+              <input type="text" class="form-control" id="editPercentage" name="participation_percentage" placeholder="Enter participation value" value="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="editStartDate" class="control-label">Assigned Date</label>
+              <input type="text" class="form-control" id="editStartDate" name="date" placeholder="Enter Start Date" value="">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button id="submit-edit-percentage" type="button" class="btn btn-success">
+            Change
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Javascript for modal show -->
+
+<script>
+  $(function(){
+      $("#editStartDate").datepicker({
+          dateFormat: 'yy-mm-dd'
+      });
+
+//      show modal
+      $('.edit-activity').click(function () {
+//          $('.remove-developer-modal-title').html('Are you sure to <span class="text-danger"> remove</span> ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name') + '?');
+          $("#edit_developers_percentage").modal('show');
+          var element = $(this);
+          var date = element.data('date');
+          var percentage = element.data('percentage');
+          var projectId = element.data('project-id');
+          var id = element.data('id');
+
+          $('#editPercentage').val(percentage);
+          $('#editStartDate').val(date);
+          console.log('log of javascript ' + element);
+
+          $('#submit-edit-percentage').click(function () {
+              var date = $('#editStartDate').val();
+              var percentage = $('#editPercentage').val();
+              console.log('With in submit button date: ' +date + ' and percentage ' + percentage );
+
+              $.ajax({
+                  url: "<%= update_project_team_projects_path %>",
+                  type: 'post',
+                  dataType: 'json',
+                  data: { project_id: projectId, date: date, id: id, percentage: percentage },
+                  success: function (res) {
+                      $("#edit_developers_percentage").modal('hide');
+                      if (res.status) {
+                          window.location.href = '/projects/' + res.status +'/team_activity';
+                      }
+                  }
+              });
+          });
+
+      });
+
+  });
+</script>
