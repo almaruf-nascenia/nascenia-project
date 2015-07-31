@@ -32,7 +32,7 @@
           <% end %>
         </td>
         <td><%= project_team.status_date %></td>
-        <td><%= link_to 'edit', '#', html_options = { class: 'label label-primary edit-activity', data: { project_id: project_team.project_id,id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s } } %></td>
+        <td><%= link_to 'edit', 'javascript:;', html_options = { class: 'label label-primary edit-activity', data: { project_id: project_team.project_id,id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s } } %></td>
       </tr>
   <% end %>
   </tbody>
