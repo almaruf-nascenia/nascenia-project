@@ -11,7 +11,8 @@
   </tr>
   </thead>
 
-  <tbody class="sortable projects_table">
+  <!--<tbody class="sortable projects_table">-->
+  <tbody class="<%= (current_user.super_admin? || current_user.admin?) ? 'sortable projects_table' : '' %> ">
   <% projects.each do |project| %>
       <tr project_id="<%= project.id %>">
         <td><%= link_to project.name, project %></td>

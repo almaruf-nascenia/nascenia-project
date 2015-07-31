@@ -143,6 +143,7 @@ class ProjectsController < ApplicationController
   def update_table_priority
     project_ids = params[:project_ids]
     page_number = params[:page_number].present? ? params[:page_number].to_i : 1
+    authorize! :update, Project
     project_ids.each_with_index do |project_id, index|
       Project.find(project_id).update_attributes(priority: WillPaginate.per_page  * ( page_number -1 )+ index + 1)
     end
