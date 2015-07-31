@@ -1,31 +1,14 @@
-<% headers = ['Developer Name', 'Experience in Nascenia(years)', 'Previous Experience(years)', 'Total Experience(years)', 'Project Count', 'Assigned Project','Participation Percentage(%)'] %>
+<% headers = ['Developer Name', 'Experience in Nascenia(years)', 'Previous Experience(years)', 'Total Experience(years)', 'Project Count', 'Assigned Projects'] %>
 <%= CSV.generate_line(headers).html_safe.strip %>
 <% @developers.each do |developer| %>
     <% active_projects = developer.active_project_teams %>
-    <% active_projects.each_with_index do |project_team, index| %>
-        <% if index == 0 %>
             <% row = [
                     developer.name,
                     developer.company_tenure,
                     developer.previous_job_exp,
                     developer.total_experience,
                     active_projects.count,
-                    project_team.project.name,
-                    project_team.participation_percentage
+                    active_projects.present? ? active_projects.map{ |project_team| "#{project_team.project.name} (#{project_team.participation_percentage}%)" }.join(' + ') : nil
             ] %>
-        <% else %>
-            <% row = [
-                    nil,
-                    nil,
-                    nil,
-                    nil,
-                    nil,
-                    project_team.project.name,
-                    project_team.participation_percentage
-            ] %>
-        <% end %>
-
-        <%= CSV.generate_line(row).html_safe.strip -%>
-    <% end %>
-    <%= CSV.generate_line([nil]) -%>
+        <%= CSV.generate_line(row).html_safe.strip %>
 <% end %>
