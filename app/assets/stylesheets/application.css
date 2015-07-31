@@ -82,3 +82,8 @@
 .navbar-collapse>.nav-tabs>li>a:hover{
     padding-bottom: 18px;
 }
+
+.text-line-through{
+    text-decoration:line-through
+}
+

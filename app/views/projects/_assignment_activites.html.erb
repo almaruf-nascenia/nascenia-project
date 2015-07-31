@@ -26,8 +26,8 @@
         <td><span class="<%= design %>"><%= status %></span></td>
         <td><%= project_team.participation_percentage.to_s + '%' %>
           <% if project_team.status == 2 %>
-              <span style='color:red;text-decoration:line-through'>
-                    <span style='color:black'>(<%= project_team.previous_participation_percentage %>)</span>
+              <span class="text-line-through">
+                    <span class="small">(<%= project_team.previous_participation_percentage.to_s + '%' %>)</span>
               </span>
           <% end %>
         </td>
