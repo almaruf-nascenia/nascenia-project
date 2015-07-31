@@ -148,7 +148,7 @@ class ProjectsController < ApplicationController
     end
 
     @projects = Project.order(:priority, :id).all
-    @projects = @projects.paginate(page: params[:page_number].to_i, per_page: 2)
+    @projects = @projects.paginate(page: params[:page_number].to_i)
 
     respond_to do |format|
       format.js
