@@ -5,8 +5,11 @@ class DevelopersController < ApplicationController
   respond_to :html
 
   def index
-    @developers = Developer.all
-    # respond_with(@developers)
+    if params[:all]
+      @developers = Developer.all
+    else
+      @developers = Developer.where(active: true).all
+    end
     @developers = @developers.paginate(:page => params[:page])
   end
 
@@ -99,6 +102,6 @@ class DevelopersController < ApplicationController
   end
 
   def developer_params
-    params.require(:developer).permit(:name, :designation, :joining_date, :previous_job_exp)
+    params.require(:developer).permit(:name, :designation, :joining_date, :previous_job_exp, :active)
   end
 end

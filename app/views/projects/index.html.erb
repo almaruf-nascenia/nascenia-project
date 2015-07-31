@@ -2,6 +2,11 @@
 <br/>
 <% if can? :create, @projects %>
     <%= link_to 'New Project', new_project_path, :class => 'btn btn-primary' %>
+    <% if params[:all].present? && params[:all] == 'true' %>
+        <%= link_to 'Active Projects', projects_path, :class => 'btn btn-primary' %>
+    <% else %>
+        <%= link_to 'All Projects', projects_path(all: true), :class => 'btn btn-primary' %>
+    <% end %>
 <% end %>
 <br/>
 <br/>

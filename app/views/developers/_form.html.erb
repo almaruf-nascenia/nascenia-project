@@ -47,6 +47,15 @@
     </div>
   </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div id="addPercentageGroup" class="form-group">
+          <%= f.label "Active" %> <br />
+          <%= f.check_box :active %> <br />
+        </div>
+      </div>
+    </div>
+
   <div class="actions clearfix">
     <% unless @developer.new_record? %>
       <div class="pull-left">

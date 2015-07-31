@@ -6,7 +6,11 @@ class ProjectsController < ApplicationController
   respond_to :html
 
   def index
-    @projects = Project.order(:priority, :id).all
+    if params[:all]
+      @projects = Project.order(:priority, :id)
+    else
+      @projects = Project.where(active: true).order(:priority, :id)
+    end
     @projects = @projects.paginate(page: params[:page])
   end
 
@@ -75,7 +79,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_assign
-    @projects = Project.order(:priority).all
+    @projects = Project.where(active: true).order(:priority).all
     # respond_with(@projects)
     @projects = @projects.paginate(:page => params[:page])
 
@@ -155,7 +159,6 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.js
     end
-
   end
 
   def project_table_row_up
@@ -206,7 +209,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:id, :name, :title, :description, :priority)
+    params.require(:project).permit(:id, :name, :title, :description, :priority, :active)
   end
 
   def project_team_params

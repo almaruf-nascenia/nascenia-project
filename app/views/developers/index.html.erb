@@ -3,6 +3,11 @@
 <% if can? :create, @developers %>
     <%= link_to 'New Developer', new_developer_path, :class => 'btn btn-primary' %>
     <%= link_to 'Developer Engagement Report ', engagement_report_developers_path, :class => 'btn btn-primary' %>
+    <% if params[:all].present? && params[:all] == 'true' %>
+      <%= link_to 'Active Developers', developers_path, :class => 'btn btn-primary' %>
+    <% else %>
+      <%= link_to 'All Developers', developers_path(all: true), :class => 'btn btn-primary' %>
+    <% end %>
 <% end %>
 <br/>
 <br/>
@@ -20,7 +25,7 @@
   <tbody>
     <% @developers.each do |developer| %>
       <tr>
-        <td><%= link_to developer.name, developer %></td>
+        <td><%= link_to developer.name, developer %> <%= developer.active? ? ' ' : '(Inactive)' %></td>
         <td><%= developer.designation %></td>
         <td><%= developer.joining_date %></td>
         <td><%= developer.previous_job_exp %></td>

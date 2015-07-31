@@ -15,7 +15,7 @@
   <tbody class="<%= (current_user.super_admin? || current_user.admin?) ? 'sortable projects_table' : '' %> ">
   <% projects.each do |project| %>
       <tr project_id="<%= project.id %>">
-        <td><%= link_to project.name, project %></td>
+        <td><%= link_to project.name, project %> <%= project.active? ? ' ' : '(Inactive)' %></td>
         <td><%= project.title %></td>
         <td><%= truncate(project.description) %></td>
         <td >

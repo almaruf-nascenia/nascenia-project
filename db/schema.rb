@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150731085219) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "work_load",                   default: 0
+    t.boolean  "active",                      default: true
   end
 
   create_table "project_teams", force: true do |t|
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150731085219) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "priority"
+    t.boolean  "active",      default: true
   end
 
   create_table "users", force: true do |t|

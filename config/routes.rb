@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       post 'update_table_priority'
       post 'project_table_row_up'
       post 'project_table_row_down'
+      get 'show_all_projects'
     end
 
     member do
