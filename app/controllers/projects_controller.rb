@@ -166,7 +166,7 @@ class ProjectsController < ApplicationController
     @projects = Project.order(:priority, :id).all
     @projects = @projects.paginate(page: @page)
 
-    unless @projects.where(id: project_id).present?
+    if Project.find(project_id).priority % WillPaginate.per_page == 0
       @page = @page - 1
     end
 
@@ -186,8 +186,8 @@ class ProjectsController < ApplicationController
       @projects = Project.order(:priority, :id).all
       @projects = @projects.paginate(page: @page)
 
-      unless @projects.where(id: project_id).present?
-        @page = @page - 1
+      if Project.find(project_id).priority % WillPaginate.per_page == 1
+        @page = @page + 1
       end
     else
       flash[:error] = "Can't Go Down More"
