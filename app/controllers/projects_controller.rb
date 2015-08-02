@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   respond_to :html
 
   def index
-    if params[:all]
+    if params[:all] == 'true'
       @projects = Project.order(:priority, :id)
     else
       @projects = Project.where(active: true).order(:priority, :id)
@@ -155,6 +155,7 @@ class ProjectsController < ApplicationController
     @projects = Project.order(:priority, :id).all
     @projects = @projects.paginate(page: params[:page_number].to_i)
     @page =  page_number
+    @all = params[:all]
 
     respond_to do |format|
       format.js
@@ -170,6 +171,7 @@ class ProjectsController < ApplicationController
     @page = params[:page].present? ? params[:page].to_i : 1
     @projects = Project.order(:priority, :id).all
     @projects = @projects.paginate(page: @page)
+    @all = params[:all]
 
     if Project.find(project_id).priority % WillPaginate.per_page == 0
       @page = @page - 1
@@ -190,6 +192,7 @@ class ProjectsController < ApplicationController
       @page = params[:page].present? ? params[:page].to_i : 1
       @projects = Project.order(:priority, :id).all
       @projects = @projects.paginate(page: @page)
+      @all = params[:all]
 
       if Project.find(project_id).priority % WillPaginate.per_page == 1
         @page = @page + 1

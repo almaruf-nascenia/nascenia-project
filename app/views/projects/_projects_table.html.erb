@@ -13,8 +13,8 @@
 
   <!--<tbody class="sortable projects_table">-->
   <tbody class="<%= (current_user.super_admin? || current_user.admin?) ? 'sortable projects_table' : '' %> ">
-  <% projects.each do |project| %>
-      <tr project_id="<%= project.id %>">
+  <% projects.each_with_index do |project, index| %>
+      <tr project_id="<%= project.id %>" >
         <td><%= link_to project.name, project %> <%= project.active? ? ' ' : '(Inactive)' %></td>
         <td><%= project.title %></td>
         <td><%= truncate(project.description) %></td>
@@ -30,11 +30,11 @@
           <% end %>
           <span style="margin: 5px">&nbsp;</span>
           <% if can? :update, project %>
-              <% if project.priority != 1%>
-                  <span class="up_arrow"><%= image_tag('up_arrow.png', size: "16") %></span>
+              <% unless (( params[:page].nil? || params[:page] == '1' ) && index == 0 ) %>
+                  <span class="up_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('up_arrow.png', size: "16") %></span>
               <% end %>
-              <% unless projects.count == project.priority%>
-                <span class="down_arrow"><%= image_tag('down_arrow.png', size: "16") %></span>
+              <% unless projects.total_pages == projects.current_page && index == projects.size - 1 %>
+                <span class="down_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('down_arrow.png', size: "16") %></span>
               <% end %>
           <% end %>
         </td>
@@ -62,7 +62,8 @@
                     dataType: 'script',
                     data: {
                         project_ids: project_ids,
-                        page_number: page_number
+                        page_number: page_number,
+                        all: <%= params[:all].present? && params[:all] == 'true' %>
                     }
                 });
             }
@@ -77,7 +78,8 @@
                 dataType: 'script',
                 data: {
                     id: project_id,
-                    page: page_number
+                    page: page_number,
+                    all: <%= params[:all].present? && params[:all] == 'true' %>
                 }
             });
         });
@@ -91,7 +93,8 @@
                 dataType: 'script',
                 data: {
                     id: project_id,
-                    page: page_number
+                    page: page_number,
+                    all: <%= params[:all].present? && params[:all] == 'true' %>
                 }
             });
         });
