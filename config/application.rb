@@ -7,7 +7,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 #set per page row for pagination
-WillPaginate.per_page = 2
+WillPaginate.per_page = 10
 
 module Nascenia
   class Application < Rails::Application
