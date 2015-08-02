@@ -110,11 +110,15 @@ class ProjectsController < ApplicationController
     @project_team = ProjectTeam.new(project_team_params)
     @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
-
-    if @project_team.save
-      flash[:success] = 'New developer has been added'
+    developr = Developer.find(@project_team.developer_id)
+    if @project_team.status_date <= developr.joining_date
+      if @project_team.save
+        flash[:success] = 'New developer has been added'
+      else
+        flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+      end
     else
-      flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+      flash[:error] = "Project Assigned date must be >= developer joining date"
     end
 
     authorize! :create, @project_team
@@ -138,7 +142,7 @@ class ProjectsController < ApplicationController
     # authorize! :create, @project_team
 
     respond_to do |format|
-      format.json{ render json: { status: status }}
+      format.json { render json: {status: status} }
     end
   end
 
@@ -166,7 +170,7 @@ class ProjectsController < ApplicationController
   def update_developers_percentage
     dev_id = params[:dev_id]
     project_id = params[:id]
-    project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage] )
+    project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage])
     authorize! :create, project_team
 
     if project_team.save

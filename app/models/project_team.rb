@@ -55,7 +55,9 @@ class ProjectTeam < ActiveRecord::Base
   # ----------------------------------------------------------------------
   # == Instance methods == #
   # ----------------------------------------------------------------------
-
+  def self.get_developer_assign_date(dev_id, project_id)
+    where(developer_id: dev_id, project_id: project_id).order(:id).first.status_date
+  end
 
   private
 
