@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
-    @project.priority = Project.count + 1
+    @project.priority = Project.where(active: true).count + 1
     if @project.save
       flash[:success] = 'Project has been successfully created'
     end
@@ -58,6 +58,26 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    active_field_same_as_input = project_params[:active].present? && project_params[:active] == '1'
+
+    if @project.active != active_field_same_as_input
+        if project_params[:active] == '1'
+          projects_to_be_updated = Project.where("priority < ? AND active = ? ", @project.priority, false)
+          projects_to_be_updated.each do |project|
+            Project.increment_counter(:priority, project.id)
+          end
+          new_priority = Project.where(active: true).count + 1
+          @project.priority = new_priority
+        elsif project_params[:active] == '0'
+          projects_to_be_updated = Project.where("priority > ? AND active = ? ", @project.priority, true)
+          projects_to_be_updated.each do |project|
+            Project.decrement_counter(:priority, project.id)
+          end
+          new_priority = Project.where(active: true).count
+          @project.priority = new_priority
+        end
+    end
+
     if @project.update(project_params)
       flash[:success] = 'Project information has been updated'
     end
@@ -67,7 +87,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    projects_to_be_updated = Project.where("priority > ? ", @project.priority)
+    projects_to_be_updated = Project.where("priority > ? AND active = ? ", @project.priority, true)
     projects_to_be_updated.each do |project|
       Project.decrement_counter(:priority, project.id)
     end

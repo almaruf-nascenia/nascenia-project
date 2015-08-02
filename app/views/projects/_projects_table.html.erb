@@ -30,11 +30,11 @@
           <% end %>
           <span style="margin: 5px">&nbsp;</span>
           <% if can? :update, project %>
-              <% unless (( params[:page].nil? || params[:page] == '1' ) && index == 0 ) %>
-                  <span class="up_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('up_arrow.png', size: "16") %></span>
-              <% end %>
-              <% unless projects.total_pages == projects.current_page && index == projects.size - 1 %>
-                <span class="down_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('down_arrow.png', size: "16") %></span>
+                  <% unless (( params[:page].nil? || params[:page] == '1' ) && index == 0 ) %>
+                      <span class="up_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('up_arrow.png', size: "16") %></span>
+                  <% end %>
+                  <% unless projects.total_pages == projects.current_page && index == projects.size - 1 %>
+                      <span class="down_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('down_arrow.png', size: "16") %></span>
               <% end %>
           <% end %>
         </td>
