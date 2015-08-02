@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
     else
       @projects = Project.where(active: true).order(:priority, :id)
     end
+    @last_page = (Project.where(active: true).count.to_f / WillPaginate.per_page).ceil
     @projects = @projects.paginate(page: params[:page])
   end
 

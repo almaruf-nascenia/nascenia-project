@@ -14,7 +14,7 @@
   <!--<tbody class="sortable projects_table">-->
   <tbody class="<%= (current_user.super_admin? || current_user.admin?) ? 'sortable projects_table' : '' %> ">
   <% projects.each_with_index do |project, index| %>
-      <tr project_id="<%= project.id %>" >
+      <tr project_id="<%= project.id %>" class="<%= project.active? ? 'active-project' : 'inactive-project' %>" >
         <td><%= link_to project.name, project %> <%= project.active? ? ' ' : '(Inactive)' %></td>
         <td><%= project.title %></td>
         <td><%= truncate(project.description) %></td>
@@ -30,11 +30,9 @@
           <% end %>
           <span style="margin: 5px">&nbsp;</span>
           <% if can? :update, project %>
-                  <% unless (( params[:page].nil? || params[:page] == '1' ) && index == 0 ) %>
-                      <span class="up_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('up_arrow.png', size: "16") %></span>
-                  <% end %>
-                  <% unless projects.total_pages == projects.current_page && index == projects.size - 1 %>
-                      <span class="down_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('down_arrow.png', size: "16") %></span>
+              <% if project.active? %>
+                  <span class="up_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('up_arrow.png', size: "16") %></span>
+                  <span class="down_arrow" data-all="<%= params[:all].present? ? 'true' : 'false' %>" ><%= image_tag('down_arrow.png', size: "16") %></span>
               <% end %>
           <% end %>
         </td>
@@ -51,7 +49,16 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+
+        <% if @last_page == projects.current_page %>
+            $(".active-project:last .down_arrow").remove();
+        <% end %>
+        <% if ( params[:page].nil? || params[:page] == '1' )  %>
+            $(".active-project:first .up_arrow").remove();
+        <% end %>
+
         $(".projects_table").sortable({
+            items: 'tr.active-project',
             stop: function() {
                 var project_ids =  $(this).sortable('toArray', { attribute: 'project_id' });
                 var page_number = <%= params[:page].present? ? params[:page] : 1 %>;
@@ -99,4 +106,4 @@
             });
         });
     });
-</script>
+      </script>
