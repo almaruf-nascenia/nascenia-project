@@ -1,9 +1,9 @@
-<h1>Developer Engagement Report on Date <b><%= @filter_date.present? ? @filter_date : 'Empty select date' %></b></h1>
-<br/>
-
+<div class="panel panel-info">
+  <div class="panel-heading" style="font-size: 18px">Developers Engagement Report on Date: <b><%= @filter_date.present? ? @filter_date : 'Empty select date' %></div>
+</div>
 <div>
   <form path="<%= engagement_report_developers_path %>">
-  <input type='text' placeholder='select date' id='date-selector' name="filter_date" value="<%= @filter_date.present? ? @filter_date : '' %>" >
+  <input type='text' placeholder='select date' id='date-selector' name="filter_date" class="developer_search_box" value="<%= @filter_date.present? ? @filter_date : '' %>" >
   <span>
     <button type="submit" class="filter-date" id="submit-filter-date">Filter</button>
   </span>
