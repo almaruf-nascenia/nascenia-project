@@ -1,83 +1,94 @@
 <p id="notice"><%= notice %></p>
+<div class="panel panel-info">
+  <div class="panel-heading">Developer Details</div>
+  <div class="panel-body">
+    <p>
+      <strong>Developer Name:</strong>
+      <%= @developer.name %>
+    </p>
 
-<p>
-  <strong>Developer Name:</strong>
-  <%= @developer.name %>
-</p>
+    <p>
+      <strong>Designation:</strong>
+      <%= @developer.designation %>
+    </p>
 
-<p>
-  <strong>Designation:</strong>
-  <%= @developer.designation %>
-</p>
+    <p>
+      <strong>Joining date:</strong>
+      <%= @developer.joining_date %>
+    </p>
 
-<p>
-  <strong>Joining date:</strong>
-  <%= @developer.joining_date %>
-</p>
+    <p>
+      <strong>Previous job exp (in years):</strong>
+      <%= @developer.previous_job_exp %>
+    </p>
 
-<p>
-  <strong>Previous job exp (in years):</strong>
-  <%= @developer.previous_job_exp %>
-</p>
+    <p>
+      <strong>Developer Status:</strong>
+      <%= @developer.active? ? 'Active' : 'Inactive' %>
+    </p>
 
-<p>
-  <strong>Developer Status:</strong>
-  <%= @developer.active? ? 'Active' : 'Inactive' %>
-</p>
+    <div class="input-group">
+      <form action="">
+        <input type="text" name="assign_date" placeholder="Select date " class="search_dev developer_search_box" value="<%= params[:assign_date].present? ? params[:assign_date] : '' %>">
+        <span ><button type="submit" class="btn btn-primary">Search!</button></span>
+      </form>
+    </div>
+  </div>
 
-<!--<#%= link_to 'Edit', edit_developer_path(@developer) %> -->
-<!--<#%= link_to 'Back', developers_path %>-->
 
-<div class="input-group">
-  <form action="">
-    <input type="text" name="assign_date" placeholder="Select date " class="search_dev" value="<%= params[:assign_date].present? ? params[:assign_date] : '' %>">
-    <span >
-      <button type="submit" class="btn btn-default">Search!</button>
-    </span>
-  </form>
-</div>
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th> Project Name </th>
-    <th> Action </th>
-    <th> Status Date </th>
-    <th> Participation Percentage </th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @teams.each do |team| %>
-      <%
-         if team.status == 0
-           status = 'Remove'
-           design = 'label label-danger'
-         elsif team.status == 1
-           status = 'Assign'
-           design = 'label label-success'
-         else
-           status = 'Re-assign'
-           design = 'label label-primary'
-         end
-      %>
+<div class="panel-body">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th> Project Name </th>
+      <th> Action </th>
+      <th> Status Date </th>
+      <th> Participation Percentage </th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @teams.each do |team| %>
+        <%
+           if team.status == 0
+             status = 'Remove'
+             design = 'label label-danger'
+           elsif team.status == 1
+             status = 'Assign'
+             design = 'label label-success'
+           else
+             status = 'Re-assign'
+             design = 'label label-primary'
+           end
+        %>
         <td><%= team.project.name %></td>
         <td><span class="<%= design %>"><%= status %></span></td>
-        <td><%= team.participation_percentage.to_s + '%' %></td>
+        <td><%= team.participation_percentage.to_s + '%' %>
+          <% if team.status == 2 %>
+              <span class="text-line-through">
+                    <span class="small">(<%= team.previous_participation_percentage.to_s + '%' %>)</span>
+              </span>
+          <% end %>
+        </td>
         <td><%= team.status_date %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-<div>
-  <%= link_to 'back', developers_path %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <div>
+    <div>
+      <%= link_to 'back', developers_path %>
+    </div>
+    <div class="pagination_table">
+      <%= will_paginate @teams, renderer: BootstrapPagination::Rails %>
+    </div>
+  </div>
 </div>
-<div class="pagination_table">
-  <%= will_paginate @teams, renderer: BootstrapPagination::Rails %>
 </div>
 
-<script type="text/javascript">
-  $(function() {
-    $('.search_dev').datepicker({
-      dateFormat: 'yy-mm-dd'
-    })
-  });
-</script>
+  <script type="text/javascript">
+      $(function() {
+          $('.search_dev').datepicker({
+              dateFormat: 'yy-mm-dd'
+          })
+      });
+  </script>

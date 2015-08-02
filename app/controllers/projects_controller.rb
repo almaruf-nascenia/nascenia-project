@@ -62,21 +62,21 @@ class ProjectsController < ApplicationController
     active_field_same_as_input = project_params[:active].present? && project_params[:active] == '1'
 
     if @project.active != active_field_same_as_input
-        if project_params[:active] == '1'
-          projects_to_be_updated = Project.where("priority < ? AND active = ? ", @project.priority, false)
-          projects_to_be_updated.each do |project|
-            Project.increment_counter(:priority, project.id)
-          end
-          new_priority = Project.where(active: true).count + 1
-          @project.priority = new_priority
-        elsif project_params[:active] == '0'
-          projects_to_be_updated = Project.where("priority > ? AND active = ? ", @project.priority, true)
-          projects_to_be_updated.each do |project|
-            Project.decrement_counter(:priority, project.id)
-          end
-          new_priority = Project.where(active: true).count
-          @project.priority = new_priority
+      if project_params[:active] == '1'
+        projects_to_be_updated = Project.where("priority < ? AND active = ? ", @project.priority, false)
+        projects_to_be_updated.each do |project|
+          Project.increment_counter(:priority, project.id)
         end
+        new_priority = Project.where(active: true).count + 1
+        @project.priority = new_priority
+      elsif project_params[:active] == '0'
+        projects_to_be_updated = Project.where("priority > ? AND active = ? ", @project.priority, true)
+        projects_to_be_updated.each do |project|
+          Project.decrement_counter(:priority, project.id)
+        end
+        new_priority = Project.where(active: true).count
+        @project.priority = new_priority
+      end
     end
 
     if @project.update(project_params)
@@ -111,7 +111,7 @@ class ProjectsController < ApplicationController
     @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
     developr = Developer.find(@project_team.developer_id)
-    if @project_team.status_date <= developr.joining_date
+    if @project_team.status_date >= developr.joining_date
       if @project_team.save
         flash[:success] = 'New developer has been added'
       else
@@ -170,13 +170,17 @@ class ProjectsController < ApplicationController
   def update_developers_percentage
     dev_id = params[:dev_id]
     project_id = params[:id]
+    developer = Developer.find(dev_id)
     project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage])
     authorize! :create, project_team
-
-    if project_team.save
-      flash[:success] = 'Developer Percentage has been Updated'
+    if project_team.status_date >= developer.joining_date
+      if project_team.save
+        flash[:success] = 'Developer Percentage has been Updated'
+      else
+        flash[:error] = 'Developer Percentage Update fail'
+      end
     else
-      flash[:error] = 'Developer Percentage Update fail'
+      flash[:error] = "Project Assigned date must be greater or equal than developer joining date"
     end
   end
 

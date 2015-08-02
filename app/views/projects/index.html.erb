@@ -1,5 +1,6 @@
-<h1>Project List</h1>
-<br/>
+<div class="panel panel-info">
+  <div class="panel-heading" style="font-size: 18px">Project Lists</div>
+</div>
 <% if can? :create, @projects %>
     <%= link_to 'New Project', new_project_path, :class => 'btn btn-primary' %>
     <% if params[:all].present? && params[:all] == 'true' %>

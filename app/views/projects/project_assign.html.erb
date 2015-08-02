@@ -20,7 +20,7 @@
           <tr>
             <td><%= link_to project.name, project %> </td>
             <td>
-              <ul class="token-input-list-facebook ">
+              <ul class="token-input-list-facebook " style="font-family: arial, sans-serif">
                 <% ProjectTeam.project_recent_data(project.id).each do |team| %>
                     <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
                       <p class="<%= team.developer.current_work_load > 100 ? 'text-warning' : '' %>"> <%= team.developer.name %> <%= team.participation_percentage %>% </p>
