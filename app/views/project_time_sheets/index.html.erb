@@ -1,5 +1,6 @@
-<h1> Time Sheets for Project <%= @project.name %></h1>
-<br/>
+<div class="panel panel-info">
+  <div class="panel-heading" style="font-size: 22px">Time Sheets for Project: <b><%= @project.name %></b></div>
+</div>
 <% if can? :create, @project %>
     <%= link_to 'Add time sheet', new_project_project_time_sheet_path, html_options = { class: 'btn btn-success' } %>
 <% end %>
@@ -15,7 +16,6 @@
       <th colspan="3"></th>
     </tr>
   </thead>
-
   <tbody>
     <% @project_time_sheets.each do |project_time_sheet| %>
       <tr>
