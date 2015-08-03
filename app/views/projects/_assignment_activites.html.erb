@@ -32,9 +32,13 @@
           <% end %>
         </td>
         <td><%= project_team.status_date %></td>
-        <% if can? :edit, project_team %>
-            <td><%= link_to 'edit', 'javascript:;', html_options = {class: 'label label-primary edit-activity', data: {status: project_team.status, project_id: project_team.project_id, id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s}} %></td>
-        <% end %>
+        <td>
+          <% if can? :edit, project_team %>
+              <% if project_team.developer.active %>
+                  <%= link_to 'edit', 'javascript:;', html_options = {class: 'label label-primary edit-activity', data: {status: project_team.status, project_id: project_team.project_id, id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s}} %>
+              <% end %>
+          <% end %>
+        </td>
       </tr>
   <% end %>
   </tbody>

@@ -25,7 +25,9 @@
                     <li class="token-input-token-facebook" id="dev-<%= team.developer.id %>">
                       <p class="<%= team.developer.current_work_load > 100 ? 'text-warning text-medium' : 'text-medium' %> <%= team.developer.active ? '' : 'inactive-user'%>"> <%= team.developer.name %> <%= team.participation_percentage.to_i %>% </p>
                       <% if can? :create, :team %>
-                          <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>
+                          <% if team.developer.active %>
+                              <span class="token-input-delete-token-facebook edit-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>">Edit</span>
+                          <% end %>
                           <span class="token-input-delete-token-facebook remove-developer" data-project-id="<%= project.id %>" data-dev-id="<%= team.developer.id %>" data-developer-name="<%= team.developer.name %>" data-project-name="<%= project.name %>">×</span>
                       <% end %>
                     </li>
@@ -91,7 +93,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               <button type="button" class="btn btn-success" onclick="createTeam()">
-                 Add
+                Add
               </button>
             </div>
         <% end %>
@@ -167,7 +169,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button id="submit-edit-percentage" type="button" class="btn btn-success">
-             Change
+            Change
           </button>
         </div>
 
