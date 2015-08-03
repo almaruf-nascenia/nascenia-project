@@ -3,9 +3,9 @@
 </div>
 <div>
   <form path="<%= engagement_report_developers_path %>">
-  <input type='text' placeholder='select date' id='date-selector' name="filter_date" class="developer_search_box" value="<%= @filter_date.present? ? @filter_date : '' %>" >
+  <input type='text' placeholder='select date' id='date-selector' name="filter_date" class=" search_dev developer_search_box" value="<%= @filter_date.present? ? @filter_date : '' %>" >
   <span>
-    <button type="submit" class="filter-date" id="submit-filter-date">Filter</button>
+    <button type="submit" class="filter-date btn btn-primary" id="submit-filter-date">Filter</button>
   </span>
   </form>
 </div>
