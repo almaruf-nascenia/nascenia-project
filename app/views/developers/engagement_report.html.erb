@@ -39,7 +39,7 @@
           <ul class="token-input-list-facebook ">
             <% active_projects.each  do |project_team| %>
                 <li class="token-input-token-facebook" >
-                  <p> <%= project_team.project.name %> <%= project_team.participation_percentage %></p>
+                  <p> <%= project_team.project.name %> <%= project_team.participation_percentage.to_i.to_s + '%' %></p>
                 </li>
             <% end %>
           </ul>
