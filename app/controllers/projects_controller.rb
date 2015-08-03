@@ -163,7 +163,7 @@ class ProjectsController < ApplicationController
   def dev_list
     project_id = params[:id]
     assigned_dev_id_list = ProjectTeam.project_recent_data(project_id).pluck(:developer_id)
-    @developer_list = Developer.where.not(id: assigned_dev_id_list)
+    @developer_list = Developer.active.where.not(id: assigned_dev_id_list)
 
     respond_to do |format|
       format.js
