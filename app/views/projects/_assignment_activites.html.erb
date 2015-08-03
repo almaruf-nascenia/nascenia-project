@@ -32,7 +32,9 @@
           <% end %>
         </td>
         <td><%= project_team.status_date %></td>
-        <td><%= link_to 'edit', 'javascript:;', html_options = { class: 'label label-primary edit-activity', data: { project_id: project_team.project_id,id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s } } %></td>
+        <% if can? :edit, project_team %>
+            <td><%= link_to 'edit', 'javascript:;', html_options = {class: 'label label-primary edit-activity', data: {status: project_team.status, project_id: project_team.project_id, id: project_team.id, percentage: project_team.participation_percentage, date: project_team.status_date.to_s}} %></td>
+        <% end %>
       </tr>
   <% end %>
   </tbody>
@@ -89,45 +91,46 @@
 <!-- Javascript for modal show -->
 
 <script>
-  $(function(){
-      $("#editStartDate").datepicker({
-          dateFormat: 'yy-mm-dd'
-      });
+    $(function () {
+        $("#editStartDate").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
 
 //      show modal
-      $('.edit-activity').click(function () {
+        $('.edit-activity').click(function () {
 //          $('.remove-developer-modal-title').html('Are you sure to <span class="text-danger"> remove</span> ' + $(this).data('developer-name') + ' from ' + $(this).data('project-name') + '?');
-          $("#edit_developers_percentage").modal('show');
-          var element = $(this);
-          var date = element.data('date');
-          var percentage = element.data('percentage');
-          var projectId = element.data('project-id');
-          var id = element.data('id');
+            $("#edit_developers_percentage").modal('show');
+            var element = $(this);
+            var date = element.data('date');
+            var percentage = element.data('percentage');
+            var projectId = element.data('project-id');
+            var id = element.data('id');
+            var status = element.data('status');
 
-          $('#editPercentage').val(percentage);
-          $('#editStartDate').val(date);
-          console.log('log of javascript ' + element);
+            $('#editPercentage').val(percentage);
+            $('#editStartDate').val(date);
+            console.log('log of javascript ' + element);
 
-          $('#submit-edit-percentage').click(function () {
-              var date = $('#editStartDate').val();
-              var percentage = $('#editPercentage').val();
-              console.log('With in submit button date: ' +date + ' and percentage ' + percentage );
+            $('#submit-edit-percentage').click(function () {
+                var date = $('#editStartDate').val();
+                var percentage = $('#editPercentage').val();
+                console.log('With in submit button date: ' + date + ' and percentage ' + percentage);
 
-              $.ajax({
-                  url: "<%= update_project_team_projects_path %>",
-                  type: 'post',
-                  dataType: 'json',
-                  data: { project_id: projectId, date: date, id: id, percentage: percentage },
-                  success: function (res) {
-                      $("#edit_developers_percentage").modal('hide');
-                      if (res.status) {
-                          window.location.href = '/projects/' + res.status +'/team_activity';
-                      }
-                  }
-              });
-          });
+                $.ajax({
+                    url: "<%= update_project_team_projects_path %>",
+                    type: 'post',
+                    dataType: 'json',
+                    data: { project_id: projectId, date: date, id: id, percentage: percentage, status: status },
+                    success: function (res) {
+                        $("#edit_developers_percentage").modal('hide');
+                        if (res.status) {
+                            window.location.href = '/projects/' + res.status + '/team_activity';
+                        }
+                    }
+                });
+            });
 
-      });
+        });
 
-  });
+    });
 </script>

@@ -118,7 +118,7 @@ class ProjectsController < ApplicationController
         flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
       end
     else
-      flash[:error] = "Project Assigned date must be >= developer joining date"
+      flash[:error] = 'Project Assigned date must be greater then or equal to developer joining date'
     end
 
     authorize! :create, @project_team
@@ -131,15 +131,29 @@ class ProjectsController < ApplicationController
     @project_team.participation_percentage = params[:percentage] if params[:percentage].present?
     @project_team.status_date = params[:date] if params[:date].present?
 
-
-    if @project_team.save
-      flash[:success] = 'Assignment data updated'
+    if params[:status] == '1'
+      compare_date = @project_team.developer.joining_date
+      error_message = 'Assigned date must be greater that or equal to developer joining date'
+    elsif params[:status] == '2'
+      compare_date = ProjectTeam.get_developer_assign_date(@project_team.developer_id, @project_team.project_id)
+      error_message = 'Re-assigned date must be greater that or equal to assigned date'
     else
-      flash[:error] = 'Assignment data updated'
+      compare_date = ProjectTeam.get_developer_assign_date(@project_team.developer_id, @project_team.project_id)
+      error_message = 'Remove date must be greater that or equal to assigned date'
     end
 
-    status = params[:project_id]
-    # authorize! :create, @project_team
+    status = @project_team.project_id
+    if @project_team.status_date >= compare_date
+      if @project_team.save
+        flash[:success] = 'Assignment data updated success!'
+      else
+        flash[:error] = 'Assignment data updated fail!'
+      end
+    else
+      flash[:error] = error_message
+    end
+
+     authorize! :create, @project_team
 
     respond_to do |format|
       format.json { render json: {status: status} }
@@ -173,14 +187,15 @@ class ProjectsController < ApplicationController
     developer = Developer.find(dev_id)
     project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage])
     authorize! :create, project_team
-    if project_team.status_date >= developer.joining_date
+
+    if project_team.status_date >= ProjectTeam.get_developer_assign_date(dev_id, project_id)
       if project_team.save
         flash[:success] = 'Developer Percentage has been Updated'
       else
         flash[:error] = 'Developer Percentage Update fail'
       end
     else
-      flash[:error] = "Project Assigned date must be greater or equal than developer joining date"
+      flash[:error] = 'Project re-assigned date must be greater than or equal to  developer assigned date'
     end
   end
 
