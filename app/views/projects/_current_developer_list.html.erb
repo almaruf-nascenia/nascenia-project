@@ -10,8 +10,8 @@
     <% @team_members.each do |team| %>
 
         <tr>
-          <td><%= team.developer.name %> </td>
-          <td><%= team.participation_percentage %>%</td>
+          <td class="<%= team.developer.active ? '' : 'inactive-user'%>"><%= team.developer.name %> </td>
+          <td class="<%= team.developer.active ? '' : 'inactive-user'%>"><%= team.participation_percentage %>%</td>
         </tr>
     <% end %>
     </tbody>

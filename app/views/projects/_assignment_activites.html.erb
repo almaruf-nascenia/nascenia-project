@@ -22,7 +22,7 @@
          end
       %>
       <tr project="<%= project_team.id %>">
-        <td><%= project_team.developer.name %></td>
+        <td class="<%= project_team.developer.active ? '' : 'inactive-user'%>"><%= project_team.developer.name %></td>
         <td><span class="<%= design %>"><%= status %></span></td>
         <td><%= project_team.participation_percentage.to_i.to_s + '%' %>
           <% if project_team.status == 2 %>
