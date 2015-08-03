@@ -24,10 +24,10 @@
       <tr project="<%= project_team.id %>">
         <td><%= project_team.developer.name %></td>
         <td><span class="<%= design %>"><%= status %></span></td>
-        <td><%= project_team.participation_percentage.to_s + '%' %>
+        <td><%= project_team.participation_percentage.to_i.to_s + '%' %>
           <% if project_team.status == 2 %>
               <span class="text-line-through">
-                    <span class="small">(<%= project_team.previous_participation_percentage.to_s + '%' %>)</span>
+                    <span class="small">(<%= project_team.previous_participation_percentage.to_i.to_s + '%' %>)</span>
               </span>
           <% end %>
         </td>
@@ -102,7 +102,7 @@
             $("#edit_developers_percentage").modal('show');
             var element = $(this);
             var date = element.data('date');
-            var percentage = element.data('percentage');
+            var percentage = parseInt(element.data('percentage'), 10);
             var projectId = element.data('project-id');
             var id = element.data('id');
             var status = element.data('status');
