@@ -50,7 +50,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        <% if @last_page == projects.current_page %>
+        <% if projects.present? && @last_page == projects.current_page %>
             $(".active-project:last .down_arrow").remove();
         <% end %>
         <% if ( params[:page].nil? || params[:page] == '1' )  %>
