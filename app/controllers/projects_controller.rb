@@ -123,7 +123,7 @@ class ProjectsController < ApplicationController
 
     authorize! :create, @project_team
 
-    redirect_to project_assign_path
+    redirect_to project_assign_path(page: params[:page])
   end
 
   def update_project_team
