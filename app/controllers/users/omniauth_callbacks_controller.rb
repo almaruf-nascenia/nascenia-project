@@ -15,7 +15,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         redirect_to new_user_registration_url
       end
     else
-      flash[:error] = 'Only Nascenia Employees are allowed to use this application'
+      flash[:error] = 'Only Nascenia employees are allowed to use this application'
       render 'devise/sessions/new'
     end
   end
