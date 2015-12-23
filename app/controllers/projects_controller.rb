@@ -102,7 +102,7 @@ class ProjectsController < ApplicationController
   def project_assign
     @projects = Project.where(active: true).order(:priority).all
     # respond_with(@projects)
-    @projects = @projects.paginate(:page => params[:page])
+    #@projects = @projects.paginate(:page => params[:page])
 
   end
 
@@ -110,16 +110,26 @@ class ProjectsController < ApplicationController
     @project_team = ProjectTeam.new(project_team_params)
     @project_team.status = ProjectTeam::STATUS[:assigned]
     @project_team.most_recent_data = true
-    developr = Developer.find(@project_team.developer_id)
-    if @project_team.status_date >= developr.joining_date
-      if @project_team.save
-        flash[:success] = 'New developer has been added'
+
+    if @project_team.developer_id.present?
+      developr = Developer.find(@project_team.developer_id)
+        if developr.joining_date.present?
+          if @project_team.status_date >= developr.joining_date
+            if @project_team.save
+              flash[:success] = 'New developer has been added'
+            else
+              flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+            end
+          else
+            flash[:error] = 'Unable to add the developer. Project assigned date must be greater then or equal to developer joining date'
+          end
       else
-        flash[:error] = "Unable to add the developer without proper information #{@project_team.errors}"
+        flash[:error] = 'Unable to add the developer. Please select a start date'
       end
     else
-      flash[:error] = 'Project Assigned date must be greater then or equal to developer joining date'
+      flash[:error] = 'Unable to add a developer. No developer available to add to this project'
     end
+
 
     authorize! :create, @project_team
 
@@ -188,15 +198,21 @@ class ProjectsController < ApplicationController
     project_team = ProjectTeam.new(project_id: project_id, developer_id: dev_id, participation_percentage: params[:developer_percentage], status: ProjectTeam::STATUS[:re_assigned], status_date: params[:edit_date], previous_participation_percentage: params[:previous_percentage])
     authorize! :create, project_team
 
-    if project_team.status_date >= ProjectTeam.get_developer_assign_date(dev_id, project_id)
-      if project_team.save
-        flash[:success] = 'Developer Percentage has been Updated'
+    if project_team.status_date.present?
+      if project_team.status_date >= ProjectTeam.get_developer_assign_date(dev_id, project_id)
+        if project_team.save
+          flash[:success] = 'Developer Percentage has been Updated'
+        else
+          flash[:error] = 'Developer Percentage Update fail'
+        end
       else
-        flash[:error] = 'Developer Percentage Update fail'
+        flash[:error] = 'Project re-assigned date must be greater than or equal to  developer assigned date'
       end
     else
-      flash[:error] = 'Project re-assigned date must be greater than or equal to  developer assigned date'
+      flash[:error] = 'Developer Start Date Update fail'
     end
+
+
   end
 
   def team_activity
