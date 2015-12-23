@@ -15,34 +15,36 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <% if user_signed_in? %>
-          <ul class="nav nav-tabs navbar-right header-alignment" style="border: none">
-            <li>
-              <h5 style="margin-top: 13px; margin-right: 15px"> Signed in as: <b><%= current_user.email %></b> </h5>
-            </li>
-            <% if current_user.super_admin? %>
+      <ul class="nav nav-tabs navbar-right header-alignment" style="border: none">
+          <% if user_signed_in? %>
+
                 <li>
-                  <%= link_to 'Manage Admin', manage_admin_and_users_list_admins_path %>
+                  <h5 style="margin-top: 13px; margin-right: 15px"> Signed in as: <b><%= current_user.email %></b> </h5>
                 </li>
-            <% end %>
-            <li>
-              <%= link_to 'Team assignments', project_assign_path %>
-            </li>
-            <li>
-              <%= link_to 'Projects', projects_path %>
-            </li>
-            <li>
-              <%= link_to 'Developer', developers_path %>
-            </li>
-            <li>
-              <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
-            </li>
-          </ul>
-      <% else %>
-          <li>
-            <%= link_to 'Log In', new_user_session_path, :method => :get %>
-          </li>
-      <% end %>
+                <% if current_user.super_admin? %>
+                    <li>
+                      <%= link_to 'Manage Admin', manage_admin_and_users_list_admins_path %>
+                    </li>
+                <% end %>
+                <li>
+                  <%= link_to 'Project Assign', project_assign_path %>
+                </li>
+                <li>
+                  <%= link_to 'Project', projects_path %>
+                </li>
+                <li>
+                  <%= link_to 'Developer', developers_path %>
+                </li>
+                <li>
+                  <%= link_to 'Log Out', destroy_user_session_path, :method => :delete %>
+                </li>
+              </ul>
+          <% else %>
+              <li>
+                <%= link_to 'Log In', new_user_session_path, :method => :get %>
+              </li>
+          <% end %>
+      </ul>
 
 
 

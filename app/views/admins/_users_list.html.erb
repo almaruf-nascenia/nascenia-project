@@ -12,7 +12,7 @@
         <tr class='user_<%= user.id %>' data-id="<%= user.id %>">
           <td><%= user.super_admin? ? user.email + ' (Super Admin)' : user.email %> </td>
           <% unless user.super_admin? %>
-              <td><%= link_to 'Upgrade to Admin', make_user_admin_admin_path(id: user.id), data: {confirm: 'Are you sure to upgrade into Admin ?'}, remote: true %> </td>
+              <td><%= link_to 'Upgrade to admin', make_user_admin_admin_path(id: user.id), data: {confirm: 'Are you sure to upgrade into Admin ?'}, remote: true %> </td>
           <% else %>
               <td></td>
           <% end %>

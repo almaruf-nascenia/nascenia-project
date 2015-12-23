@@ -1,5 +1,5 @@
 <div class="panel-body">
-  <%= link_to 'Add Admin', add_admin_form_admins_path, html_options ={class: 'btn btn-success'} %>
+
   <table class="table table-striped">
     <thead>
     <tr>
@@ -21,7 +21,7 @@
     <% end %>
     </tbody>
   </table>
-
+  <%= link_to 'Add Admin', add_admin_form_admins_path, html_options ={class: 'btn btn-primary'} %>
   <div class="pagination_table">
     <%= will_paginate admins, renderer: BootstrapPagination::Rails, :param_name => 'admin_pagination', :params => {:tab_name => "admins_list"} %>
   </div>
