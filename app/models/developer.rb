@@ -31,9 +31,9 @@ class Developer < ActiveRecord::Base
   # == Validations == #
   # ----------------------------------------------------------------------
 
-  validates :previous_job_exp, presence: true
+  validates :previous_job_exp, :name, :designation, :joining_date, presence: true
 
-  # ----------------------------------------------------------------------
+  # -------------------------------------------,---------------------------
   # == Callbacks == #
   # ----------------------------------------------------------------------
 
