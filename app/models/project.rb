@@ -32,7 +32,7 @@ class Project < ActiveRecord::Base
   # ----------------------------------------------------------------------
 
   validates :name, presence: true, uniqueness: true
-
+  validates :title, presence: true
 
   # ----------------------------------------------------------------------
   # == Callbacks == #

@@ -19,10 +19,10 @@ class AdminsController < ApplicationController
     @admins = User.where(admin: true)
     @admins = @admins.paginate(:page => params[:admin_pagination])
 
-
     respond_to do |format|
       format.js {}
     end
+
   end
 
   def remove_user_from_admin
@@ -46,6 +46,7 @@ class AdminsController < ApplicationController
 
 
     if @admin.save
+      flash[:success] = 'Admin successfully added'
       redirect_to manage_admin_and_users_list_admins_path
     else
         render 'add_admin_form'
