@@ -5,6 +5,9 @@ class ProjectsController < ApplicationController
   skip_before_filter :check_super_admin
   respond_to :html
 
+  ##Callback for selecting results per page
+  before_action :get_per_page, only: [:index, :project_assign]
+
   def index
     if params[:all] == 'true'
       @projects = Project.order(:priority, :id)
@@ -12,7 +15,13 @@ class ProjectsController < ApplicationController
       @projects = Project.where(active: true).order(:priority, :id)
     end
     @last_page = (Project.where(active: true).count.to_f / WillPaginate.per_page).ceil
-    @projects = @projects.paginate(page: params[:page])
+    #@projects = @projects.paginate(page: params[:page])
+    ##Paginating project page
+    if @per_page == 'All'
+      @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
+    else
+      @projects = @projects.paginate(:per_page => @per_page, :page => params[:page])
+    end
   end
 
   def show
@@ -101,8 +110,24 @@ class ProjectsController < ApplicationController
 
   def project_assign
     @projects = Project.where(active: true).order(:priority).all
-    # respond_with(@projects)
-    #@projects = @projects.paginate(:page => params[:page])
+
+    ##Paginating Projects
+
+    ##Making sure params[:page] doesn't have a null or invalid value
+    ##If this error checking isn't taken care of, adding developers to a project raises an error
+    begin
+      params[:page] = Integer(params[:page]) unless params[:page].nil?
+    rescue
+      # ignore conversion errors
+      params[:page] = 1
+    end
+
+
+    if @per_page == 'All'
+      @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
+    else
+      @projects = @projects.paginate(:per_page => @per_page, :page => params[:page])
+    end
 
   end
 
@@ -298,4 +323,10 @@ class ProjectsController < ApplicationController
   def project_team_params
     params.permit(:project_id, :developer_id, :participation_percentage, :status_date)
   end
+
+  def get_per_page
+
+    @per_page = params[:per_page] || 20
+  end
+
 end
