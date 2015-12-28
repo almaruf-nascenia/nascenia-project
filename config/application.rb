@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-#set per page row for pagination
+#SET per page default for will_paginate
 WillPaginate.per_page = 10
 
 module Nascenia

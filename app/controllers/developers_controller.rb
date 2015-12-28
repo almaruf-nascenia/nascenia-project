@@ -11,16 +11,13 @@ class DevelopersController < ApplicationController
       @developers = Developer.where(active: true).all
     end
 
-    #@developers = @developers.paginate(:page => params[:page])
     ##Paginating Developers
-    @per_page = params[:per_page] || 20
+    @per_page = params[:per_page] || 10
     if params[:per_page] == 'All'
       @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
     else
       @developers = @developers.paginate(:per_page => @per_page, :page => params[:page])
     end
-
-
 
   end
 
