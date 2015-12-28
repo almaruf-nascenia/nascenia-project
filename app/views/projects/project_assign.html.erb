@@ -44,13 +44,19 @@
       </tbody>
     </table>
 
-    <%# Adding Dropdown to take input for results per page %>
-    <%= render 'layouts/results_per_page_dropdown' %>
 
-    <div class="pagination_table">
-      <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
-    </div>
   </div>
+
+</div>
+
+<div class="space"></div>
+<%# Adding Dropdown to take input for results per page %>
+<div class="results_per_page_team_assignment">
+  <%= render 'layouts/results_per_page_dropdown' %>
+</div>
+
+<div class="pagination_table">
+  <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
 </div>
 
 <div id="addDeveloperDialog" class="modal fade" data-backdrop="static">

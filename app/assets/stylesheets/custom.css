@@ -91,3 +91,25 @@
     text-decoration: line-through;
     color: #9d9d9d;
 }
+
+.results_per_page{
+
+    position: absolute;
+    bottom: 25px;
+    left: 35px;
+}
+
+.pagination_table, .results_per_page{
+    display: inline;
+}
+
+.space {
+    height: 50px;
+}
+
+.results_per_page_team_assignment{
+
+    position: absolute;
+    bottom: 80px;
+    left: 35px;
+}

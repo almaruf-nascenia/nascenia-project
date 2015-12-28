@@ -1,4 +1,4 @@
-<div class="panel panel-info">
+<div class="panel panel-info" xmlns="http://www.w3.org/1999/html">
   <div class="panel-heading" style="font-size: 18px">Developers List</div>
 </div>
 <% if can? :create, @developers %>
@@ -12,43 +12,51 @@
 <% end %>
 <br/>
 <br/>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Developer Name</th>
-      <th>Designation</th>
-      <th>Joining date</th>
-      <th>Previous job experience</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @developers.each do |developer| %>
+<div class="panel-body">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= link_to developer.name, developer %> <%= developer.active? ? ' ' : '(Inactive)' %></td>
-        <td><%= developer.designation %></td>
-        <td><%= developer.joining_date %></td>
-        <td><%= developer.previous_job_exp %></td>
-        <% if can? :update, developer %>
-        <td>
-          <span><%= link_to 'Edit', edit_developer_path(developer), html_options = { class: 'label label-primary'} %></span>
-          <span style="margin: 10px">&nbsp;</span>
-          <span><%= link_to 'Delete', developer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'label label-danger' %></span>
-        </td>
-        <% end %>
+        <th>Developer Name</th>
+        <th>Designation</th>
+        <th>Joining date</th>
+        <th>Previous job experience</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
+    <tbody>
+      <% @developers.each do |developer| %>
+        <tr>
+          <td><%= link_to developer.name, developer %> <%= developer.active? ? ' ' : '(Inactive)' %></td>
+          <td><%= developer.designation %></td>
+          <td><%= developer.joining_date %></td>
+          <td><%= developer.previous_job_exp %></td>
+          <% if can? :update, developer %>
+          <td>
+            <span><%= link_to 'Edit', edit_developer_path(developer), html_options = { class: 'label label-primary'} %></span>
+            <span style="margin: 10px">&nbsp;</span>
+            <span><%= link_to 'Delete', developer, method: :delete, data: { confirm: 'Are you sure?' }, class: 'label label-danger' %></span>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>
+
+<div class="space"></div>
 <%# Adding Dropdown to take input for results per page %>
-<%# render 'layouts/results_per_page' %>
-<%= render 'layouts/results_per_page_dropdown' %>
+
+<div class="results_per_page">
+  <%= render 'layouts/results_per_page_dropdown' %>
+</div>
 
 <div class="pagination_table">
   <%= will_paginate @projects, renderer: BootstrapPagination::Rails  %>
 </div>
+
+
 <br>
 
 

@@ -41,9 +41,11 @@
   </tbody>
 </table>
 
+<div class="space"></div>
 <%# Adding dropdown for results per page selection %>
-<%= render 'layouts/results_per_page_dropdown' %>
-
+<div class="results_per_page">
+  <%= render 'layouts/results_per_page_dropdown' %>
+</div>
 
 <div class="pagination_table">
   <%= will_paginate projects, renderer: BootstrapPagination::Rails if projects.present? %>
