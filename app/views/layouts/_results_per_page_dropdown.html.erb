@@ -1,3 +1,3 @@
 <%= label_tag 'Results Per Page' %>
 <%= select_tag :per_page, options_for_select(GlobalConstants::RESULTS_PER_PAGE, params[:per_page]),
-               :onchange => "if(this.value){window.location='?per_page='+this.value;}", prompt: "---" %>
+               :onchange => "if(this.value){window.location='?per_page='+this.value;}", prompt: "Select" %>

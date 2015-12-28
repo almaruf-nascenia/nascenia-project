@@ -95,8 +95,11 @@
 .results_per_page{
 
     position: absolute;
-    bottom: 25px;
-    left: 35px;
+    bottom: 20px;
+    left: 14px;
+    border: 1px solid silver;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .pagination_table, .results_per_page{
@@ -110,6 +113,9 @@
 .results_per_page_team_assignment{
 
     position: absolute;
-    bottom: 80px;
-    left: 35px;
+    bottom: 85px;
+    left: 14px;
+    border: 1px solid silver;
+    border-radius: 5px;
+    padding: 5px;
 }
