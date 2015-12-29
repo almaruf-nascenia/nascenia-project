@@ -1,3 +1,9 @@
-<%= label_tag 'Results Per Page' %>
-<%= select_tag :per_page, options_for_select(GlobalConstants::RESULTS_PER_PAGE, params[:per_page]),
-                 :onchange => "if(this.value){window.location='?per_page='+this.value;}", class: "per_page_dropdown" %>
+<ul class="pagination pagination-sm">
+
+  <li class="disabled"><a>Per page</a></li>
+
+  <% GlobalConstants::RESULTS_PER_PAGE.collect do |option| %>
+      <li><a href="#" onclick="window.location='?per_page='+'<%= option %>'" ><%= option %></a></li>
+  <% end %>
+
+</ul>
