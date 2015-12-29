@@ -1,6 +1,6 @@
 <%# Here need a local variable projects %>
 <% projects = [] unless projects.present? %>
-
+<%= page_entries_info projects %><hr/>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -40,8 +40,6 @@
   <% end %>
   </tbody>
 </table>
-
-<%= page_entries_info projects %>
 
 <%# Checking if total count is less than 10, because pagination isn't needed in that case %>
 <% if projects.count > 10 %>

@@ -3,7 +3,7 @@
   <li class="disabled"><a>Per page</a></li>
 
   <% GlobalConstants::RESULTS_PER_PAGE.collect do |option| %>
-      <li><a href="#" onclick="window.location='?per_page='+'<%= option %>'" ><%= option %></a></li>
-  <% end %>
+      <li class="<%= "active" if option.to_s == @per_page %>" ><a href="#" onclick="window.location='?per_page='+'<%= option %>'" ><%= option %></a></li>
+  <% end.join.html_safe %>
 
 </ul>
