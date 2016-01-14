@@ -76,7 +76,7 @@
   </table>
   <div>
     <div>
-      <%= link_to 'back', developers_path %>
+      <a href="javascript:history.back()">Back</a>
     </div>
     <div class="pagination_table">
       <%= will_paginate @teams, renderer: BootstrapPagination::Rails %>

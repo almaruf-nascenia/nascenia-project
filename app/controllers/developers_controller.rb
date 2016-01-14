@@ -2,18 +2,19 @@ class DevelopersController < ApplicationController
   before_action :set_developer, only: [:show, :edit, :update, :destroy]
   skip_before_filter :check_super_admin
 
+  before_action :get_per_page, only: [:index, :engagement_report]
+
   respond_to :html
 
   def index
     if params[:all]
-      @developers = Developer.all
+      @developers = Developer.order(active: :desc)
     else
       @developers = Developer.where(active: true).all
     end
 
     ##Paginating Developers
-    @per_page = params[:per_page] || 10
-    if params[:per_page] == 'All'
+    if @per_page == 'All'
       @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
     else
       @developers = @developers.paginate(:per_page => @per_page, :page => params[:page])
@@ -101,7 +102,14 @@ class DevelopersController < ApplicationController
   def engagement_report
     @filter_date = params[:filter_date] || Time.now.strftime("%Y-%m-%d")
     @developers = Developer.all
-    @developers = @developers.paginate(:page => params[:page])
+
+    ##Paginating Developers engagement report
+    if @per_page == 'All'
+      @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
+    else
+      @developers = @developers.paginate(:per_page => @per_page, :page => params[:page])
+    end
+
   end
 
   private
@@ -112,4 +120,5 @@ class DevelopersController < ApplicationController
   def developer_params
     params.require(:developer).permit(:name, :designation, :joining_date, :previous_job_exp, :active)
   end
+
 end

@@ -10,6 +10,7 @@
   </form>
 </div>
 
+<%= page_entries_info @developers %><hr/>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -51,10 +52,23 @@
   </tbody>
 </table>
 
-<div class="pagination_table">
-  <%= will_paginate @developers, renderer: BootstrapPagination::Rails %>
-</div>
-<br>
+<%# Checking if total count is less than 10, because pagination isn't needed in that case %>
+<% if @developers.count > 10 %>
+
+    <div class="space"></div>
+
+    <%# Adding Dropdown to take input for results per page %>
+    <div class="results_per_page">
+      <%= render 'layouts/results_per_page_dropdown' %>
+    </div>
+
+    <div class="pagination_table">
+      <%= will_paginate @developers, renderer: BootstrapPagination::Rails %>
+    </div>
+    <br>
+<% end %>
+
+
 <script>
   $(function(){
       $("#date-selector").datepicker({

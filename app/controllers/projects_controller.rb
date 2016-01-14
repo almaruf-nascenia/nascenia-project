@@ -22,6 +22,7 @@ class ProjectsController < ApplicationController
     else
       @projects = @projects.paginate(:per_page => @per_page, :page => params[:page])
     end
+
   end
 
   def show
@@ -322,10 +323,6 @@ class ProjectsController < ApplicationController
 
   def project_team_params
     params.permit(:project_id, :developer_id, :participation_percentage, :status_date)
-  end
-
-  def get_per_page
-    @per_page = params[:per_page] || 10
   end
 
 end

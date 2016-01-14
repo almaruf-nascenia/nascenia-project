@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
   def check_super_admin
     redirect_to root_url, :alert => 'You are not authorized to access requested page' unless current_user && current_user.super_admin?
   end
+
+  def get_per_page
+    @per_page = params[:per_page] || 10
+  end
+
 end
