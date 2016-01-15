@@ -1,25 +1,30 @@
 <ul class="pagination pagination-sm">
 
   <li class="disabled"><a>Per page</a></li>
-
+  <%# Iterating over the GLOBAL CONSTANTS for options of results per page %>
   <% GlobalConstants::RESULTS_PER_PAGE.collect do |option| %>
       <li class="<%= "active" if option.to_s == params[:per_page] %>" >
-        <a href="#" onclick="send_parameters_and_load_page('<%= option %>')" ><%= option %></a>
+        <%# A javascript function is called on an option click for pagination optionwise %>
+        <a href="#" onclick="send_parameters_and_load_page('<%= option %>')" > <%= option %> </a>
       </li>
   <% end.join.html_safe %>
 
 </ul>
 
+<%# This function checks if all developers or all projects are selected and properly paginates them on selection %>
 <script>
   function send_parameters_and_load_page(option) {
+    //Checking if all developers are selected whether active or inactive(Not the "All" options for pagination)
     if(window.location.href.indexOf("developers?all=true") > -1) {
-      window.location.href = 'developers?all=true&per_page='+option;
+      window.location.href = 'developers?all=true&per_page=' + option;
     }
+    //Checking if all projects are selected whether active or inactive(Not the "All" options for pagination)
     else if (window.location.href.indexOf("projects?all=true") > -1){
-      window.location.href = 'projects?all=true&per_page='+option;
+      window.location.href = 'projects?all=true&per_page=' + option;
     }
+    //Normally sends the per_page parameter otherwise
     else{
-      window.location = '?per_page='+option;
+      window.location = '?per_page=' + option;
     }
   }
 </script>

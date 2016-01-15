@@ -1,23 +1,35 @@
 class DevelopersController < ApplicationController
   before_action :set_developer, only: [:show, :edit, :update, :destroy]
+
+  #DELETING THE SESSION VALUES FOR PROJECTS PAGE, SO THAT USER SEES THE
+  #DEFAULT PAGINATION OPTIONS IF HE NAVIGATES BACK
   before_action :reset_projects_session_values
+
   skip_before_filter :check_super_admin
 
   respond_to :html
 
   def index
 
+    #If all the developers including the not active developers are shown
     if params[:all]
 
       @developers = Developer.order(active: :desc)
 
+      #IF USER SELECTS A RESULT PER PAGE OPTION, THE SESSION VALUE FOR THIS IS STORED AND THE PAGE NUMBER IS RESET
       if params[:per_page]
         session[:developer_index_for_all] = params[:per_page]
+
+        #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
+        #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
+        #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
         session[:developer_index_page_number_for_all] = 1
       end
 
+      #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:developer_index_page_number_for_all] = params[:page] if params[:page]
 
+      #THE PAGINATION FOR ALL DEVELOPERS BASED ON THE SESSION VALUES
       if session[:developer_index_for_all]
         if session[:developer_index_for_all] == "All"
           @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
@@ -26,20 +38,29 @@ class DevelopersController < ApplicationController
                                              :page => session[:developer_index_page_number_for_all])
         end
       else
+        #IF THERE IS NO SESSION VALUE, THE PAGINATION IS DEFAULT TO 10
         @developers = @developers.paginate(:per_page => 10, :page => params[:page])
       end
 
+    #ONLY the active developers are shown
     else
 
       @developers = Developer.where(active: true).all
 
+      #IF USER SELECTS A RESULT PER PAGE OPTION, THE SESSION VALUE FOR THIS IS STORED AND THE PAGE NUMBER IS RESET
       if params[:per_page]
         session[:developer_index] = params[:per_page]
+
+        #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
+        #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
+        #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
         session[:developer_index_page_number] = 1
       end
 
+      #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:developer_index_page_number] = params[:page] if params[:page]
 
+      #THE PAGINATION FOR ACTIVE DEVELOPERS BASED ON THE SESSION VALUES
       if session[:developer_index]
         if session[:developer_index] == "All"
           @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
@@ -47,6 +68,7 @@ class DevelopersController < ApplicationController
           @developers = @developers.paginate(:per_page => session[:developer_index], :page => session[:developer_index_page_number])
         end
       else
+        #IF THERE IS NO SESSION VALUE, THE PAGINATION IS DEFAULT TO 10
         @developers = @developers.paginate(:per_page => 10, :page => params[:page])
       end
 
@@ -135,13 +157,20 @@ class DevelopersController < ApplicationController
     @filter_date = params[:filter_date] || Time.now.strftime("%Y-%m-%d")
     @developers = Developer.all
 
+    #PAGE PER RESULT OPTION FOR " DEVELPOPER ENGAGEMENT REPORT" STORED IN SESSION
     if params[:per_page]
       session[:developer_engagement] = params[:per_page]
+
+      #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
+      #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
+      #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
       session[:developer_engagement_page_number] = 1
     end
 
+    #THE CURRENT PAGE NUMBER IS ALSO STORED FOR LATER
     session[:developer_engagement_page_number] = params[:page] if params[:page]
 
+    #ACTIVE DEPELOPERS PAGINATED BASED ON SESSION VALUES
     if session[:developer_engagement]
       if session[:developer_engagement] == "All"
         @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
@@ -149,6 +178,7 @@ class DevelopersController < ApplicationController
         @developers = @developers.paginate(:per_page => session[:developer_engagement], :page => session[:developer_engagement_page_number])
       end
     else
+      #DEFAULT PAGINATION TO 10 RESULTS PER PAGE INCASE THERE IS NO SESSION VALUE
       @developers = @developers.paginate(:per_page => 10, :page => params[:page])
     end
 

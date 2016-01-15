@@ -1,23 +1,36 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy, :update_developers_percentage, :team_activity]
+
+  #DELETING THE SESSION VALUES FOR DEVELOPERS PAGE, SO THAT USER SEES THE
+  #DEFAULT PAGINATION OPTIONS IF HE NAVIGATES BACK
   before_action :reset_developer_session_values
+
   skip_before_action :verify_authenticity_token
   skip_before_filter :check_super_admin
   respond_to :html
 
   def index
 
+    #SHOWING ACTIVE AND INACTIVE PROJECTS
     if params[:all] == 'true'
 
+      #SORTING PROJECTS BASED ON PRIORITY
       @projects = Project.order(:priority, :id)
 
+      #IF USER SELECTS A RESULT PER PAGE OPTION, THE SESSION VALUE FOR THIS IS STORED AND THE PAGE NUMBER IS RESET
       if params[:per_page]
         session[:project_index_for_all] = params[:per_page]
+
+        #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
+        #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
+        #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
         session[:project_index_page_number_for_all] = 1
       end
 
+      #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:project_index_page_number_for_all] = params[:page] if params[:page]
 
+      #THE PAGINATION FOR ALL PROJECTS BASED ON THE SESSION VALUES
       if session[:project_index_for_all]
         if session[:project_index_for_all] == "All"
           @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
@@ -26,20 +39,29 @@ class ProjectsController < ApplicationController
                                          :page => session[:project_index_page_number_for_all])
         end
       else
+        #IF THERE IS NO SESSION VALUE, THE PAGINATION IS DEFAULT TO 10
         @projects = @projects.paginate(:per_page => 10, :page => params[:page])
       end
 
+    #ONLY the active projects are shown
     else
 
       @projects = Project.where(active: true).order(:priority, :id)
 
+      #IF USER SELECTS A RESULT PER PAGE OPTION, THE SESSION VALUE FOR THIS IS STORED AND THE PAGE NUMBER IS RESET
       if params[:per_page]
         session[:project_index] = params[:per_page]
+
+        #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
+        #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
+        #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
         session[:project_index_page_number] = 1
       end
 
+      #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:project_index_page_number] = params[:page] if params[:page]
 
+      #THE PAGINATION FOR ACTIVE DEVELOPERS BASED ON THE SESSION VALUES
       if session[:project_index]
         if session[:project_index] == "All"
           @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
@@ -47,12 +69,12 @@ class ProjectsController < ApplicationController
           @projects = @projects.paginate(:per_page => session[:project_index], :page => session[:project_index_page_number])
         end
       else
+        #IF THERE IS NO SESSION VALUE, THE PAGINATION IS DEFAULT TO 10
         @projects = @projects.paginate(:per_page => 10, :page => params[:page])
       end
 
     end
     @last_page = (Project.where(active: true).count.to_f / WillPaginate.per_page).ceil
-
 
   end
 
