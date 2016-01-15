@@ -14,8 +14,37 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => 'You are not authorized to access requested page' unless current_user && current_user.super_admin?
   end
 
-  def get_per_page
-    @per_page = params[:per_page] || 10
+  def reset_session_values
+    session[:project_index] = 10
+    session[:project_index_page_number] = 1
+    session[:project_index_for_all] = 10
+    session[:project_index_page_number_for_all] = 1
+    session[:project_assign] = 10
+    session[:project_assign_page_number] = 1
+    session[:developer_index] = 10
+    session[:developer_index_page_number] = 1
+    session[:developer_index_for_all] = 10
+    session[:developer_index_page_number_for_all] = 1
+    session[:developer_engagement] = 10
+    session[:developer_engagement_page_number] = 1
+  end
+
+  def reset_developer_session_values
+    session[:developer_index] = 10
+    session[:developer_index_page_number] = 1
+    session[:developer_index_for_all] = 10
+    session[:developer_index_page_number_for_all] = 1
+    session[:developer_engagement] = 10
+    session[:developer_engagement_page_number] = 1
+  end
+
+  def reset_projects_session_values
+    session[:project_index] = 10
+    session[:project_index_page_number] = 1
+    session[:project_index_for_all] = 10
+    session[:project_index_page_number_for_all] = 1
+    session[:project_assign] = 10
+    session[:project_assign_page_number] = 1
   end
 
 end

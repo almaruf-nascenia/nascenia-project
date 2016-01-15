@@ -3,15 +3,20 @@
   <li class="disabled"><a>Per page</a></li>
 
   <% GlobalConstants::RESULTS_PER_PAGE.collect do |option| %>
-      <li class="<%= "active" if option.to_s == @per_page %>" ><a href="#" onclick="myFunction('<%= option %>')" ><%= option %></a></li>
+      <li class="<%= "active" if option.to_s == params[:per_page] %>" >
+        <a href="#" onclick="send_parameters_and_load_page('<%= option %>')" ><%= option %></a>
+      </li>
   <% end.join.html_safe %>
 
 </ul>
 
 <script>
-  function myFunction(option) {
-    if(window.location.href.indexOf("true") > -1) {
+  function send_parameters_and_load_page(option) {
+    if(window.location.href.indexOf("developers?all=true") > -1) {
       window.location.href = 'developers?all=true&per_page='+option;
+    }
+    else if (window.location.href.indexOf("projects?all=true") > -1){
+      window.location.href = 'projects?all=true&per_page='+option;
     }
     else{
       window.location = '?per_page='+option;

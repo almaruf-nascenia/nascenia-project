@@ -9,6 +9,9 @@ class AdminsController < ApplicationController
 
     @users = User.where(admin: false)
     @users = @users.paginate(:page => params[:user_pagination])
+
+    reset_session_values
+
   end
 
   def make_user_admin

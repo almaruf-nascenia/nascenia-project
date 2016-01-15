@@ -1,27 +1,58 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy, :update_developers_percentage, :team_activity]
-
+  before_action :reset_developer_session_values
   skip_before_action :verify_authenticity_token
   skip_before_filter :check_super_admin
   respond_to :html
 
-  ##Callback for selecting results per page
-  before_action :get_per_page, only: [:index, :project_assign]
-
   def index
+
     if params[:all] == 'true'
+
       @projects = Project.order(:priority, :id)
+
+      if params[:per_page]
+        session[:project_index_for_all] = params[:per_page]
+        session[:project_index_page_number_for_all] = 1
+      end
+
+      session[:project_index_page_number_for_all] = params[:page] if params[:page]
+
+      if session[:project_index_for_all]
+        if session[:project_index_for_all] == "All"
+          @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
+        else
+          @projects = @projects.paginate(:per_page => session[:project_index_for_all],
+                                         :page => session[:project_index_page_number_for_all])
+        end
+      else
+        @projects = @projects.paginate(:per_page => 10, :page => params[:page])
+      end
+
     else
+
       @projects = Project.where(active: true).order(:priority, :id)
+
+      if params[:per_page]
+        session[:project_index] = params[:per_page]
+        session[:project_index_page_number] = 1
+      end
+
+      session[:project_index_page_number] = params[:page] if params[:page]
+
+      if session[:project_index]
+        if session[:project_index] == "All"
+          @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
+        else
+          @projects = @projects.paginate(:per_page => session[:project_index], :page => session[:project_index_page_number])
+        end
+      else
+        @projects = @projects.paginate(:per_page => 10, :page => params[:page])
+      end
+
     end
     @last_page = (Project.where(active: true).count.to_f / WillPaginate.per_page).ceil
 
-    ##Paginating project page
-    if @per_page == 'All'
-      @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
-    else
-      @projects = @projects.paginate(:per_page => @per_page, :page => params[:page])
-    end
 
   end
 
@@ -110,6 +141,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_assign
+
     @projects = Project.where(active: true).order(:priority).all
 
     ##Paginating Projects
@@ -123,11 +155,21 @@ class ProjectsController < ApplicationController
       params[:page] = 1
     end
 
+    if params[:per_page]
+      session[:project_assign] = params[:per_page]
+      session[:project_assign_page_number] = 1
+    end
 
-    if @per_page == 'All'
-      @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
+    session[:project_assign_page_number] = params[:page] if params[:page]
+
+    if session[:project_assign]
+      if session[:project_assign] == "All"
+        @projects = @projects.paginate(:per_page => @projects.count, :page => params[:page])
+      else
+        @projects = @projects.paginate(:per_page => session[:project_assign], :page => session[:project_assign_page_number])
+      end
     else
-      @projects = @projects.paginate(:per_page => @per_page, :page => params[:page])
+      @projects = @projects.paginate(:per_page => 10, :page => params[:page])
     end
 
   end

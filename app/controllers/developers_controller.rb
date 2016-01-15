@@ -1,23 +1,55 @@
 class DevelopersController < ApplicationController
   before_action :set_developer, only: [:show, :edit, :update, :destroy]
+  before_action :reset_projects_session_values
   skip_before_filter :check_super_admin
-
-  before_action :get_per_page, only: [:index, :engagement_report]
 
   respond_to :html
 
   def index
-    if params[:all]
-      @developers = Developer.order(active: :desc)
-    else
-      @developers = Developer.where(active: true).all
-    end
 
-    ##Paginating Developers
-    if @per_page == 'All'
-      @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
+    if params[:all]
+
+      @developers = Developer.order(active: :desc)
+
+      if params[:per_page]
+        session[:developer_index_for_all] = params[:per_page]
+        session[:developer_index_page_number_for_all] = 1
+      end
+
+      session[:developer_index_page_number_for_all] = params[:page] if params[:page]
+
+      if session[:developer_index_for_all]
+        if session[:developer_index_for_all] == "All"
+          @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
+        else
+          @developers = @developers.paginate(:per_page => session[:developer_index_for_all],
+                                             :page => session[:developer_index_page_number_for_all])
+        end
+      else
+        @developers = @developers.paginate(:per_page => 10, :page => params[:page])
+      end
+
     else
-      @developers = @developers.paginate(:per_page => @per_page, :page => params[:page])
+
+      @developers = Developer.where(active: true).all
+
+      if params[:per_page]
+        session[:developer_index] = params[:per_page]
+        session[:developer_index_page_number] = 1
+      end
+
+      session[:developer_index_page_number] = params[:page] if params[:page]
+
+      if session[:developer_index]
+        if session[:developer_index] == "All"
+          @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
+        else
+          @developers = @developers.paginate(:per_page => session[:developer_index], :page => session[:developer_index_page_number])
+        end
+      else
+        @developers = @developers.paginate(:per_page => 10, :page => params[:page])
+      end
+
     end
 
   end
@@ -103,11 +135,21 @@ class DevelopersController < ApplicationController
     @filter_date = params[:filter_date] || Time.now.strftime("%Y-%m-%d")
     @developers = Developer.all
 
-    ##Paginating Developers engagement report
-    if @per_page == 'All'
-      @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
+    if params[:per_page]
+      session[:developer_engagement] = params[:per_page]
+      session[:developer_engagement_page_number] = 1
+    end
+
+    session[:developer_engagement_page_number] = params[:page] if params[:page]
+
+    if session[:developer_engagement]
+      if session[:developer_engagement] == "All"
+        @developers = @developers.paginate(:per_page => @developers.count, :page => params[:page])
+      else
+        @developers = @developers.paginate(:per_page => session[:developer_engagement], :page => session[:developer_engagement_page_number])
+      end
     else
-      @developers = @developers.paginate(:per_page => @per_page, :page => params[:page])
+      @developers = @developers.paginate(:per_page => 10, :page => params[:page])
     end
 
   end
