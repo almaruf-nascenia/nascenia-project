@@ -11,6 +11,9 @@ class ProjectsController < ApplicationController
 
   def index
 
+    #DELETING SESSION VALUES FOR THE PROJECT ASSIGN PAGE
+    reset_project_assign_session_values
+
     #SHOWING ACTIVE AND INACTIVE PROJECTS
     if params[:all] == 'true'
 
@@ -164,6 +167,9 @@ class ProjectsController < ApplicationController
 
   def project_assign
 
+    #DELETING SESSION VALUES FOR THE PROJECT INDEX PAGE
+    reset_projects_session_values
+
     @projects = Project.where(active: true).order(:priority).all
 
     ##Paginating Projects
@@ -179,6 +185,7 @@ class ProjectsController < ApplicationController
 
     if params[:per_page]
       session[:project_assign] = params[:per_page]
+
       session[:project_assign_page_number] = 1
     end
 

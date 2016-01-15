@@ -3,7 +3,8 @@ class DevelopersController < ApplicationController
 
   #DELETING THE SESSION VALUES FOR PROJECTS PAGE, SO THAT USER SEES THE
   #DEFAULT PAGINATION OPTIONS IF HE NAVIGATES BACK
-  before_action :reset_projects_session_values
+  before_action :reset_projects_session_values,
+                :reset_project_assign_session_values
 
   skip_before_filter :check_super_admin
 

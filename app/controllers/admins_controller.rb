@@ -10,6 +10,7 @@ class AdminsController < ApplicationController
     @users = User.where(admin: false)
     @users = @users.paginate(:page => params[:user_pagination])
 
+    #RESETTING ALL THE SESSION VALUES STORED FOR PAGINATION TO DEFAULT WHEN NAVIGATING HERE
     reset_session_values
 
   end
