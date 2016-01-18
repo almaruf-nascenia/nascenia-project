@@ -21,6 +21,8 @@ class DevelopersController < ApplicationController
       if params[:per_page]
         session[:developer_index_for_all] = params[:per_page]
 
+        @selected = session[:developer_index_for_all]
+
         #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
         #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
         #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
@@ -29,6 +31,8 @@ class DevelopersController < ApplicationController
 
       #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:developer_index_page_number_for_all] = params[:page] if params[:page]
+
+      @selected = 10 unless @selected
 
       #THE PAGINATION FOR ALL DEVELOPERS BASED ON THE SESSION VALUES
       if session[:developer_index_for_all]
@@ -52,6 +56,8 @@ class DevelopersController < ApplicationController
       if params[:per_page]
         session[:developer_index] = params[:per_page]
 
+        @selected = session[:developer_index]
+
         #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
         #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
         #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
@@ -60,6 +66,8 @@ class DevelopersController < ApplicationController
 
       #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:developer_index_page_number] = params[:page] if params[:page]
+
+      @selected = 10 unless @selected
 
       #THE PAGINATION FOR ACTIVE DEVELOPERS BASED ON THE SESSION VALUES
       if session[:developer_index]
@@ -162,6 +170,8 @@ class DevelopersController < ApplicationController
     if params[:per_page]
       session[:developer_engagement] = params[:per_page]
 
+      @selected = session[:developer_engagement]
+
       #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
       #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
       #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
@@ -170,6 +180,8 @@ class DevelopersController < ApplicationController
 
     #THE CURRENT PAGE NUMBER IS ALSO STORED FOR LATER
     session[:developer_engagement_page_number] = params[:page] if params[:page]
+
+    @selected = 10 unless @selected
 
     #ACTIVE DEPELOPERS PAGINATED BASED ON SESSION VALUES
     if session[:developer_engagement]

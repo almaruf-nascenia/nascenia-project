@@ -24,6 +24,8 @@ class ProjectsController < ApplicationController
       if params[:per_page]
         session[:project_index_for_all] = params[:per_page]
 
+        @selected = session[:project_index_for_all]
+
         #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
         #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
         #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
@@ -32,6 +34,8 @@ class ProjectsController < ApplicationController
 
       #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:project_index_page_number_for_all] = params[:page] if params[:page]
+
+      @selected = 10 unless @selected
 
       #THE PAGINATION FOR ALL PROJECTS BASED ON THE SESSION VALUES
       if session[:project_index_for_all]
@@ -55,6 +59,8 @@ class ProjectsController < ApplicationController
       if params[:per_page]
         session[:project_index] = params[:per_page]
 
+        @selected = session[:project_index]
+
         #IF PAGE NUMBER IS NOT SET TO 1 AFTER NEW OPTION, IT MIGHT CAUSE UNEXPECTED RESULT
         #FOR EXAMPLE, IF YOU WERE IN PAGE 2 WITH 10 RESULTS PER PAGE, THEN IF YOU SELECT ALL RESULTS PER PAGE,
         #IT WILL BE EMPTY BECAUSE THERE IS NO PAGE 2
@@ -63,6 +69,8 @@ class ProjectsController < ApplicationController
 
       #THE CURRENT PAGE NUMBER WHERE THE USER IS NOW IS STORED
       session[:project_index_page_number] = params[:page] if params[:page]
+
+      @selected = 10 unless @selected
 
       #THE PAGINATION FOR ACTIVE DEVELOPERS BASED ON THE SESSION VALUES
       if session[:project_index]
@@ -186,10 +194,14 @@ class ProjectsController < ApplicationController
     if params[:per_page]
       session[:project_assign] = params[:per_page]
 
+      @selected = session[:project_assign]
+
       session[:project_assign_page_number] = 1
     end
 
     session[:project_assign_page_number] = params[:page] if params[:page]
+
+    @selected = 10 unless @selected
 
     if session[:project_assign]
       if session[:project_assign] == "All"
