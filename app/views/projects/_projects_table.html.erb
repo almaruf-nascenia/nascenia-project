@@ -1,6 +1,6 @@
 <%# Here need a local variable projects %>
 <% projects = [] unless projects.present? %>
-<%= page_entries_info projects %><hr/>
+<%= page_entries_info projects  if projects.present? %><hr/>
 <table class="table table-striped">
   <thead>
   <tr>
