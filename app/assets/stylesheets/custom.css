@@ -115,6 +115,7 @@
 }
 
 .nav li.current a{
-    background-color: #BDE5F8;
-    color: #31708f;
+    background-color: #559CBD;
+    color: #F0F5F8;
+    border-radius: 0;
 }
