@@ -22,17 +22,17 @@
                   <h5 style="margin-top: 13px; margin-right: 15px"> Signed in as: <b><%= current_user.email %></b> </h5>
                 </li>
                 <% if current_user.super_admin? %>
-                    <li>
+                    <li class="<%= current_path(manage_admin_and_users_list_admins_path)%>">
                       <%= link_to 'Manage Admin', manage_admin_and_users_list_admins_path %>
                     </li>
                 <% end %>
-                <li>
+                <li class="<%= current_path(project_assign_path)%>">
                   <%= link_to 'Project Assign', project_assign_path %>
                 </li>
-                <li>
+                <li class="<%= current_path(projects_path)%>">
                   <%= link_to 'Project', projects_path %>
                 </li>
-                <li>
+                <li class="<%= current_path(developers_path)%>">
                   <%= link_to 'Developer', developers_path %>
                 </li>
                 <li>
